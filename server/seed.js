@@ -96,6 +96,7 @@ const TEST_EVENTS = [
     endTime: '12:00',
     description: '考試時間：上午 9:00–12:00（測試公告，時間為示意）',
     buildingNames: ['工學館', '學思樓', '科學與航太館'],
+    locationText: '工學館：工209, 210, 221, 223, 410, 419；學思樓：學514, 515, 521, 705, 711；科學與航太館：科航401, 405',
   },
   {
     title: 'J.TEST（實用日本語檢定）',
@@ -105,6 +106,7 @@ const TEST_EVENTS = [
     endTime: '15:30',
     description: '考試時間：下午 13:30–15:30（測試公告，時間為示意）',
     buildingNames: ['行政大樓'],
+    locationText: 'A-C級（高級）：行政201教室；D-E級（中級）：行政205教室；F-G級（初級）：行政209教室',
   },
   {
     title: 'JLPT（日本語能力試驗）',
@@ -114,12 +116,13 @@ const TEST_EVENTS = [
     endTime: '11:30',
     description: '考試時間：上午 9:30–11:30（測試公告，時間為示意）',
     buildingNames: ['商學大樓'],
+    locationText: 'N3/N4/N5：商學302, 305, 308等教室（常用3樓至5樓的中型教室）',
   },
 ]
 
 const insertEvent = db.prepare(`
   INSERT INTO events (title, type, location_text, start_date, end_date, description)
-  VALUES (@title, @type, NULL, @startDateTime, @endDateTime, @description)
+  VALUES (@title, @type, @locationText, @startDateTime, @endDateTime, @description)
 `)
 const insertEventLocation = db.prepare(
   'INSERT INTO event_locations (event_id, building_id) VALUES (?, ?)'
@@ -135,6 +138,7 @@ runInTransaction(() => {
     const info = insertEvent.run({
       title: ev.title,
       type: ev.type,
+      locationText: ev.locationText || null,
       startDateTime: `${date}T${ev.startTime}`,
       endDateTime: `${date}T${ev.endTime}`,
       description: ev.description,

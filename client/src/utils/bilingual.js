@@ -55,5 +55,5 @@ export function useBilingual() {
     return target && target !== zh ? `${zh} / ${target}` : zh
   }
 
-  return { bt, btName, btTitle, locale }
+  return { bt, btName, btTitle, locale, targetNameFor }
 }

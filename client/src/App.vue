@@ -1,10 +1,27 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
 import { useAnnouncementsStore } from './stores/announcements'
 
 const announcements = useAnnouncementsStore()
+const router = useRouter()
+
+// Keep the hidden admin entry available across the whole app, rather than
+// only while the landing splash is mounted. On macOS this is Control+Option+A
+// (not Command); on Windows it is Ctrl+Alt+A.
+const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || '/admin'
+
+function handleAdminHotkey(event) {
+  if (event.ctrlKey && !event.metaKey && !event.shiftKey && event.altKey && event.code === 'KeyA') {
+    event.preventDefault()
+    router.push(ADMIN_PATH)
+  }
+}
+
 onMounted(() => announcements.loadBaseline())
+onMounted(() => window.addEventListener('keydown', handleAdminHotkey))
+onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
 </script>
 
 <template>
@@ -15,7 +32,6 @@ onMounted(() => announcements.loadBaseline())
         <span class="brand-name">{{ $t('common.appName') }}</span>
       </router-link>
       <div class="topbar-right">
-        <router-link to="/admin" class="admin-link">{{ $t('admin.entryButton') }}</router-link>
         <LanguageSwitcher />
       </div>
     </header>
@@ -74,17 +90,6 @@ onMounted(() => announcements.loadBaseline())
   flex-shrink: 0;
   white-space: nowrap;
 }
-.admin-link {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.85rem;
-  text-decoration: none;
-  border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
-  white-space: nowrap;
-}
-.admin-link:hover {
-  color: #fff;
-}
-
 @media (max-width: 480px) {
   .app-topbar {
     justify-content: center;

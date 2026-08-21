@@ -6,6 +6,7 @@ import { useBilingual } from '../utils/bilingual'
 import { fetchEventLocations } from '../utils/api'
 import buildings from '../data/buildings.json'
 import gates from '../data/gates.json'
+import { selectableBuildings } from '../utils/buildingOptions'
 
 const store = useAppStore()
 const { btName, bt, locale } = useBilingual()
@@ -28,28 +29,7 @@ function onEventLocationChange(e) {
   e.target.value = '' // reset the quick-pick control itself; destination select above reflects the choice
 }
 
-// Cross-checked against the user's own reference files (fcu/map/fcu map.jpg —
-// the printed 逢甲大學校區平面圖 — and fcu/大樓與教室代碼/大樓與教室代碼.png, the
-// building-code legend): only buildings that both (a) carry a real official
-// code and (b) are actually drawn on that printed map belong in the
-// origin/destination pickers. 逢甲智慧創新港 (id b283040780, code "IH") has a
-// code in our data but does NOT appear on the printed map, so it's excluded
-// here too — everything else without any code was already excluded by the
-// officialCode check alone. This directly implements the repeated request:
-// 「不在地圖上/不在fcu map上的都從dropdown移除」.
-const NOT_ON_OFFICIAL_MAP = new Set(['b283040780'])
-
-// Full-tier buildings first (more complete facility data), partial after —
-// buildings without an official code, or not on the printed map, are
-// filtered out entirely rather than just losing their code prefix.
-const sortedBuildings = computed(() =>
-  [...buildings]
-    .filter((b) => b.officialCode && !NOT_ON_OFFICIAL_MAP.has(b.id))
-    .sort((a, b) => {
-      if (a.tier === b.tier) return a.nameZh.localeCompare(b.nameZh, 'zh-Hant')
-      return a.tier === 'full' ? -1 : 1
-    })
-)
+const sortedBuildings = computed(() => selectableBuildings(buildings))
 
 // Feedback item: dropdown options get the same building code shown on the
 // redesigned map (e.g. "LIB｜圖書館 / Library") so the two views match up.

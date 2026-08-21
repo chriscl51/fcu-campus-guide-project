@@ -110,7 +110,7 @@
     "B1（共善學園內）新愉園：校內教職員生專屬，規劃沙發區、高腳椅輕食區與團體餐桌。週一至週五07:30–19:00（週末與國定假日不開放）"
    ]
   },
-  "photo": null
+  "photo": "buildings/humanities-social.jpg"
  },
  {
   "id": "b283040764",
@@ -178,7 +178,7 @@
     "4至7樓公共走廊特定座位區：僅限走廊指定座位可飲食與休息，教室內一律嚴禁飲食"
    ]
   },
-  "photo": null
+  "photo": "buildings/renyan.jpg"
  },
  {
   "id": "r20159319",
@@ -249,7 +249,7 @@
     "B1（共善學園）新愉園，與人文社會館共用空間"
    ]
   },
-  "photo": null
+  "photo": "buildings/virtuosi.jpg"
  },
  {
   "id": "b254446750",
@@ -323,7 +323,7 @@
     "1樓課間停留空間：進駐「帕哩帕哩小餐館」，設有販賣機與飲水機，依大樓與店家營業時間為準"
    ]
   },
-  "photo": null
+  "photo": "buildings/business.jpg"
  },
  {
   "id": "b262625997",
@@ -454,7 +454,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/civil-hydraulic.jpg"
  },
  {
   "id": "b283040769",
@@ -544,7 +544,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/xuesi.jpg"
  },
  {
   "id": "r6032175",
@@ -649,7 +649,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/architecture.jpg"
  },
  {
   "id": "b406370377",
@@ -786,7 +786,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/sciences.jpg"
  },
  {
   "id": "b283040786",
@@ -907,7 +907,7 @@
    ],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/recreation.jpg"
  },
  {
   "id": "b283040788",
@@ -1005,7 +1005,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/language.jpg"
  },
  {
   "id": "b260864150",
@@ -1115,7 +1115,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/information-electrical.jpg"
  },
  {
   "id": "b283040772",
@@ -1185,7 +1185,7 @@
    "aed": [],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/electronic-communications.jpg"
  },
  {
   "id": "b283040778",
@@ -1361,7 +1361,7 @@
    ],
    "rest": []
   },
-  "photo": null
+  "photo": "buildings/sports-center.jpg"
  },
  {
   "id": "b479358943",
@@ -1517,7 +1517,7 @@
   "officialCode": "XSG",
   "tier": "partial",
   "facilities": null,
-  "photo": null
+  "photo": "buildings/xuesi-garden.jpg"
  },
  {
   "id": "b402105183",
@@ -1587,7 +1587,7 @@
   "officialCode": "WIC",
   "tier": "partial",
   "facilities": null,
-  "photo": null
+  "photo": "buildings/wenhwa-innovation.jpg"
  },
  {
   "id": "b521721220",
@@ -1815,7 +1815,7 @@
   "officialCode": "HH",
   "tier": "partial",
   "facilities": null,
-  "photo": null
+  "photo": "buildings/history-house.jpg"
  },
  {
   "id": "r6032176",
@@ -1952,6 +1952,6 @@
   "officialCode": "IH",
   "tier": "partial",
   "facilities": null,
-  "photo": null
+  "photo": "buildings/ihub-innovation.jpg"
  }
 ]

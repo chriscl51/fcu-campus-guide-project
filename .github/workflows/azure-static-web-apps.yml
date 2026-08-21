@@ -1,0 +1,65 @@
+name: Azure Static Web Apps CI/CD
+
+# Deploys client/ (the Vue static site) to Azure Static Web Apps. Does NOT
+# touch server/ (the Express + node:sqlite events API) — that needs separate
+# hosting (e.g. Azure App Service, single instance) since it doesn't fit the
+# Static Web Apps Functions execution model. See VITE_API_BASE below.
+#
+# Before this workflow can succeed, set these as GitHub repo secrets
+# (Settings -> Secrets and variables -> Actions):
+#   AZURE_STATIC_WEB_APPS_API_TOKEN  — from the Azure Portal after creating
+#                                       the Static Web App resource
+#   VITE_ADMIN_PASSWORD              — must match server/.env's ADMIN_PASSWORD
+#   VITE_ADMIN_PATH                  — the hidden admin route's path (see
+#                                       client/.env.example); starts with "/"
+#   VITE_API_BASE                    — only needed if/when server/ is
+#                                       actually deployed somewhere; omit to
+#                                       leave the events board gracefully
+#                                       empty (see client/src/utils/api.js)
+#
+# Portal "Configuration" env vars do NOT reach this build step — Vite bakes
+# VITE_-prefixed vars into the bundle at `npm run build` time, which runs
+# here in the Actions runner, not in Azure's Functions runtime. Repo secrets
+# referenced below are the only thing that actually lands in the built JS.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [main]
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Build and Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        env:
+          VITE_ADMIN_PASSWORD: ${{ secrets.VITE_ADMIN_PASSWORD }}
+          VITE_ADMIN_PATH: ${{ secrets.VITE_ADMIN_PATH }}
+          VITE_API_BASE: ${{ secrets.VITE_API_BASE }}
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: 'client'
+          output_location: 'dist'
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: 'close'

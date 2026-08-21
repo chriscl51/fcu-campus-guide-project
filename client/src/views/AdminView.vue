@@ -1,21 +1,9 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useAnnouncementsStore } from '../stores/announcements'
-import { SUPPORTED_LOCALES, LOCALE_LABELS } from '../i18n'
 import { fetchAllEvents, createEvent, updateEvent, deleteEvent } from '../utils/api'
 import buildings from '../data/buildings.json'
-
-// Feedback item: facility announcements weren't translated at all — visitors
-// just saw whatever language the admin happened to type in. Since there's no
-// paid translation API in this project (see README), the practical fix is to
-// collect the message directly in each language at entry time rather than
-// machine-translate safety-relevant text (wrong AED/restroom info would be
-// worse than no translation). zh-TW and English are required; the rest are
-// optional and fall back to the English text on the visitor side.
-const REQUIRED_MESSAGE_LOCALES = ['zh-TW', 'en']
-function emptyMessage() {
-  return Object.fromEntries(SUPPORTED_LOCALES.map((l) => [l, '']))
-}
+import { buildingOptionLabel, selectableBuildings } from '../utils/buildingOptions'
 
 // NOTE: client-side-only "lock", not real auth — see admin.disclaimer string
 // shown to the user on this same screen. Read from VITE_ADMIN_PASSWORD (see
@@ -27,6 +15,7 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'fcu2026'
 const SESSION_KEY = 'fcu-guide-admin'
 
 const ANNOUNCEMENT_TYPES = ['renovation', 'restroom', 'elevator', 'water', 'power', 'other']
+const availableBuildings = selectableBuildings(buildings)
 
 const store = useAnnouncementsStore()
 
@@ -43,10 +32,8 @@ const importFileInput = ref(null)
 const importMessage = ref('') // '', 'success', 'error'
 
 const emptyForm = () => ({
-  buildingId: buildings[0]?.id || '',
-  area: '',
+  buildingId: availableBuildings[0]?.id || '',
   type: ANNOUNCEMENT_TYPES[0],
-  message: emptyMessage(),
   startDate: '',
   endDate: '',
 })
@@ -234,18 +221,9 @@ function startAdd() {
 
 function startEdit(announcement) {
   editingId.value = announcement.id
-  // Back-compat: older entries (saved before this feature) have `message` as
-  // a plain string rather than a per-locale object — treat it as the zh-TW
-  // text so it doesn't just disappear when re-editing.
-  const message =
-    typeof announcement.message === 'string'
-      ? { ...emptyMessage(), 'zh-TW': announcement.message }
-      : { ...emptyMessage(), ...announcement.message }
   Object.assign(form, {
     buildingId: announcement.buildingId,
-    area: announcement.area || '',
     type: announcement.type,
-    message,
     startDate: announcement.startDate || '',
     endDate: announcement.endDate || '',
   })
@@ -268,8 +246,7 @@ function flashSavedNote() {
 }
 
 function saveForm() {
-  const requiredFilled = REQUIRED_MESSAGE_LOCALES.every((l) => form.message[l]?.trim())
-  if (!form.buildingId || !requiredFilled) {
+  if (!form.buildingId) {
     formError.value = true
     return
   }
@@ -277,9 +254,7 @@ function saveForm() {
 
   const payload = {
     buildingId: form.buildingId,
-    area: form.area.trim(),
     type: form.type,
-    message: Object.fromEntries(SUPPORTED_LOCALES.map((l) => [l, (form.message[l] || '').trim()])),
     startDate: form.startDate,
     endDate: form.endDate,
   }
@@ -416,18 +391,8 @@ function onImportFile(event) {
         <div class="field">
           <label for="form-building">{{ $t('admin.buildingLabel') }}</label>
           <select id="form-building" v-model="form.buildingId">
-            <option v-for="b in buildings" :key="b.id" :value="b.id">{{ b.nameZh }}</option>
+            <option v-for="b in availableBuildings" :key="b.id" :value="b.id">{{ buildingOptionLabel(b) }}</option>
           </select>
-        </div>
-
-        <div class="field">
-          <label for="form-area">{{ $t('admin.areaLabel') }}</label>
-          <input
-            id="form-area"
-            v-model="form.area"
-            type="text"
-            :placeholder="$t('admin.areaPlaceholder')"
-          />
         </div>
 
         <div class="field">
@@ -437,22 +402,6 @@ function onImportFile(event) {
               {{ $t(`announcementType.${t}`) }}
             </option>
           </select>
-        </div>
-
-        <div class="message-fields">
-          <p class="message-fields-hint">{{ $t('admin.messageMultiLangHint') }}</p>
-          <div v-for="l in SUPPORTED_LOCALES" :key="l" class="field">
-            <label :for="`form-message-${l}`">
-              {{ LOCALE_LABELS[l] }}
-              <span v-if="REQUIRED_MESSAGE_LOCALES.includes(l)" class="required-mark">*</span>
-            </label>
-            <textarea
-              :id="`form-message-${l}`"
-              v-model="form.message[l]"
-              rows="2"
-              :placeholder="$t('admin.messagePlaceholder')"
-            ></textarea>
-          </div>
         </div>
 
         <div class="form-row">
@@ -482,13 +431,6 @@ function onImportFile(event) {
             <span class="building-name">{{ buildingName(a.buildingId) }}</span>
             <span class="pill" :class="`type-${a.type}`">{{ $t(`announcementType.${a.type}`) }}</span>
           </div>
-          <p v-if="a.area" class="announcement-area">{{ a.area }}</p>
-          <p class="announcement-message">
-            {{ typeof a.message === 'string' ? a.message : a.message?.['zh-TW'] }}
-          </p>
-          <p v-if="typeof a.message === 'object'" class="message-lang-count">
-            {{ $t('admin.messageLangCount', { count: SUPPORTED_LOCALES.filter((l) => a.message[l]?.trim()).length, total: SUPPORTED_LOCALES.length }) }}
-          </p>
           <p v-if="a.startDate || a.endDate" class="announcement-dates">
             {{ a.startDate || '?' }} — {{ a.endDate || '?' }}
           </p>
@@ -533,16 +475,16 @@ function onImportFile(event) {
             id="event-building"
             multiple
             class="multi-select"
-            :size="Math.min(8, buildings.length)"
+            :size="Math.min(8, availableBuildings.length)"
             @change="onEventBuildingsChange"
           >
             <option
-              v-for="b in buildings"
+              v-for="b in availableBuildings"
               :key="b.id"
               :value="b.id"
               :selected="eventForm.buildingIds.includes(b.id)"
             >
-              {{ b.nameZh }}
+              {{ buildingOptionLabel(b) }}
             </option>
           </select>
           <p class="field-hint">{{ $t('admin.eventBuildingHint') }}</p>
@@ -761,26 +703,8 @@ function onImportFile(event) {
   margin: 0;
 }
 
-.message-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  border-top: 1px dashed var(--fcu-maroon-light);
-  border-bottom: 1px dashed var(--fcu-maroon-light);
-  padding: 0.75rem 0;
-}
-.message-fields-hint {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
 .required-mark {
   color: var(--fcu-maroon);
-}
-.message-lang-count {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--text-muted);
 }
 
 .announcement-actions {
