@@ -54,7 +54,6 @@ export default {
     directionsTitle: '텍스트 길안내',
     following: '웬화사슴이 안내하고 있어요…',
     skipToEnd: '목적지로 건너뛰기',
-    southGateApprox: '남문 위치는 평면도 비율로 추정한 것이며, GPS 실측 좌표가 아닙니다',
   },
   directions: {
     straight: '약 {distance}m 직진',

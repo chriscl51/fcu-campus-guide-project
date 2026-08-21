@@ -54,7 +54,6 @@ export default {
     directionsTitle: 'Written Directions',
     following: 'The Wenhwa Deer is guiding you there…',
     skipToEnd: 'Skip to Destination',
-    southGateApprox: 'South Gate position is estimated from a map diagram\'s proportions, not a GPS survey point',
   },
   directions: {
     straight: 'Go straight for about {distance} m',

@@ -54,7 +54,6 @@ export default {
     directionsTitle: 'Chỉ đường bằng văn bản',
     following: 'Hươu Wenhwa đang dẫn bạn đi…',
     skipToEnd: 'Bỏ qua, đến thẳng điểm đến',
-    southGateApprox: 'Vị trí Cổng Nam được ước tính theo tỷ lệ trên bản đồ sơ đồ, không phải tọa độ GPS thực đo',
   },
   directions: {
     straight: 'Đi thẳng khoảng {distance} mét',

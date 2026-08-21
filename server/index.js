@@ -68,11 +68,14 @@ function replaceEventLocations(eventId, buildingIds) {
 // "Upcoming" = auto-surfaces starting the day before start_date, through
 // end_date — matches the feature request: admin enters an event, it
 // automatically appears on the landing page starting the day before.
+// Uses '+8 hours' (not SQLite's 'localtime') so "today" is always Taipei's
+// calendar day (GMT+8), regardless of what timezone the server host is
+// actually running in.
 app.get('/api/events/upcoming', (req, res) => {
   const rows = db.prepare(`
     SELECT e.* FROM events e
-    WHERE date('now', 'localtime') >= date(e.start_date, '-1 day')
-      AND date('now', 'localtime') <= date(e.end_date)
+    WHERE date('now', '+8 hours') >= date(e.start_date, '-1 day')
+      AND date('now', '+8 hours') <= date(e.end_date)
     ORDER BY e.start_date ASC
   `).all()
   res.json(attachLocations(rows))
@@ -88,8 +91,8 @@ app.get('/api/events/locations', (req, res) => {
     FROM events e
     JOIN event_locations el ON el.event_id = e.id
     JOIN buildings b ON b.id = el.building_id
-    WHERE date('now', 'localtime') >= date(e.start_date, '-1 day')
-      AND date('now', 'localtime') <= date(e.end_date)
+    WHERE date('now', '+8 hours') >= date(e.start_date, '-1 day')
+      AND date('now', '+8 hours') <= date(e.end_date)
     ORDER BY b.name_zh
   `).all()
   res.json(rows)

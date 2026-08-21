@@ -54,7 +54,6 @@ export default {
     directionsTitle: 'คำแนะนำเส้นทางแบบข้อความ',
     following: 'กวางเหวินฮว่ากำลังพาคุณไป…',
     skipToEnd: 'ข้ามไปยังจุดหมายปลายทาง',
-    southGateApprox: 'ตำแหน่งประตูใต้เป็นการประมาณจากสัดส่วนบนแผนผัง ไม่ใช่พิกัด GPS ที่สำรวจจริง',
   },
   directions: {
     straight: 'เดินตรงไปประมาณ {distance} เมตร',

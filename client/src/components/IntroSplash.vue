@@ -8,6 +8,7 @@ import { useI18n } from 'vue-i18n'
 import { playGreeting } from '../utils/sound'
 import { fetchUpcomingEvents } from '../utils/api'
 import { useBilingual } from '../utils/bilingual'
+import { formatWallClock, formatTaipeiInstant } from '../utils/dateFormat'
 import { useAppStore } from '../stores/app'
 
 const emit = defineEmits(['start'])
@@ -60,17 +61,11 @@ function eventLocationSummary(e) {
 // start_date/end_date come back as 'YYYY-MM-DD' (older rows) or
 // 'YYYY-MM-DDTHH:MM' (current admin form, which now collects a time too —
 // feedback item: the board needs to show event start/end TIME, not just
-// date). Format with the visitor's locale; only show a time portion when
-// one is actually present in the raw value.
+// date). Format with the visitor's locale (month spelled out, GMT+8 wall
+// clock — see utils/dateFormat.js); only show a time portion when one is
+// actually present in the raw value.
 function formatEventDateTime(value) {
-  if (!value) return ''
-  const hasClock = value.length > 10
-  const d = new Date(hasClock ? value : `${value}T00:00`)
-  if (Number.isNaN(d.getTime())) return value
-  const fmt = locale.value === 'zh-TW' ? 'zh-TW' : 'en-US'
-  return d.toLocaleString(fmt, hasClock
-    ? { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }
-    : { month: 'numeric', day: 'numeric' })
+  return formatWallClock(value, locale.value)
 }
 
 function eventDateRange(e) {
@@ -85,10 +80,7 @@ function eventDateRange(e) {
 function eventPublishedAt(e) {
   if (!e.created_at) return ''
   const iso = e.created_at.includes('T') ? e.created_at : `${e.created_at.replace(' ', 'T')}Z`
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return ''
-  const fmt = locale.value === 'zh-TW' ? 'zh-TW' : 'en-US'
-  return d.toLocaleString(fmt, { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  return formatTaipeiInstant(iso, locale.value)
 }
 
 // Feedback item: an event with a single location jumps straight into the

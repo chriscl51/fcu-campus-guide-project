@@ -41,5 +41,4 @@ export const GATE_NAMES_I18N = {
   'gate-west': { ja: '西門（正門）', ko: '서문(정문)', vi: 'Cổng Tây (Cổng chính)', id: 'Gerbang Barat (Gerbang Utama)', th: 'ประตูตะวันตก (ประตูหลัก)' },
   'gate-east': { ja: '東門', ko: '동문', vi: 'Cổng Đông', id: 'Gerbang Timur', th: 'ประตูตะวันออก' },
   'gate-north': { ja: '北門', ko: '북문', vi: 'Cổng Bắc', id: 'Gerbang Utara', th: 'ประตูเหนือ' },
-  'gate-south': { ja: '南門', ko: '남문', vi: 'Cổng Nam', id: 'Gerbang Selatan', th: 'ประตูใต้' },
 }

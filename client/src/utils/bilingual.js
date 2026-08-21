@@ -18,6 +18,18 @@ export function useBilingual() {
     return target && target !== zh ? `${zh} / ${target}` : zh
   }
 
+  /** Same pairing as bt(), but returned as { zh, target } instead of a single
+   * "zh / target" string — for callers (e.g. FacilityPanel.vue) that lay the
+   * two languages out as parallel blocks rather than one run-on line.
+   * `target` is '' when there's nothing to show separately (zh-TW locale, or
+   * the target text is identical to zh). */
+  function btPair(key, params = {}) {
+    const zh = t(key, params, { locale: 'zh-TW' })
+    if (locale.value === 'zh-TW') return { zh, target: '' }
+    const target = t(key, params, { locale: locale.value })
+    return { zh, target: target && target !== zh ? target : '' }
+  }
+
   /** This locale's translation of a building/gate name, or English if this
    * locale has no dedicated entry in buildingNamesI18n.js. Single-language —
    * does NOT include the zh-TW half (see btName for the display pair). */
@@ -55,5 +67,13 @@ export function useBilingual() {
     return target && target !== zh ? `${zh} / ${target}` : zh
   }
 
-  return { bt, btName, btTitle, locale, targetNameFor }
+  /** Pair variant of btTitle() — see btPair(). */
+  function btTitlePair(key, entity) {
+    const zh = t(key, { name: entity?.nameZh ?? '' }, { locale: 'zh-TW' })
+    if (locale.value === 'zh-TW') return { zh, target: '' }
+    const target = t(key, { name: targetNameFor(entity) }, { locale: locale.value })
+    return { zh, target: target && target !== zh ? target : '' }
+  }
+
+  return { bt, btPair, btName, btTitle, btTitlePair, locale, targetNameFor }
 }

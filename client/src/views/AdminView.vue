@@ -4,6 +4,7 @@ import { useAnnouncementsStore } from '../stores/announcements'
 import { fetchAllEvents, createEvent, updateEvent, deleteEvent } from '../utils/api'
 import buildings from '../data/buildings.json'
 import { buildingOptionLabel, selectableBuildings } from '../utils/buildingOptions'
+import { formatWallClock, formatTaipeiInstant } from '../utils/dateFormat'
 
 // NOTE: client-side-only "lock", not real auth — see admin.disclaimer string
 // shown to the user on this same screen. Read from VITE_ADMIN_PASSWORD (see
@@ -83,14 +84,15 @@ function eventBuildingNames(ev) {
   return locs.map((l) => l.nameZh).join('、')
 }
 
-// event.start_date/end_date are 'YYYY-MM-DDTHH:MM'; created_at (publish time)
-// comes back from SQLite as 'YYYY-MM-DD HH:MM:SS' (UTC) — both get the same
-// human-readable treatment here for the admin list view.
+// event.start_date/end_date are 'YYYY-MM-DDTHH:MM' — a naive wall-clock
+// value (as typed into the admin form, meant as Taipei time, no timezone
+// attached) — vs. created_at (publish time), which comes back from SQLite
+// as 'YYYY-MM-DD HH:MM:SS' UTC, a real instant that needs converting to
+// Asia/Taipei (GMT+8) for display. See utils/dateFormat.js.
 function formatEventDateTime(value) {
   if (!value) return ''
-  const d = new Date(value.includes('T') ? value : `${value.replace(' ', 'T')}Z`)
-  if (Number.isNaN(d.getTime())) return value
-  return d.toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+  if (value.includes('T')) return formatWallClock(value, 'zh-TW', { withYear: true })
+  return formatTaipeiInstant(`${value.replace(' ', 'T')}Z`, 'zh-TW', { withYear: true })
 }
 
 function onEventBuildingsChange(e) {

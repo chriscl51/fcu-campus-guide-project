@@ -54,7 +54,6 @@ export default {
     directionsTitle: 'テキストでの道案内',
     following: '文華鹿が案内しています…',
     skipToEnd: '目的地までスキップ',
-    southGateApprox: '南門の位置は地図の縮尺から推定したものであり、GPS実測座標ではありません',
   },
   directions: {
     straight: '約{distance}m直進',

@@ -54,7 +54,6 @@ export default {
     directionsTitle: 'Petunjuk Arah Tertulis',
     following: 'Rusa Wenhwa sedang memandu kamu…',
     skipToEnd: 'Lewati ke Tujuan',
-    southGateApprox: 'Posisi Gerbang Selatan diperkirakan dari proporsi peta denah, bukan titik survei GPS',
   },
   directions: {
     straight: 'Jalan lurus sekitar {distance} m',

@@ -123,8 +123,9 @@ function photoUrl(path) {
 
 .arrival-photo {
   width: 100%;
-  max-height: 260px;
-  object-fit: cover;
+  height: 260px;
+  object-fit: contain;
+  background: var(--bg);
   border-radius: 10px;
   display: block;
 }

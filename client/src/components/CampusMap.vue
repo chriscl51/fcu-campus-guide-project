@@ -42,9 +42,8 @@ const buildingMarkers = buildings.map((b) => {
   return { ...b, pos, footprintPath }
 })
 
-// Gate markers (西門/東門/北門/南門), styled like the red gate labels on the
-// official schematic map. 南門 has no GPS survey point — see build_gates.py —
-// so it renders with a dashed ring + tooltip flagging the approximation.
+// Gate markers (西門/東門/北門), styled like the red gate labels on the
+// official schematic map.
 const gateMarkers = gatesData.map((g) => ({ ...g, pos: project(g.lat, g.lon) }))
 
 const POI_STYLE = {
@@ -208,10 +207,9 @@ function directionLabel(step) {
           <text :x="b.pos.x" :y="b.pos.y + 7" class="building-name">{{ b.nameZh }}</text>
         </g>
 
-        <g v-for="g in gateMarkers" :key="g.id" class="gate-marker" :class="{ approx: g.approx }">
+        <g v-for="g in gateMarkers" :key="g.id" class="gate-marker">
           <circle :cx="g.pos.x" :cy="g.pos.y" r="5" class="gate-dot" />
-          <text :x="g.pos.x" :y="g.pos.y - 9" class="gate-label">{{ g.nameZh }}<tspan v-if="g.approx">＊</tspan></text>
-          <title v-if="g.approx">{{ $t('routing.southGateApprox') }}</title>
+          <text :x="g.pos.x" :y="g.pos.y - 9" class="gate-label">{{ g.nameZh }}</text>
         </g>
 
         <g v-for="p in poiMarkers" :key="p.id" class="poi-marker">
@@ -372,12 +370,6 @@ function directionLabel(step) {
   fill: #c0392b;
   stroke: #fff;
   stroke-width: 1;
-}
-.gate-marker.approx .gate-dot {
-  fill: none;
-  stroke: #c0392b;
-  stroke-width: 1.4;
-  stroke-dasharray: 2 1.5;
 }
 .gate-label {
   font-size: 10px;

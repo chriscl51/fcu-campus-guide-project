@@ -55,7 +55,6 @@ export default {
     directionsTitle: '文字導航',
     following: '文華鹿正帶你走過去…',
     skipToEnd: '跳到終點',
-    southGateApprox: '南門位置為依平面圖比例估算，非 GPS 實測座標',
   },
   directions: {
     straight: '直走約 {distance} 公尺',
