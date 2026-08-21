@@ -1,0 +1,17 @@
+{
+  "name": "fcu-campus-guide",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Convenience root — runs client (Vite) and server (Express) together. See README.md for the full setup.",
+  "scripts": {
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "seed": "npm run seed --prefix server",
+    "server": "npm run start --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently -n web,api -c blue,green \"npm:client\" \"npm:server\"",
+    "build": "npm run build --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

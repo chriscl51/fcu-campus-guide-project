@@ -1,0 +1,172 @@
+/* FCU Campus Guide — global styles & design tokens.
+   Palette sampled from the user's real campus map material (banner maroon)
+   and the official fcu.edu.tw theme-color meta tag (deep blue). */
+:root {
+  --fcu-maroon: #811b29;
+  --fcu-maroon-dark: #5e131e;
+  --fcu-maroon-light: #a83b49;
+  --fcu-blue: #006b93;
+  --fcu-blue-dark: #004d6b;
+  --fcu-gold: #d4a94f;
+
+  --bg: #faf7f2;
+  --surface: #ffffff;
+  --text: #2b2320;
+  --text-muted: #6b625c;
+  --border: #e6ddd3;
+  --shadow: 0 8px 24px rgba(94, 19, 30, 0.12);
+  --radius: 14px;
+
+  --sans:
+    'Noto Sans TC', 'Noto Sans JP', 'Noto Sans KR', system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+
+  font: 16px/1.6 var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 0.5em;
+  color: var(--fcu-maroon-dark);
+  font-weight: 700;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+select,
+input,
+textarea {
+  font: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.7em 1.4em;
+  border-radius: 999px;
+  border: none;
+  background: var(--fcu-maroon);
+  color: #fff;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow: 0 4px 14px rgba(129, 27, 41, 0.3);
+}
+.btn:hover {
+  background: var(--fcu-maroon-dark);
+  transform: translateY(-1px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn:disabled {
+  background: #c9bfb6;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn.secondary {
+  background: var(--fcu-blue);
+  box-shadow: 0 4px 14px rgba(0, 107, 147, 0.3);
+}
+.btn.secondary:hover {
+  background: var(--fcu-blue-dark);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--fcu-maroon);
+  box-shadow: none;
+  border: 2px solid var(--fcu-maroon);
+}
+.btn.ghost:hover {
+  background: rgba(129, 27, 41, 0.08);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+.field label {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+.field select,
+.field input,
+.field textarea {
+  padding: 0.65em 0.8em;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+}
+.field select:focus,
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--fcu-blue);
+  outline-offset: 1px;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 3rem;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.25em 0.8em;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.pill.tier-full {
+  background: rgba(0, 107, 147, 0.12);
+  color: var(--fcu-blue-dark);
+}
+.pill.tier-partial {
+  background: rgba(129, 27, 41, 0.1);
+  color: var(--fcu-maroon-dark);
+}
+
+@media (max-width: 640px) {
+  :root {
+    font-size: 15px;
+  }
+  .screen {
+    padding: 1rem 0.75rem 2rem;
+  }
+}

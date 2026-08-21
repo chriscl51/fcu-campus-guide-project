@@ -1,0 +1,5 @@
+node_modules
+campus.db
+campus.db-shm
+campus.db-wal
+*.log

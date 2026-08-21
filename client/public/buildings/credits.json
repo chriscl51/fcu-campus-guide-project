@@ -1,0 +1,122 @@
+[
+ {
+  "buildingNameZh": "商學大樓",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked business.fcu.edu.tw/about/ and business.fcu.edu.tw/bb7f/ (College of Business official pages) — no exterior building photograph found; pages use only logos/decorative graphics in the extractable content."
+ },
+ {
+  "buildingNameZh": "資訊電機館",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked upiee.fcu.edu.tw (College of Information and Electrical Engineering homepage, redirected from hpiee.fcu.edu.tw) — no exterior building photograph found."
+ },
+ {
+  "buildingNameZh": "人言大樓",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked constructionplanning.fcu.edu.tw/renyaneducationinnovation/, cl.fcu.edu.tw/space/, and two 逢甲週報 (FCU Weekly) articles about 人言大樓 (fcuweekly/news/2016060108, fcuweekly/news/2008100218) — all show only interior photos (采銅廳, 創新教育中心 interior) or no image at all, no confirmed exterior shot."
+ },
+ {
+  "buildingNameZh": "逢甲大學圖書館",
+  "file": "buildings/library.jpg",
+  "sourceUrl": null,
+  "note": "使用者本人於校園實地拍攝的照片(非官網/AI生成),2026-08 提供。"
+ },
+ {
+  "buildingNameZh": "學思樓",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Found a relevant 逢甲週報 article about the building's 2008 completion (fcuweekly/news/2008100218) but no exterior image URL could be extracted from it."
+ },
+ {
+  "buildingNameZh": "忠勤樓",
+  "file": "buildings/jongchin.jpg",
+  "sourceUrl": null,
+  "note": "使用者本人於校園實地拍攝的照片(非官網/AI生成),2026-08 提供。"
+ },
+ {
+  "buildingNameZh": "工學館",
+  "file": "buildings/engineering.jpg",
+  "sourceUrl": null,
+  "note": "使用者本人於校園實地拍攝的照片(非官網/AI生成),2026-08 提供。"
+ },
+ {
+  "buildingNameZh": "理學大樓",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked ces.fcu.edu.tw/about/ (College of Engineering and Science) — building is mentioned by name (room locations) but no exterior photo present."
+ },
+ {
+  "buildingNameZh": "土木水利館",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked civil.fcu.edu.tw and he.fcu.edu.tw (Civil Engineering / Hydraulic and Ocean Engineering dept homepages) — only a campus location map graphic found, no exterior building photo."
+ },
+ {
+  "buildingNameZh": "體育館",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked sportscenter.fcu.edu.tw (official FCU Sports Center site) — page has icons/UI images but no confirmed exterior building photograph in the extractable content."
+ },
+ {
+  "buildingNameZh": "行政大樓",
+  "file": null,
+  "sourceUrl": null,
+  "note": "No dedicated page with a confirmed exterior photo found; building appears only in venue-booking listings and org-chart pages without imagery."
+ },
+ {
+  "buildingNameZh": "丘逢甲紀念館",
+  "file": "buildings/chiu-fengchia-memorial.jpg",
+  "sourceUrl": null,
+  "note": "使用者本人於校園實地拍攝的照片(非官網/AI生成),2026-08 提供。"
+ },
+ {
+  "buildingNameZh": "建築館",
+  "file": null,
+  "sourceUrl": "https://archschool.fcu.edu.tw/",
+  "note": "archschool.fcu.edu.tw (Professional College of Architecture) has an og:image at https://s3.ap-southeast-1.amazonaws.com/web-content.fcu.edu.tw/wp-content/uploads/sites/79/2021/06/15154657/%E7%9C%8B%E5%BE%97%E8%A6%8B%E7%9A%84AIpic-1-16-scaled.jpg with alt text about the college, but it could not be confirmed to be a straightforward exterior photo of the 建築館 building itself (may be a composited/promotional graphic) — not used without confirmation."
+ },
+ {
+  "buildingNameZh": "科學與航太館",
+  "file": "buildings/science-aeronautical.jpg",
+  "sourceUrl": null,
+  "note": "使用者本人於校園實地拍攝的照片(非官網/AI生成),2026-08 提供。"
+ },
+ {
+  "buildingNameZh": "電子通訊館",
+  "file": null,
+  "sourceUrl": null,
+  "note": "No official page with an exterior photo of this building found via search."
+ },
+ {
+  "buildingNameZh": "人文社會館",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked cohss.fcu.edu.tw/about/ (College of Humanities and Social Sciences) — the page's og:image is a promotional graphic for a '多寶格' exhibit, not an exterior building photo."
+ },
+ {
+  "buildingNameZh": "語文大樓",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked fll.fcu.edu.tw (Dept of Foreign Languages) — og:image found is a staff group photo, not a building exterior."
+ },
+ {
+  "buildingNameZh": "育樂館",
+  "file": null,
+  "sourceUrl": null,
+  "note": "Checked ga.fcu.edu.tw/environment/ (venue rental listing for 育樂館大禮堂) — only an interior auditorium photo found (https://s3.ap-southeast-1.amazonaws.com/web-content.fcu.edu.tw/wp-content/uploads/sites/94/2021/05/12143057/...Hall-BG-0101...jpg), not an exterior shot, so not used."
+ },
+ {
+  "buildingNameZh": "共善樓",
+  "file": null,
+  "sourceUrl": "https://s3.ap-southeast-1.amazonaws.com/web-content.fcu.edu.tw/wp-content/uploads/sites/89/2025/04/10105557/20250224_%E5%85%B1%E5%96%84%E6%A8%93-11-scaled.jpg",
+  "note": "CONFIRMED exterior photo found via the official page https://www.fcu.edu.tw/differentbutbetter/campus/ (og:image, explicitly captioned/filenamed 共善樓). This is a genuine, correctly-identified official photo. However, the download could NOT be completed in this environment: the sandbox's outbound network policy blocks ALL external HTTPS egress via curl/Bash (confirmed as a systemic 403 policy denial from the egress gateway on every host tested, including this S3 host, www.fcu.edu.tw itself, and even example.com) — this is an infrastructure restriction unrelated to FCU's site. The person running this tool should download this URL directly (outside this sandboxed environment) and save it as gongshan.jpg."
+ },
+ {
+  "buildingNameZh": "行政二館",
+  "file": "buildings/administration-2.jpg",
+  "sourceUrl": null,
+  "note": "使用者本人於校園實地拍攝的照片(非官網/AI生成),2026-08 提供。原本資料建置中,已依官方中英對照牌補上大樓代碼(ADB(II))與英文名稱,設施資料(電梯/廁所/飲水機等)因無來源文件仍缺,tier 維持 partial。"
+ }
+]

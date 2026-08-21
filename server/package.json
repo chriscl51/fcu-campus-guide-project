@@ -1,0 +1,18 @@
+{
+  "name": "fcu-campus-guide-server",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "seed": "node --no-warnings seed.js",
+    "start": "node --no-warnings index.js",
+    "dev": "node --no-warnings index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

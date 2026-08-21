@@ -1,0 +1,35 @@
+[
+ {
+  "id": "gate-west",
+  "nameZh": "西門（大門口）",
+  "nameEn": "West Gate (Main Entrance)",
+  "lat": 24.1788149,
+  "lon": 120.6465614,
+  "entranceNode": "4075385713"
+ },
+ {
+  "id": "gate-east",
+  "nameZh": "東門",
+  "nameEn": "East Gate",
+  "lat": 24.1784066,
+  "lon": 120.6502149,
+  "entranceNode": "-26854"
+ },
+ {
+  "id": "gate-north",
+  "nameZh": "北門",
+  "nameEn": "North Gate",
+  "lat": 24.1818831,
+  "lon": 120.648129,
+  "entranceNode": "8174032255"
+ },
+ {
+  "id": "gate-south",
+  "nameZh": "南門",
+  "nameEn": "South Gate",
+  "lat": 24.177892,
+  "lon": 120.646687,
+  "approx": true,
+  "entranceNode": "5479454024"
+ }
+]
