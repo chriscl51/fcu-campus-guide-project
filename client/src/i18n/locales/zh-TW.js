@@ -30,7 +30,11 @@ export default {
     eventLocationPlaceholder: '查詢活動地點（選填）',
   },
   events: {
-    upcomingTitle: '📅 近期校園活動',
+    upcomingTitle: '📅 校園活動公佈欄',
+    emptyBoard: '目前沒有近期活動公告',
+    publishedLabel: '發佈於 {time}',
+    showMore: '顯示更多',
+    showLess: '顯示較少',
   },
   parking: {
     title: '幫你找到最近的停車場了！',
@@ -133,6 +137,9 @@ export default {
     eventLocationTextLabel: '地點補充說明（選填）',
     eventLocationTextPlaceholder: '例如：一樓大廳集合',
     eventDescriptionLabel: '活動說明（選填）',
+    eventStartLabel: '活動開始日期時間',
+    eventEndLabel: '活動結束日期時間',
+    eventPublishedLabel: '發佈時間：{time}',
     eventDateOrderError: '結束日期不能早於開始日期',
     eventsServerUnreachable: '目前連不上後端伺服器，請確認 Node.js 伺服器是否已啟動（npm run server）',
     savedToServer: '已儲存到伺服器資料庫',

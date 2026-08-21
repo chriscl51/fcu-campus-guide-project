@@ -92,6 +92,8 @@ const TEST_EVENTS = [
     title: '碩士班考試入學（校內升學）',
     type: 'exam',
     dateOffset: 0,
+    startTime: '09:00',
+    endTime: '12:00',
     description: '考試時間：上午 9:00–12:00（測試公告，時間為示意）',
     buildingNames: ['工學館', '學思樓', '科學與航太館'],
   },
@@ -99,6 +101,8 @@ const TEST_EVENTS = [
     title: 'J.TEST（實用日本語檢定）',
     type: 'exam',
     dateOffset: -1,
+    startTime: '13:30',
+    endTime: '15:30',
     description: '考試時間：下午 13:30–15:30（測試公告，時間為示意）',
     buildingNames: ['行政大樓'],
   },
@@ -106,6 +110,8 @@ const TEST_EVENTS = [
     title: 'JLPT（日本語能力試驗）',
     type: 'exam',
     dateOffset: 1,
+    startTime: '09:30',
+    endTime: '11:30',
     description: '考試時間：上午 9:30–11:30（測試公告，時間為示意）',
     buildingNames: ['商學大樓'],
   },
@@ -113,7 +119,7 @@ const TEST_EVENTS = [
 
 const insertEvent = db.prepare(`
   INSERT INTO events (title, type, location_text, start_date, end_date, description)
-  VALUES (@title, @type, NULL, @date, @date, @description)
+  VALUES (@title, @type, NULL, @startDateTime, @endDateTime, @description)
 `)
 const insertEventLocation = db.prepare(
   'INSERT INTO event_locations (event_id, building_id) VALUES (?, ?)'
@@ -129,7 +135,8 @@ runInTransaction(() => {
     const info = insertEvent.run({
       title: ev.title,
       type: ev.type,
-      date,
+      startDateTime: `${date}T${ev.startTime}`,
+      endDateTime: `${date}T${ev.endTime}`,
       description: ev.description,
     })
     const eventId = info.lastInsertRowid

@@ -29,7 +29,11 @@ export default {
     eventLocationPlaceholder: '행사 장소 검색(선택 사항)',
   },
   events: {
-    upcomingTitle: '📅 캠퍼스 예정 행사',
+    upcomingTitle: '📅 캠퍼스 행사 게시판',
+    emptyBoard: '현재 예정된 행사 공지가 없습니다',
+    publishedLabel: '{time}에 게시됨',
+    showMore: '더 보기',
+    showLess: '접기',
   },
   parking: {
     title: '가장 가까운 주차장을 찾았어요!',
@@ -132,6 +136,9 @@ export default {
     eventLocationTextLabel: '장소 추가 설명（선택）',
     eventLocationTextPlaceholder: '예: 1층 로비 집합',
     eventDescriptionLabel: '행사 설명（선택）',
+    eventStartLabel: '행사 시작 일시',
+    eventEndLabel: '행사 종료 일시',
+    eventPublishedLabel: '게시 시간: {time}',
     eventDateOrderError: '종료일은 시작일보다 빠를 수 없습니다',
     eventsServerUnreachable: '백엔드 서버에 연결할 수 없습니다. Node.js 서버가 실행 중인지 확인해 주세요 (npm run server)',
     savedToServer: '서버 데이터베이스에 저장되었습니다',

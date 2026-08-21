@@ -1,8 +1,9 @@
 <script setup>
 // The very first screen — a warm greeting from the Wenhwa Deer (文華鹿),
-// FCU's mascot. Browsers block autoplay audio without a user gesture, so
-// playGreeting() is only ever called from inside the button's click handler.
-import { onMounted, ref } from 'vue'
+// FCU's mascot, alongside a campus event announcement board. Browsers block
+// autoplay audio without a user gesture, so playGreeting() is only ever
+// called from inside the button's click handler.
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playGreeting } from '../utils/sound'
 import { fetchUpcomingEvents } from '../utils/api'
@@ -24,17 +25,27 @@ function onStart() {
 }
 
 // Feature: admin-entered activities/events (學測/演講/研討會…) auto-appear
-// here starting the day before the event, through its last day — powered by
-// the optional Node.js + SQLite backend (server/). If that server isn't
-// running, fetchUpcomingEvents() resolves to null and this section just
-// doesn't render — the rest of the site is unaffected (see utils/api.js).
-// Each event now carries a `locations` array (one event can span multiple
-// buildings, e.g. 學測 held across 3 exam buildings at once).
+// on the announcement board starting the day before the event, through its
+// last day — powered by the optional Node.js + SQLite backend (server/). If
+// that server isn't running, fetchUpcomingEvents() resolves to null and the
+// board just shows its empty state — the rest of the site is unaffected
+// (see utils/api.js). Each event carries a `locations` array (one event can
+// span multiple buildings, e.g. 學測 held across 3 exam buildings at once).
 const upcomingEvents = ref([])
 onMounted(async () => {
   const events = await fetchUpcomingEvents()
   if (events) upcomingEvents.value = events
 })
+
+// Feedback item: the board only shows the first 3 items by default, with a
+// show more/less toggle for the rest — keeps the card from growing
+// unbounded on a busy exam season.
+const BOARD_PAGE_SIZE = 3
+const showAllEvents = ref(false)
+const hasMoreEvents = computed(() => upcomingEvents.value.length > BOARD_PAGE_SIZE)
+const visibleEvents = computed(() =>
+  showAllEvents.value ? upcomingEvents.value : upcomingEvents.value.slice(0, BOARD_PAGE_SIZE)
+)
 
 function locationLabel(loc) {
   return locale.value === 'zh-TW' || !loc.nameEn ? loc.nameZh : `${loc.nameZh} / ${loc.nameEn}`
@@ -46,12 +57,46 @@ function eventLocationSummary(e) {
   return e.location_text || ''
 }
 
+// start_date/end_date come back as 'YYYY-MM-DD' (older rows) or
+// 'YYYY-MM-DDTHH:MM' (current admin form, which now collects a time too —
+// feedback item: the board needs to show event start/end TIME, not just
+// date). Format with the visitor's locale; only show a time portion when
+// one is actually present in the raw value.
+function formatEventDateTime(value) {
+  if (!value) return ''
+  const hasClock = value.length > 10
+  const d = new Date(hasClock ? value : `${value}T00:00`)
+  if (Number.isNaN(d.getTime())) return value
+  const fmt = locale.value === 'zh-TW' ? 'zh-TW' : 'en-US'
+  return d.toLocaleString(fmt, hasClock
+    ? { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+    : { month: 'numeric', day: 'numeric' })
+}
+
+function eventDateRange(e) {
+  const start = formatEventDateTime(e.start_date)
+  const end = formatEventDateTime(e.end_date)
+  return e.start_date === e.end_date ? start : `${start} – ${end}`
+}
+
+// created_at is written by SQLite's datetime('now') — UTC, 'YYYY-MM-DD
+// HH:MM:SS' — this is the announcement's PUBLISH time (distinct from the
+// event's own start/end), another board field the feedback asked for.
+function eventPublishedAt(e) {
+  if (!e.created_at) return ''
+  const iso = e.created_at.includes('T') ? e.created_at : `${e.created_at.replace(' ', 'T')}Z`
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return ''
+  const fmt = locale.value === 'zh-TW' ? 'zh-TW' : 'en-US'
+  return d.toLocaleString(fmt, { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+}
+
 // Feedback item: an event with a single location jumps straight into the
-// guide with that destination pre-filled (same as before). An event with
-// MULTIPLE locations instead expands an inline dropdown, scoped to just
-// that event's buildings, right here on the landing page — no navigation —
-// so the visitor can quickly pick which of the event's buildings they're
-// headed to (ex. 學測 held in 3 exam buildings → only those 3 show up).
+// guide with that destination pre-filled. An event with MULTIPLE locations
+// instead expands an inline dropdown, scoped to just that event's
+// buildings, right here on the board — no navigation — so the visitor can
+// quickly pick which of the event's buildings they're headed to (ex. 學測
+// held in 3 exam buildings → only those 3 show up).
 const expandedEventId = ref(null)
 
 function onEventClick(e) {
@@ -78,25 +123,30 @@ function onEventLocationPick(ev, e) {
 </script>
 
 <template>
-  <div class="intro-splash screen">
-    <div class="intro-card">
-      <div class="deer-wrap">
-        <!-- Feedback item: use the user's own sticker artwork directly (not
-             a redrawn SVG) — deerStickerFollowMe.png, animated with a simple
-             left-right sway via CSS keyframes. -->
-        <img src="/stickers/deer-follow-me.png" alt="文華鹿 Follow Me" class="deer-follow-sticker" />
+  <div class="intro-splash">
+    <div class="intro-layout">
+      <!-- Right card (top on mobile): Wenhwa Deer greeting + start button. -->
+      <div class="intro-card deer-card">
+        <div class="deer-wrap">
+          <!-- Feedback item: use the user's own sticker artwork directly (not
+               a redrawn SVG) — deerStickerFollowMe.png, animated with a simple
+               left-right sway via CSS keyframes. -->
+          <img src="/stickers/deer-follow-me.png" alt="文華鹿 Follow Me" class="deer-follow-sticker" />
+        </div>
+        <h1 class="intro-title">{{ $t('intro.title') }}</h1>
+        <p class="intro-subtitle">{{ $t('intro.subtitle') }}</p>
+        <button type="button" class="btn intro-start-btn" @click="onStart">
+          {{ $t('intro.startButton') }}
+        </button>
       </div>
-      <h1 class="intro-title">{{ $t('intro.title') }}</h1>
-      <p class="intro-subtitle">{{ $t('intro.subtitle') }}</p>
-      <button type="button" class="btn intro-start-btn" @click="onStart">
-        {{ $t('intro.startButton') }}
-      </button>
 
-      <div v-if="upcomingEvents.length" class="events-banner">
-        <p class="events-banner-title">{{ bt('events.upcomingTitle') }}</p>
-        <ul class="events-list">
+      <!-- Left card (bottom on mobile): campus event announcement board. -->
+      <div class="intro-card events-board">
+        <p class="events-board-title">{{ bt('events.upcomingTitle') }}</p>
+
+        <ul v-if="visibleEvents.length" class="events-list">
           <li
-            v-for="e in upcomingEvents"
+            v-for="e in visibleEvents"
             :key="e.id"
             class="event-item"
             :class="{ clickable: (e.locations || []).length > 0 }"
@@ -105,12 +155,12 @@ function onEventLocationPick(ev, e) {
             <div class="event-item-row">
               <span class="event-type-tag">{{ e.type }}</span>
               <span class="event-title">{{ e.title }}</span>
-              <span class="event-meta">
-                {{ e.start_date }}<span v-if="e.end_date !== e.start_date"> – {{ e.end_date }}</span>
-                <template v-if="eventLocationSummary(e)"> · {{ eventLocationSummary(e) }}</template>
-              </span>
             </div>
-            <p v-if="e.description" class="event-description">{{ e.description }}</p>
+            <p class="event-datetime">{{ eventDateRange(e) }}</p>
+            <p v-if="eventLocationSummary(e)" class="event-location">📍 {{ eventLocationSummary(e) }}</p>
+            <p v-if="e.created_at" class="event-published">
+              {{ $t('events.publishedLabel', { time: eventPublishedAt(e) }) }}
+            </p>
             <div v-if="expandedEventId === e.id" class="event-location-picker" @click.stop>
               <select :value="''" @change="onEventLocationPick($event, e)">
                 <option value="" disabled>{{ $t('select.eventLocationPlaceholder') }}</option>
@@ -121,29 +171,81 @@ function onEventLocationPick(ev, e) {
             </div>
           </li>
         </ul>
+        <p v-else class="events-board-empty">{{ $t('events.emptyBoard') }}</p>
+
+        <button
+          v-if="hasMoreEvents"
+          type="button"
+          class="events-toggle-btn"
+          @click="showAllEvents = !showAllEvents"
+        >
+          {{ showAllEvents ? $t('events.showLess') : $t('events.showMore') }}
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Full-bleed background wrapper: unlike the shared `.screen` utility (which
+   also caps content at max-width:960px), the gradient here needs to cover
+   the ENTIRE viewport width — the feedback item was that the maroon/blue
+   gradient stopped at 960px and left the app's plain background color
+   showing on both sides on wide screens. So the gradient lives on this
+   full-width wrapper, and max-width centering happens one level down on
+   .intro-layout instead. */
 .intro-splash {
+  flex: 1;
+  width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
+  display: flex;
   justify-content: center;
   background: linear-gradient(160deg, var(--fcu-maroon) 0%, var(--fcu-maroon-dark) 55%, var(--fcu-blue-dark) 100%);
   color: #fff;
+  padding: 1.25rem 1rem 2.5rem;
+}
+
+.intro-layout {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'deer' 'board';
+  gap: 1rem;
+  align-items: start;
+  animation: intro-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 860px) {
+  .intro-layout {
+    grid-template-columns: 1fr 1.05fr;
+    grid-template-areas: 'board deer';
+    gap: 1.5rem;
+    align-items: center;
+  }
 }
 
 .intro-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 1.1rem 1.1rem 1.25rem;
+}
+
+.deer-card {
+  grid-area: deer;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  gap: 1rem;
-  max-width: 480px;
-  width: 100%;
-  animation: intro-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  gap: 0.9rem;
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  min-height: 100%;
 }
 
 .deer-wrap {
@@ -151,12 +253,11 @@ function onEventLocationPick(ev, e) {
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-bottom: 0.25rem;
   overflow: visible;
 }
 
 .deer-follow-sticker {
-  width: clamp(220px, 62vw, 340px);
+  width: clamp(160px, 34vw, 360px);
   height: auto;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
   animation: deer-sway 2.4s ease-in-out infinite;
@@ -174,42 +275,47 @@ function onEventLocationPick(ev, e) {
 
 .intro-title {
   color: #fff;
-  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  font-size: clamp(1.25rem, 4vw, 2.1rem);
   margin: 0;
 }
 
 .intro-subtitle {
   color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(1rem, 3vw, 1.15rem);
-  margin: 0 0 0.5rem;
+  font-size: clamp(0.9rem, 2.4vw, 1.15rem);
+  margin: 0;
   max-width: 36ch;
 }
 
 .intro-start-btn {
   background: var(--fcu-gold);
   color: var(--fcu-maroon-dark);
-  font-size: 1.15rem;
-  padding: 0.85em 2.2em;
+  font-size: 1.1rem;
+  padding: 0.7em 2.2em;
+  margin-top: 1rem;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
 }
 .intro-start-btn:hover {
   background: #e6bf6c;
 }
 
-.events-banner {
-  margin-top: 0.75rem;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  padding: 0.85rem 1rem;
+/* ---- Events board (公佈欄) ------------------------------------------- */
+.events-board {
+  grid-area: board;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
   text-align: left;
 }
-.events-banner-title {
-  margin: 0 0 0.5rem;
+.events-board-title {
+  margin: 0;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #fff;
+}
+.events-board-empty {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
 }
 .events-list {
   list-style: none;
@@ -217,29 +323,55 @@ function onEventLocationPick(ev, e) {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 .event-item {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  font-size: 0.88rem;
+  gap: 0.25rem;
+  font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
-  padding: 0.3rem 0.4rem;
-  margin: -0.3rem -0.4rem;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
 }
 .event-item.clickable {
   cursor: pointer;
 }
 .event-item.clickable:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.14);
 }
 .event-item-row {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.4rem;
+  gap: 0.45rem;
+}
+.event-type-tag {
+  background: var(--fcu-gold);
+  color: var(--fcu-maroon-dark);
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding: 0.1em 0.55em;
+  border-radius: 999px;
+}
+.event-title {
+  font-weight: 600;
+}
+.event-datetime {
+  margin: 0;
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+.event-location {
+  margin: 0;
+  font-size: 0.83rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+.event-published {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 .event-location-picker {
   padding-top: 0.15rem;
@@ -253,25 +385,18 @@ function onEventLocationPick(ev, e) {
   padding: 0.4rem 0.5rem;
   font-size: 0.85rem;
 }
-.event-type-tag {
-  background: var(--fcu-gold);
-  color: var(--fcu-maroon-dark);
-  font-weight: 700;
-  font-size: 0.75rem;
-  padding: 0.1em 0.55em;
+.events-toggle-btn {
+  align-self: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
   border-radius: 999px;
-}
-.event-title {
+  padding: 0.35em 1.2em;
+  font-size: 0.82rem;
   font-weight: 600;
 }
-.event-meta {
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.82rem;
-}
-.event-description {
-  margin: 0;
-  font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.88);
+.events-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 @keyframes intro-rise {
@@ -285,9 +410,60 @@ function onEventLocationPick(ev, e) {
   }
 }
 
-@media (max-width: 640px) {
-  .intro-card {
-    gap: 0.75rem;
+/* Feedback item: on mobile the board sits BELOW the deer card, and its
+   header + first entry must be visible without scrolling on any phone size.
+   The deer card is the tall element here, so it's the one trimmed down —
+   smaller sticker, tighter gaps, smaller button — to leave room. */
+@media (max-width: 859px) {
+  .intro-splash {
+    padding: 0.85rem 0.75rem 2rem;
+  }
+  .intro-layout {
+    gap: 0.65rem;
+  }
+  .deer-card {
+    gap: 0.35rem;
+    padding: 0;
+  }
+  .deer-follow-sticker {
+    width: clamp(140px, 40vw, 220px);
+  }
+  .intro-subtitle {
+    margin: 0;
+  }
+  .intro-start-btn {
+    padding: 0.55em 1.8em;
+    font-size: 1rem;
+    margin-top: 1.4rem;
+  }
+  .intro-card.events-board {
+    padding: 0.85rem 0.85rem 1rem;
+  }
+}
+
+/* Short-viewport phones (landscape or small screens like SE): compact the
+   deer card further so it never pushes the board's header/first item
+   offscreen. */
+@media (max-width: 859px) and (max-height: 700px) {
+  .intro-splash {
+    padding-top: 0.6rem;
+  }
+  .intro-layout {
+    gap: 0.45rem;
+  }
+  .deer-follow-sticker {
+    width: clamp(120px, 36vw, 190px);
+  }
+  .intro-title {
+    font-size: 1.05rem;
+  }
+  .intro-subtitle {
+    display: none;
+  }
+  .intro-start-btn {
+    padding: 0.45em 1.5em;
+    font-size: 0.92rem;
+    margin-top: 1.2rem;
   }
 }
 </style>

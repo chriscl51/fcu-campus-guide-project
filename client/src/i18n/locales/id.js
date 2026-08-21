@@ -29,7 +29,11 @@ export default {
     eventLocationPlaceholder: 'Cari lokasi acara (opsional)',
   },
   events: {
-    upcomingTitle: '📅 Acara Kampus Mendatang',
+    upcomingTitle: '📅 Papan Acara Kampus',
+    emptyBoard: 'Belum ada pengumuman acara mendatang',
+    publishedLabel: 'Dipublikasikan {time}',
+    showMore: 'Tampilkan lebih banyak',
+    showLess: 'Tampilkan lebih sedikit',
   },
   parking: {
     title: 'Tempat parkir terdekat sudah ditemukan!',
@@ -132,6 +136,9 @@ export default {
     eventLocationTextLabel: 'Catatan lokasi (opsional)',
     eventLocationTextPlaceholder: 'Misalnya: Berkumpul di lobi lantai 1',
     eventDescriptionLabel: 'Deskripsi acara (opsional)',
+    eventStartLabel: 'Tanggal & Waktu Mulai Acara',
+    eventEndLabel: 'Tanggal & Waktu Selesai Acara',
+    eventPublishedLabel: 'Waktu publikasi: {time}',
     eventDateOrderError: 'Tanggal selesai tidak boleh sebelum tanggal mulai',
     eventsServerUnreachable: 'Tidak dapat terhubung ke server backend — pastikan server Node.js sudah berjalan (npm run server)',
     savedToServer: 'Sudah disimpan ke database server',

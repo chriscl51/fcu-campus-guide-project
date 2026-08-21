@@ -7,6 +7,16 @@ import express from 'express'
 import cors from 'cors'
 import { db, runInTransaction } from './db.js'
 
+// Loads server/.env (ADMIN_PASSWORD=...) into process.env — see .env.example
+// for the template. .env is gitignored so the real password never ends up
+// in source control; try/catch because a hosting environment that injects
+// ADMIN_PASSWORD directly (no .env file present) is also valid.
+try {
+  process.loadEnvFile()
+} catch {
+  // no .env file — fine if ADMIN_PASSWORD is set some other way
+}
+
 const PORT = process.env.PORT || 3001
 
 // Same "front-end lock, not real security" caveat as AdminView.vue's

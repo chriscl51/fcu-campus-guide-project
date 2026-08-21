@@ -18,10 +18,12 @@ function emptyMessage() {
 }
 
 // NOTE: client-side-only "lock", not real auth — see admin.disclaimer string
-// shown to the user on this same screen. There is no backend on this static
-// site, so this password is visible in the built JS source. It only keeps
-// casual visitors out, not a determined attacker.
-const ADMIN_PASSWORD = 'fcu2026'
+// shown to the user on this same screen. Read from VITE_ADMIN_PASSWORD (see
+// client/.env / .env.example) so the real value stays out of source control
+// — but Vite bakes VITE_-prefixed vars into the built JS at build time, so
+// it's still visible in the built site's source. It only keeps casual
+// visitors out, not a determined attacker.
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'fcu2026'
 const SESSION_KEY = 'fcu-guide-admin'
 
 const ANNOUNCEMENT_TYPES = ['renovation', 'restroom', 'elevator', 'water', 'power', 'other']
@@ -92,6 +94,16 @@ function eventBuildingNames(ev) {
   const locs = ev.locations || []
   if (!locs.length) return ''
   return locs.map((l) => l.nameZh).join('、')
+}
+
+// event.start_date/end_date are 'YYYY-MM-DDTHH:MM'; created_at (publish time)
+// comes back from SQLite as 'YYYY-MM-DD HH:MM:SS' (UTC) — both get the same
+// human-readable treatment here for the admin list view.
+function formatEventDateTime(value) {
+  if (!value) return ''
+  const d = new Date(value.includes('T') ? value : `${value.replace(' ', 'T')}Z`)
+  if (Number.isNaN(d.getTime())) return value
+  return d.toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
 }
 
 function onEventBuildingsChange(e) {
@@ -548,12 +560,12 @@ function onImportFile(event) {
 
         <div class="form-row">
           <div class="field">
-            <label for="event-start">{{ $t('admin.startDateLabel') }}</label>
-            <input id="event-start" v-model="eventForm.startDate" type="date" />
+            <label for="event-start">{{ $t('admin.eventStartLabel') }}</label>
+            <input id="event-start" v-model="eventForm.startDate" type="datetime-local" />
           </div>
           <div class="field">
-            <label for="event-end">{{ $t('admin.endDateLabel') }}</label>
-            <input id="event-end" v-model="eventForm.endDate" type="date" />
+            <label for="event-end">{{ $t('admin.eventEndLabel') }}</label>
+            <input id="event-end" v-model="eventForm.endDate" type="datetime-local" />
           </div>
         </div>
 
@@ -583,7 +595,8 @@ function onImportFile(event) {
             {{ eventBuildingNames(ev) || '—' }}<span v-if="ev.location_text"> · {{ ev.location_text }}</span>
           </p>
           <p v-if="ev.description" class="announcement-message">{{ ev.description }}</p>
-          <p class="announcement-dates">{{ ev.start_date }} — {{ ev.end_date }}</p>
+          <p class="announcement-dates">{{ formatEventDateTime(ev.start_date) }} — {{ formatEventDateTime(ev.end_date) }}</p>
+          <p class="announcement-dates">{{ $t('admin.eventPublishedLabel', { time: formatEventDateTime(ev.created_at) }) }}</p>
           <div class="announcement-actions">
             <button type="button" class="btn secondary" @click="startEditEvent(ev)">
               {{ $t('admin.edit') }}

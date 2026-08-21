@@ -29,7 +29,11 @@ export default {
     eventLocationPlaceholder: 'Tra địa điểm sự kiện (không bắt buộc)',
   },
   events: {
-    upcomingTitle: '📅 Sự kiện sắp diễn ra trong trường',
+    upcomingTitle: '📅 Bảng thông báo sự kiện trong trường',
+    emptyBoard: 'Hiện chưa có thông báo sự kiện nào sắp diễn ra',
+    publishedLabel: 'Đăng lúc {time}',
+    showMore: 'Xem thêm',
+    showLess: 'Thu gọn',
   },
   parking: {
     title: 'Đã tìm được bãi đỗ xe gần nhất cho bạn!',
@@ -132,6 +136,9 @@ export default {
     eventLocationTextLabel: 'Ghi chú địa điểm (không bắt buộc)',
     eventLocationTextPlaceholder: 'Ví dụ: Tập trung tại sảnh tầng 1',
     eventDescriptionLabel: 'Mô tả sự kiện (không bắt buộc)',
+    eventStartLabel: 'Ngày giờ bắt đầu sự kiện',
+    eventEndLabel: 'Ngày giờ kết thúc sự kiện',
+    eventPublishedLabel: 'Thời gian đăng: {time}',
     eventDateOrderError: 'Ngày kết thúc không được sớm hơn ngày bắt đầu',
     eventsServerUnreachable: 'Không thể kết nối đến máy chủ backend — vui lòng kiểm tra xem máy chủ Node.js đã chạy chưa (npm run server)',
     savedToServer: 'Đã lưu vào cơ sở dữ liệu máy chủ',

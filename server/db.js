@@ -45,8 +45,8 @@ db.exec(`
     title TEXT NOT NULL,
     type TEXT NOT NULL,            -- exam / lecture / symposium / other
     location_text TEXT,            -- free-text extra detail (room number, etc.), independent of building links
-    start_date TEXT NOT NULL,      -- ISO date 'YYYY-MM-DD'
-    end_date TEXT NOT NULL,        -- ISO date 'YYYY-MM-DD', >= start_date
+    start_date TEXT NOT NULL,      -- ISO datetime 'YYYY-MM-DDTHH:MM' (date-only 'YYYY-MM-DD' also accepted)
+    end_date TEXT NOT NULL,        -- ISO datetime 'YYYY-MM-DDTHH:MM', >= start_date
     description TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );

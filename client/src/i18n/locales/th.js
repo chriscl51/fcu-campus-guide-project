@@ -29,7 +29,11 @@ export default {
     eventLocationPlaceholder: 'ค้นหาสถานที่จัดกิจกรรม (ไม่บังคับ)',
   },
   events: {
-    upcomingTitle: '📅 กิจกรรมในมหาวิทยาลัยที่กำลังจะมาถึง',
+    upcomingTitle: '📅 บอร์ดกิจกรรมในมหาวิทยาลัย',
+    emptyBoard: 'ขณะนี้ยังไม่มีประกาศกิจกรรม',
+    publishedLabel: 'เผยแพร่เมื่อ {time}',
+    showMore: 'แสดงเพิ่มเติม',
+    showLess: 'แสดงน้อยลง',
   },
   parking: {
     title: 'พบที่จอดรถที่ใกล้ที่สุดให้คุณแล้ว!',
@@ -132,6 +136,9 @@ export default {
     eventLocationTextLabel: 'รายละเอียดสถานที่เพิ่มเติม (ไม่บังคับ)',
     eventLocationTextPlaceholder: 'เช่น รวมตัวที่ล็อบบี้ชั้น 1',
     eventDescriptionLabel: 'รายละเอียดกิจกรรม (ไม่บังคับ)',
+    eventStartLabel: 'วันที่และเวลาเริ่มกิจกรรม',
+    eventEndLabel: 'วันที่และเวลาสิ้นสุดกิจกรรม',
+    eventPublishedLabel: 'เผยแพร่เมื่อ: {time}',
     eventDateOrderError: 'วันที่สิ้นสุดต้องไม่มาก่อนวันที่เริ่มต้น',
     eventsServerUnreachable: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ backend ได้ กรุณาตรวจสอบว่าเซิร์ฟเวอร์ Node.js เปิดใช้งานอยู่หรือไม่ (npm run server)',
     savedToServer: 'บันทึกลงฐานข้อมูลเซิร์ฟเวอร์แล้ว',

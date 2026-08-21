@@ -29,7 +29,11 @@ export default {
     eventLocationPlaceholder: 'Look up an event location (optional)',
   },
   events: {
-    upcomingTitle: '📅 Upcoming Campus Events',
+    upcomingTitle: '📅 Campus Events Board',
+    emptyBoard: 'No upcoming event announcements right now',
+    publishedLabel: 'Published {time}',
+    showMore: 'Show more',
+    showLess: 'Show less',
   },
   parking: {
     title: "We found the nearest parking for you!",
@@ -132,6 +136,9 @@ export default {
     eventLocationTextLabel: 'Location note (optional)',
     eventLocationTextPlaceholder: 'e.g. Meet in the 1F lobby',
     eventDescriptionLabel: 'Description (optional)',
+    eventStartLabel: 'Event Start Date & Time',
+    eventEndLabel: 'Event End Date & Time',
+    eventPublishedLabel: 'Published: {time}',
     eventDateOrderError: 'End date cannot be before start date',
     eventsServerUnreachable: 'Cannot reach the backend server right now — please make sure the Node.js server is running (npm run server)',
     savedToServer: 'Saved to the server database',

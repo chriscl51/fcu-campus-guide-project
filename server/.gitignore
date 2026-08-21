@@ -3,3 +3,5 @@ campus.db
 campus.db-shm
 campus.db-wal
 *.log
+.env*
+!.env.example

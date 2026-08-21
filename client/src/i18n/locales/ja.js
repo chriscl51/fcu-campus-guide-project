@@ -29,7 +29,11 @@ export default {
     eventLocationPlaceholder: 'イベント会場を検索（任意）',
   },
   events: {
-    upcomingTitle: '📅 近日開催のキャンパスイベント',
+    upcomingTitle: '📅 キャンパスイベント掲示板',
+    emptyBoard: '現在、近日開催のイベント公告はありません',
+    publishedLabel: '{time} に公開',
+    showMore: 'もっと見る',
+    showLess: '閉じる',
   },
   parking: {
     title: '最寄りの駐車場を見つけました！',
@@ -132,6 +136,9 @@ export default {
     eventLocationTextLabel: '場所の補足説明（任意）',
     eventLocationTextPlaceholder: '例：1階ロビーに集合',
     eventDescriptionLabel: 'イベント説明（任意）',
+    eventStartLabel: 'イベント開始日時',
+    eventEndLabel: 'イベント終了日時',
+    eventPublishedLabel: '公開日時：{time}',
     eventDateOrderError: '終了日は開始日より前に設定できません',
     eventsServerUnreachable: 'バックエンドサーバーに接続できません。Node.jsサーバーが起動しているか確認してください（npm run server）',
     savedToServer: 'サーバーのデータベースに保存しました',
