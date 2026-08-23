@@ -26,7 +26,7 @@ import { formatWallClock, formatTaipeiInstant } from '../utils/dateFormat'
 // backend (server/) running to work.
 const SESSION_KEY = 'fcu-guide-admin'
 
-const ANNOUNCEMENT_TYPES = ['renovation', 'restroom', 'elevator', 'water', 'power', 'other']
+const ANNOUNCEMENT_TYPES = ['renovation', 'restroom', 'elevator', 'water', 'power', 'maintenance', 'other']
 const availableBuildings = selectableBuildings(buildings)
 
 const store = useAnnouncementsStore()

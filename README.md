@@ -98,9 +98,17 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
   `selectableBuildings()`）跟地圖上實際畫出的建築色塊（`CampusMap.vue`）自然保持
   一致。下拉選單依官方地圖上的「編號 No.」（1–29）排序，跟訪客掃視實體牌樓地圖
   的順序一致，出發地下拉選單的停車場選項固定排在最上方，不受此排序影響。
-- **文華鹿走路動畫**：`src/components/DeerSprite.vue`，手繪 SVG 向量插畫，側面角色
-  行走姿態（頭朝行進方向、身體橫向、兩對腿以對角步態交替擺動），配色參考鹿吉祥物
-  （暖色調毛皮、藍紫漸層鹿角、FCU 深藍/白色鞍布配色）。
+- **文華鹿走路動畫**：`src/components/DeerSprite.vue`，改用美術提供的貼圖圖檔
+  （`public/stickers/deer-go-walk.png` 走路、`deer-follow-me.png` 首頁招呼、
+  `deer-finish.png` 抵達），不再是手繪 SVG 向量圖；`CampusMap.vue` 把貼圖放進
+  `<foreignObject>` 沿路線移動，達成走路動畫效果。要再換一批貼圖，直接替換
+  `public/stickers/` 底下對應檔名即可，不需要改程式碼。
+- **首頁地圖連結**（`IntroSplash.vue`）：文華鹿卡片下方提供三個開新分頁的靜態地圖
+  連結——「查看全校地圖」（`public/map/FCU Campus.pdf`）、「AED 設備地點總覽」
+  （`public/map/AED.jpg`）、「無障礙設施地點總覽」（`public/map/Barrier_free_map.jpg`）。
+  三個都是直接連到 `public/map/` 底下的靜態圖檔/PDF，不是網頁內嵌地圖，要更新內容
+  直接換掉對應檔案即可；文字有 7 語系翻譯（`i18n/locales/*.js` 的
+  `intro.mapLink` / `intro.aedMapLink` / `intro.accessibilityMapLink`）。
 - **音效**：`src/utils/sound.js` 用瀏覽器 Web Audio API 即時合成（歡迎聲、腳步聲、
   抵達提示音），沒有外部音檔，離線也能播放。
 - **多語系**：繁體中文／英文／日文／韓文／越南文／印尼文／泰文，共 7 語系
@@ -130,7 +138,7 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 | 建築中英文正式名稱／代碼／編號 | `map/fcu map buildings.jpg`（官方牌樓圖例）＋ `map/fcu map no.jpg`（官方牌樓地圖本體） | 29 個項目（含 5 項球場／泳池／運動場），見 `scripts/build_content.py` 的 `OFFICIAL_CODES` |
 | 建築實景照片 29 張 | 使用者本人於校園實地拍攝（見 `public/buildings/credits.json`） | 官方地圖上全部 29 個項目 |
 | 電梯 8 處、無障礙電梯 1 處 | `fcu_routing.osm`、使用者現場確認 | 忠勤樓×4、圖書館×1、+3 處；行政大樓無障礙電梯 1 處 |
-| AED 8 處 | `map/AED.pdf` | 體育館、育樂館、人言大樓、共善樓、行政大樓、商學大樓 |
+| AED 8 處 | `map/AED.jpg` | 體育館、育樂館、人言大樓、共善樓、行政大樓、商學大樓 |
 | 廁所 30 處、無障礙廁所 1 處、飲水機 28 處 | `FCU map.osm`、使用者現場確認 | 全校散佈點位；行政大樓無障礙廁所／飲水機位置 |
 | 飲水機精確樓層 27 點 | `map/115-06水質檢測報告總表_27台.pdf` | 19 棟建築 |
 | 休憩空間 7 處 | `休憩空間與飲水機位置.pdf`、使用者現場確認 | 圖書館、商學、行政、人文社會、人言 |
@@ -183,8 +191,9 @@ project/
                       api.js（呼叫 server/ 的失敗優雅降級 fetch 包裝）
       stores/         Pinia：app.js（導覽流程狀態）、announcements.js（公告 CRUD）
       i18n/locales/   7 語系文字
-      components/     各畫面元件（DeerSprite 是手繪側面行走 SVG 鹿精靈；DriveInfoCard 是
-                      開車流程的建議停車場小卡片；IntroSplash 含近期活動公告區塊）
+      components/     各畫面元件（DeerSprite 是走路動畫貼圖；DriveInfoCard 是
+                      開車流程的建議停車場小卡片；IntroSplash 含近期活動公告區塊
+                      與首頁地圖連結）
       views/          GuideView（主流程）、AdminView（管理後台，含公告／活動／帳號三個頁籤）
     scripts/          Python：把 .osm / 各種 PDF/圖檔原始資料轉成 src/data/*.json
     public/buildings/ 建築實景照片（JPG，Vite 直接原樣發布）＋ credits.json 照片來源記錄
@@ -323,26 +332,8 @@ git push -u origin main
 `client/.gitignore` 和 `server/.gitignore` 已經排除 `node_modules`、`dist`、
 `campus.db` 等不必要進版控的檔案，可以直接 `git add .`。
 
-**2. Azure 部署**
-
-Azure 沒有能同時免費跑「靜態前端＋常駐 Node.js 後端」的單一服務，建議拆成兩個
-Azure 資源：
-
-- **前端**：[Azure Static Web Apps](https://azure.microsoft.com/products/app-service/static)
-  （有免費方案）——把 `client/` 接到 GitHub repo，build command 設
-  `npm run build`，輸出目錄設 `dist`。
-- **後端**：[Azure App Service](https://azure.microsoft.com/products/app-service)（Node.js
-  runtime）——部署 `server/` 資料夾，執行一次 `npm run seed` 建立第一個管理者帳號
-  （見上方「管理者帳號與登入」，務必用環境變數設定一個不是預設值的 `ADMIN_PASSWORD`），
-  啟動指令 `npm start`；並在 `server/index.js` 的 `cors()` 設定裡把允許來源限制成
-  你的 Static Web Apps 網址（目前是完全開放 `*`，本機開發沒問題，正式上線建議收緊）。
-  部署後把 `client/src/utils/api.js` 的 `API_BASE`
-  （或建置時的環境變數 `VITE_API_BASE`）改成後端的正式網址。
-
 ## 已知限制 / 之後可以做的事
 
-- **文華鹿走路動畫是手繪 SVG 向量圖，不是點陣圖/貼圖序列幀**。如果之後有現成的貼圖
-  序列幀圖檔，可以直接換掉 `DeerSprite.vue` 改用 `<img>` 序列或 CSS sprite sheet。
 - **Google 地圖相關連結用的是免金鑰的非官方網址技巧**（`output=embed` 內嵌／
   `maps/dir/?api=1` 深連結），不是付費的官方 Embed/Directions API，長期穩定性不是
   Google 保證的。正式部署後建議實際點一次「開啟導航」按鈕確認顯示效果。
@@ -357,5 +348,6 @@ Azure 資源：
 - 管理者帳號系統（見上方「管理者帳號與登入」）沒有信箱驗證、忘記密碼流程、或雙重
   驗證，屬於給小團隊內部使用的簡易帳號系統，不是企業級身分驗證機制；密碼強度也只
   檢查最少 8 個字元。
-- **CORS 目前完全開放**（`server/index.js` 的 `app.use(cors())` 沒有限制來源），
-  本機開發沒問題，正式部署到 Azure 後建議改成只允許前端網域。
+- **CORS 現在預設開放，需要手動設定才會收緊**：`server/index.js` 讀取 `CORS_ORIGIN`
+  環境變數（見 `server/.env.example`）來限制允許的來源；正式部署時，請設定
+  `CORS_ORIGIN=<你的前端網址>`，避免 API 對所有來源開放。

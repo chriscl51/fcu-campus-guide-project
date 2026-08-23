@@ -14,6 +14,8 @@ export default {
     subtitle: 'Hướng dẫn viên khuôn viên "Hươu Wenhwa" — dạo quanh FCU không lo lạc đường!',
     startButton: 'Xuất phát thôi!',
     mapLink: 'Xem bản đồ toàn trường',
+    aedMapLink: 'Tổng quan vị trí máy AED',
+    accessibilityMapLink: 'Tổng quan cơ sở vật chất cho người khuyết tật',
   },
   select: {
     heading: 'Bạn xuất phát từ đâu và muốn đến đâu?',
@@ -87,7 +89,7 @@ export default {
     tierFull: 'Dữ liệu đầy đủ',
     tierPartial: 'Đang cập nhật dữ liệu',
     dataPending: 'Thông tin chi tiết về cơ sở vật chất của tòa nhà này đang được cập nhật. Nếu bạn có thông tin liên quan, vui lòng bổ sung qua trang quản trị.',
-    announcementsTitle: 'Thông báo hiện tại',
+    announcementsTitle: '⚠️ Thông báo thay đổi cơ sở vật chất',
     noAnnouncements: 'Hiện chưa có thông báo nào',
     announcementFallbackNote: '(Chưa có bản dịch cho ngôn ngữ này — đang hiển thị bản tiếng Anh)',
     empty: 'Chưa có dữ liệu',
@@ -98,6 +100,7 @@ export default {
     elevator: 'Thang máy hỏng',
     water: 'Mất nước',
     power: 'Mất điện',
+    maintenance: 'Đang bảo trì',
     other: 'Khác',
   },
   admin: {

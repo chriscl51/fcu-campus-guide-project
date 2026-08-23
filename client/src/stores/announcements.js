@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { fetchAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement } from '../utils/api'
+import { isWithinWindow } from '../utils/activeWindow'
 
 // Building change notices ("這棟大樓的這個區域在整修/廁所故障/停水停電...").
 // Backed by the Node.js + SQLite server (server/) — same shared-data model as
@@ -17,8 +18,23 @@ export const useAnnouncementsStore = defineStore('announcements', {
     all(state) {
       return state.items
     },
+    // Unfiltered by date — kept for the admin panel, which needs to manage
+    // the full history (past and future), not just what's currently live.
     forBuilding(state) {
       return (buildingId) => state.items.filter((a) => a.buildingId === buildingId)
+    },
+    // Announcements whose optional startDate/endDate window currently covers
+    // today (Asia/Taipei) — an announcement "上架" (publishes) 24 hours before
+    // startDate and "下架" (unpublishes) 24 hours after endDate, same rule as
+    // events (see utils/activeWindow.js). Used everywhere a visitor sees
+    // announcements — the landing page board and FacilityPanel.vue's
+    // per-building list both use this, so a notice appears/disappears on the
+    // same schedule no matter where it's shown.
+    activeNow(state) {
+      return state.items.filter((a) => isWithinWindow(a.startDate, a.endDate))
+    },
+    activeForBuilding() {
+      return (buildingId) => this.activeNow.filter((a) => a.buildingId === buildingId)
     },
   },
   actions: {

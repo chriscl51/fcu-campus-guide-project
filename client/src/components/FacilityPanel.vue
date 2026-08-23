@@ -1,10 +1,11 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAnnouncementsStore } from '../stores/announcements'
 import { useBilingual } from '../utils/bilingual'
 import { translateFacilityText } from '../data/facilityContentI18n'
 import { formatWallClock } from '../utils/dateFormat'
+import { fetchUpcomingEvents } from '../utils/api'
 import BilingualText from './BilingualText.vue'
 
 const props = defineProps({
@@ -16,9 +17,30 @@ const props = defineProps({
 
 const announcementsStore = useAnnouncementsStore()
 const { locale } = useI18n({ useScope: 'global' })
-const { btPair, btTitlePair } = useBilingual()
+const { bt, btPair, btTitlePair } = useBilingual()
 
-const announcements = computed(() => announcementsStore.forBuilding(props.building.id))
+const announcements = computed(() => announcementsStore.activeForBuilding(props.building.id))
+
+// Feature: the building's currently-relevant activities/events (學測、演講…)
+// now show here too, not just on the landing page board — a visitor who
+// navigated straight to this building's info (e.g. from a bookmark or the
+// dropdown) should still see "this building hosts an exam this week" without
+// having to go back to the homepage. `fetchUpcomingEvents()` is fetched once;
+// the building prop can change without remounting this component (GuideView
+// reuses one FacilityPanel instance), so the filter below stays reactive.
+const upcomingEvents = ref([])
+onMounted(async () => {
+  const events = await fetchUpcomingEvents()
+  if (events) upcomingEvents.value = events
+})
+const buildingEvents = computed(() =>
+  upcomingEvents.value.filter((e) => (e.locations || []).some((loc) => loc.buildingId === props.building.id))
+)
+function eventDateRange(e) {
+  const start = formatWallClock(e.start_date, locale.value)
+  const end = formatWallClock(e.end_date, locale.value)
+  return e.start_date === e.end_date ? start : `${start} – ${end}`
+}
 
 // building.photo is a root-relative path into public/buildings/ (e.g.
 // "buildings/library.jpg") — same mechanism/asset set as ArrivalModal.vue.
@@ -111,6 +133,18 @@ const facilitySections = computed(() => {
 
     <section v-else class="facility-section pending">
       <p><BilingualText v-bind="btPair('facility.dataPending')" /></p>
+    </section>
+
+    <section v-if="buildingEvents.length" class="announcements-section events-section">
+      <h3>{{ bt('events.upcomingTitle') }}</h3>
+      <div v-for="e in buildingEvents" :key="e.id" class="announcement-card">
+        <div class="announcement-head">
+          <span class="tag"><BilingualText v-bind="btPair(`eventType.${e.type}`)" /></span>
+          <span class="announcement-area">{{ e.title }}</span>
+        </div>
+        <p v-if="e.description" class="announcement-message">{{ e.description }}</p>
+        <p class="announcement-dates">{{ eventDateRange(e) }}</p>
+      </div>
     </section>
 
     <section v-if="announcements.length" class="announcements-section">
@@ -233,6 +267,9 @@ const facilitySections = computed(() => {
   margin: 0 0 0.6rem;
   color: var(--fcu-maroon-dark);
 }
+.events-section h3 {
+  color: var(--fcu-blue-dark);
+}
 
 .announcement-card {
   border: 1.5px solid var(--fcu-maroon-light);
@@ -240,6 +277,13 @@ const facilitySections = computed(() => {
   border-radius: 10px;
   padding: 0.85rem 1rem;
   margin-bottom: 0.6rem;
+}
+.events-section .announcement-card {
+  border-color: var(--fcu-blue-light, var(--fcu-blue-dark));
+  background: rgba(0, 107, 147, 0.06);
+}
+.events-section .tag {
+  background: var(--fcu-blue-dark);
 }
 .announcement-card:last-child {
   margin-bottom: 0;

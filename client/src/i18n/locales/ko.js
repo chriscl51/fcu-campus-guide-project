@@ -14,6 +14,8 @@ export default {
     subtitle: '캠퍼스 안내 도우미 "웬화사슴"과 함께, 펑자대학교를 길 잃지 않고 걸어요!',
     startButton: '출발할게요!',
     mapLink: '전체 캠퍼스 지도 보기',
+    aedMapLink: 'AED 위치 안내',
+    accessibilityMapLink: '무장애 시설 위치 안내',
   },
   select: {
     heading: '어디에서 출발해서 어디로 가시나요?',
@@ -87,7 +89,7 @@ export default {
     tierFull: '전체 데이터',
     tierPartial: '데이터 준비 중',
     dataPending: '이 건물의 상세 시설 정보는 현재 준비 중입니다. 관련 정보가 있으시면 관리자 페이지를 통해 제공해 주세요.',
-    announcementsTitle: '현재 공지사항',
+    announcementsTitle: '⚠️ 시설 변경 공지',
     noAnnouncements: '현재 공지사항이 없습니다',
     announcementFallbackNote: '(이 언어로 아직 번역되지 않아 영어 버전을 표시합니다)',
     empty: '아직 데이터가 없습니다',
@@ -98,6 +100,7 @@ export default {
     elevator: '엘리베이터 고장',
     water: '단수',
     power: '정전',
+    maintenance: '시설 점검 중',
     other: '기타',
   },
   admin: {

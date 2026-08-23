@@ -14,6 +14,8 @@ export default {
     subtitle: 'Your campus guide, Wenhwa Deer — explore FCU and never lose your way!',
     startButton: "Let's go!",
     mapLink: 'View Full Campus Map',
+    aedMapLink: 'AED Locations Overview',
+    accessibilityMapLink: 'Accessibility Facilities Overview',
   },
   select: {
     heading: 'Where are you starting from, and where are you headed?',
@@ -87,7 +89,7 @@ export default {
     tierFull: 'Full data',
     tierPartial: 'Data Pending',
     dataPending: 'Detailed facility data for this building is still being compiled. If you have information to contribute, please reach out via the admin panel.',
-    announcementsTitle: 'Current Notices',
+    announcementsTitle: '⚠️ Facility Notices',
     noAnnouncements: 'No current notices',
     announcementFallbackNote: '(Not translated into this language yet — showing English)',
     empty: 'No data yet',
@@ -98,6 +100,7 @@ export default {
     elevator: 'Elevator Out of Service',
     water: 'Water Outage',
     power: 'Power Outage',
+    maintenance: 'Under Maintenance',
     other: 'Other',
   },
   admin: {

@@ -1,7 +1,7 @@
 // Source-of-truth locale — every other locale file mirrors this key structure.
 export default {
   common: {
-    appName: '文華鹿帶路 FCU Campus Navigation Service',
+    appName: '逢甲導航文華鹿',
     next: '下一步',
     back: '上一步',
     confirm: '確認',
@@ -15,6 +15,8 @@ export default {
     subtitle: '校園導航「文華鹿」，走進逢甲免迷路！',
     startButton: '出發囉！',
     mapLink: '查看全校地圖',
+    aedMapLink: 'AED 設備地點總覽',
+    accessibilityMapLink: '無障礙設施地點總覽',
   },
   select: {
     heading: '你要從哪裡出發，去哪裡呢？',
@@ -88,7 +90,7 @@ export default {
     tierFull: '完整資料',
     tierPartial: '資料建置中',
     dataPending: '本棟大樓詳細設施資料建置中，如您有相關資訊歡迎透過管理者後台補充。',
-    announcementsTitle: '目前異動公告',
+    announcementsTitle: '⚠️ 設施異動公告',
     noAnnouncements: '目前沒有異動公告',
     announcementFallbackNote: '（此語言尚無翻譯，顯示英文版本）',
     empty: '暫無資料',
@@ -99,6 +101,7 @@ export default {
     elevator: '電梯故障',
     water: '停水',
     power: '停電',
+    maintenance: '設施養護中',
     other: '其他',
   },
   admin: {

@@ -14,6 +14,8 @@ export default {
     subtitle: 'Pemandu kampus "Rusa Wenhwa" — jelajahi FCU tanpa takut tersesat!',
     startButton: 'Ayo berangkat!',
     mapLink: 'Lihat Peta Seluruh Kampus',
+    aedMapLink: 'Ikhtisar Lokasi AED',
+    accessibilityMapLink: 'Ikhtisar Fasilitas Aksesibilitas',
   },
   select: {
     heading: 'Kamu berangkat dari mana, dan mau ke mana?',
@@ -87,7 +89,7 @@ export default {
     tierFull: 'Data lengkap',
     tierPartial: 'Data sedang disusun',
     dataPending: 'Data fasilitas lengkap untuk gedung ini masih dalam penyusunan. Jika kamu punya informasi terkait, silakan tambahkan melalui panel admin.',
-    announcementsTitle: 'Pengumuman Saat Ini',
+    announcementsTitle: '⚠️ Pengumuman Fasilitas',
     noAnnouncements: 'Belum ada pengumuman saat ini',
     announcementFallbackNote: '(Belum diterjemahkan ke bahasa ini — menampilkan versi bahasa Inggris)',
     empty: 'Belum ada data',
@@ -98,6 +100,7 @@ export default {
     elevator: 'Lift Rusak',
     water: 'Air Mati',
     power: 'Listrik Padam',
+    maintenance: 'Sedang Dalam Perawatan',
     other: 'Lainnya',
   },
   admin: {

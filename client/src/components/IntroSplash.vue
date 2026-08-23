@@ -10,11 +10,14 @@ import { fetchUpcomingEvents } from '../utils/api'
 import { useBilingual } from '../utils/bilingual'
 import { formatWallClock, formatTaipeiInstant } from '../utils/dateFormat'
 import { useAppStore } from '../stores/app'
+import { useAnnouncementsStore } from '../stores/announcements'
+import buildings from '../data/buildings.json'
 
 const emit = defineEmits(['start'])
 const { locale } = useI18n({ useScope: 'global' })
 const { bt } = useBilingual()
 const store = useAppStore()
+const announcementsStore = useAnnouncementsStore()
 
 const started = ref(false)
 
@@ -112,6 +115,26 @@ function onEventLocationPick(ev, e) {
   const loc = (e.locations || []).find((l) => l.buildingId === buildingId)
   if (loc) chooseLocation(loc)
 }
+
+// Feature: building-change announcements (整修中、廁所故障、停水停電…) now show
+// on the landing page too, not just on that building's own facility page —
+// a visitor should see "游泳池暫停開放" the moment they land, without first
+// having to pick a route to find out. Only announcements whose date window
+// currently covers today are shown here (see stores/announcements.js's
+// `activeNow`); FacilityPanel.vue still lists the building's full history.
+const buildingsById = Object.fromEntries(buildings.map((b) => [b.id, b]))
+const activeAnnouncements = computed(() => announcementsStore.activeNow)
+
+function announcementBuildingLabel(a) {
+  const b = buildingsById[a.buildingId]
+  if (!b) return ''
+  return locationLabel(b)
+}
+
+function onAnnouncementClick(a) {
+  store.setDestination(a.buildingId)
+  onStart()
+}
 </script>
 
 <template>
@@ -138,6 +161,12 @@ function onEventLocationPick(ev, e) {
         >
           <span>{{ $t('intro.mapLink') }}</span>
           <img src="/map/click%20me%20map.png" :alt="$t('intro.mapLink')" />
+        </a>
+        <a class="secondary-map-link" href="/map/AED.jpg" target="_blank" rel="noopener">
+          {{ $t('intro.aedMapLink') }}
+        </a>
+        <a class="secondary-map-link" href="/map/Barrier_free_map.jpg" target="_blank" rel="noopener">
+          {{ $t('intro.accessibilityMapLink') }}
         </a>
       </div>
 
@@ -182,6 +211,29 @@ function onEventLocationPick(ev, e) {
         >
           {{ showAllEvents ? $t('events.showLess') : $t('events.showMore') }}
         </button>
+
+        <!-- Feature: active building-change announcements (整修中/廁所故障/停水
+             停電…) surfaced right on the landing page — see onAnnouncementClick. -->
+        <template v-if="activeAnnouncements.length">
+          <p class="events-board-title announcements-title">{{ bt('facility.announcementsTitle') }}</p>
+          <ul class="events-list">
+            <li
+              v-for="a in activeAnnouncements"
+              :key="a.id"
+              class="event-item clickable"
+              @click="onAnnouncementClick(a)"
+            >
+              <div class="event-item-row">
+                <span class="event-type-tag">{{ $t(`announcementType.${a.type}`) }}</span>
+                <span class="event-title">{{ announcementBuildingLabel(a) }}</span>
+              </div>
+              <p class="event-location">{{ a.message }}</p>
+              <p v-if="a.startDate || a.endDate" class="event-datetime">
+                {{ formatWallClock(a.startDate, locale) }}<span v-if="a.startDate && a.endDate"> – </span>{{ formatWallClock(a.endDate, locale) }}
+              </p>
+            </li>
+          </ul>
+        </template>
       </div>
     </div>
   </div>
@@ -328,6 +380,20 @@ function onEventLocationPick(ev, e) {
   outline: 3px solid #fff;
   outline-offset: 4px;
 }
+.secondary-map-link {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.32rem;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.secondary-map-link:hover,
+.secondary-map-link:focus-visible {
+  color: var(--fcu-gold);
+}
+.secondary-map-link:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
 
 /* ---- Events board (公佈欄) ------------------------------------------- */
 .events-board {
@@ -340,12 +406,17 @@ function onEventLocationPick(ev, e) {
 .events-board-title {
   margin: 0;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.32rem;
   color: #fff;
+}
+.announcements-title {
+  margin-top: 0.5rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 .events-board-empty {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1.32rem;
   color: rgba(255, 255, 255, 0.75);
 }
 .events-list {
@@ -360,7 +431,7 @@ function onEventLocationPick(ev, e) {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  font-size: 0.9rem;
+  font-size: 1.32rem;
   color: rgba(255, 255, 255, 0.95);
   border-radius: 10px;
   padding: 0.55rem 0.65rem;
@@ -382,7 +453,7 @@ function onEventLocationPick(ev, e) {
   background: var(--fcu-gold);
   color: var(--fcu-maroon-dark);
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 1rem;
   padding: 0.1em 0.55em;
   border-radius: 999px;
 }
@@ -391,17 +462,17 @@ function onEventLocationPick(ev, e) {
 }
 .event-datetime {
   margin: 0;
-  font-size: 0.83rem;
+  font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.85);
 }
 .event-location {
   margin: 0;
-  font-size: 0.83rem;
+  font-size: 1.15rem;
   color: rgba(255, 255, 255, 0.85);
 }
 .event-published {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 1.05rem;
   color: rgba(255, 255, 255, 0.6);
 }
 .event-location-picker {
@@ -423,7 +494,7 @@ function onEventLocationPick(ev, e) {
   color: #fff;
   border-radius: 999px;
   padding: 0.35em 1.2em;
-  font-size: 0.82rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 .events-toggle-btn:hover {

@@ -28,7 +28,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
   <div class="app-shell">
     <header class="app-topbar">
       <router-link to="/" class="brand">
-        <span class="brand-deer">🦌</span>
         <span class="brand-name">{{ $t('common.appName') }}</span>
       </router-link>
       <div class="topbar-right">
@@ -68,7 +67,10 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  font-size: 1.05rem;
+  /* Same size as the landing page's "我是「文華鹿」" heading (IntroSplash.vue's
+     --intro-heading-size) — kept in sync manually since that variable is
+     scoped to IntroSplash's own <style>. */
+  font-size: clamp(1.25rem, 4vw, 2.1rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -78,10 +80,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.brand-deer {
-  font-size: 1.4rem;
-  flex-shrink: 0;
 }
 .topbar-right {
   display: flex;
@@ -98,7 +96,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
     flex: 1 1 100%;
     justify-content: center;
     text-align: center;
-    font-size: 0.95rem;
   }
   .topbar-right {
     flex: 1 1 100%;

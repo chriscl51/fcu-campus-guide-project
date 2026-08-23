@@ -23,7 +23,17 @@ const PORT = process.env.PORT || 3001
 
 const app = express()
 app.disable('x-powered-by') // don't advertise the framework in every response header
-app.use(cors())
+
+// Allowed origins come from CORS_ORIGIN (comma-separated, see .env.example).
+// Left unset, the API allows any origin — fine for local dev where the
+// frontend's port can vary, but must be set once this server is deployed
+// publicly, or any site on the internet could call it with a visitor's
+// session token.
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean)
+app.use(cors(allowedOrigins.length ? { origin: allowedOrigins } : undefined))
 app.use(express.json())
 
 // Brute-force protection on the one endpoint that accepts a guessable secret
@@ -154,7 +164,7 @@ app.get('/api/health', (req, res) => res.json({ ok: true }))
 // error handler, which (see the catch-all below) is exactly what that
 // handler exists to also guard against, but it's cheaper and clearer to
 // reject bad input up front.
-const ANNOUNCEMENT_TYPES = new Set(['renovation', 'restroom', 'elevator', 'water', 'power', 'other'])
+const ANNOUNCEMENT_TYPES = new Set(['renovation', 'restroom', 'elevator', 'water', 'power', 'maintenance', 'other'])
 const EVENT_TYPES = new Set(['exam', 'lecture', 'symposium', 'other'])
 const buildingExistsStmt = db.prepare('SELECT 1 FROM buildings WHERE id = ?')
 function buildingExists(id) {
@@ -187,17 +197,19 @@ function replaceEventLocations(eventId, buildingIds) {
 }
 
 // ---- events (activity/announcement) ------------------------------------
-// "Upcoming" = auto-surfaces starting the day before start_date, through
-// end_date — matches the feature request: admin enters an event, it
-// automatically appears on the landing page starting the day before.
-// Uses '+8 hours' (not SQLite's 'localtime') so "today" is always Taipei's
-// calendar day (GMT+8), regardless of what timezone the server host is
-// actually running in.
+// "Upcoming" = auto-surfaces starting the day before start_date, through one
+// day after end_date — the 24-hour lead/grace window applies on both ends:
+// admin enters an event, it appears on the landing page starting the day
+// before, and stays visible through the day after it ends rather than
+// vanishing right at midnight. Announcements follow the same rule
+// client-side (see utils/activeWindow.js). Uses '+8 hours' (not SQLite's
+// 'localtime') so "today" is always Taipei's calendar day (GMT+8),
+// regardless of what timezone the server host is actually running in.
 app.get('/api/events/upcoming', (req, res) => {
   const rows = db.prepare(`
     SELECT e.* FROM events e
     WHERE date('now', '+8 hours') >= date(e.start_date, '-1 day')
-      AND date('now', '+8 hours') <= date(e.end_date)
+      AND date('now', '+8 hours') <= date(e.end_date, '+1 day')
     ORDER BY e.start_date ASC
   `).all()
   res.json(attachLocations(rows))
@@ -214,7 +226,7 @@ app.get('/api/events/locations', (req, res) => {
     JOIN event_locations el ON el.event_id = e.id
     JOIN buildings b ON b.id = el.building_id
     WHERE date('now', '+8 hours') >= date(e.start_date, '-1 day')
-      AND date('now', '+8 hours') <= date(e.end_date)
+      AND date('now', '+8 hours') <= date(e.end_date, '+1 day')
     ORDER BY b.name_zh
   `).all()
   res.json(rows)

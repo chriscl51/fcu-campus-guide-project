@@ -14,6 +14,8 @@ export default {
     subtitle: 'キャンパス案内役「文華鹿」と一緒に、逢甲を迷わず歩こう！',
     startButton: '出発しましょう！',
     mapLink: 'キャンパス全体の地図を見る',
+    aedMapLink: 'AED設置場所一覧',
+    accessibilityMapLink: 'バリアフリー設備一覧',
   },
   select: {
     heading: 'どこから出発して、どこへ行きますか？',
@@ -87,7 +89,7 @@ export default {
     tierFull: 'データ完備',
     tierPartial: 'データ準備中',
     dataPending: 'この建物の詳細な設備情報は現在整備中です。関連情報をお持ちの方は、管理者ページよりご提供いただけると幸いです。',
-    announcementsTitle: '現在のお知らせ',
+    announcementsTitle: '⚠️ 施設変更のお知らせ',
     noAnnouncements: '現在お知らせはありません',
     announcementFallbackNote: '（この言語の翻訳はまだありません。英語版を表示しています）',
     empty: 'データがまだありません',
@@ -98,6 +100,7 @@ export default {
     elevator: 'エレベーター故障',
     water: '断水',
     power: '停電',
+    maintenance: '設備メンテナンス中',
     other: 'その他',
   },
   admin: {
