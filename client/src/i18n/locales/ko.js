@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: '웬화사슴 가이드 FCU',
+    appName: '웬화사슴 FCU Campus Navigation Service',
     next: '다음',
     back: '이전',
     confirm: '확인',

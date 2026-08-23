@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: 'Panduan Rusa Wenhwa FCU Guide',
+    appName: 'Panduan Rusa Wenhwa FCU Campus Navigation Service',
     next: 'Lanjut',
     back: 'Kembali',
     confirm: 'Konfirmasi',

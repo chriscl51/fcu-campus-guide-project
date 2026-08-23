@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: 'Wenhwa Deer Guide — FCU',
+    appName: 'Wenhwa Deer — FCU Campus Navigation Service',
     next: 'Next',
     back: 'Back',
     confirm: 'Confirm',

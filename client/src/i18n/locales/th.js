@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: 'กวางเหวินฮว่า นำทาง FCU Guide',
+    appName: 'กวางเหวินฮว่า นำทาง FCU Campus Navigation Service',
     next: 'ถัดไป',
     back: 'ย้อนกลับ',
     confirm: 'ยืนยัน',

@@ -1,83 +1,53 @@
 <script setup>
-// Self-contained vector campus map: renders the real surveyed path network,
-// buildings, and POIs, then walks the pixel deer along the computed Dijkstra
-// route. No external map tiles/APIs — everything is drawn from src/data/*.json
-// projected into flat SVG coordinates by utils/projection.js.
+// Campus map screen: the school's own illustrated campus map artwork is the
+// map, and the deer walks a real computed Dijkstra route across it.
+//
+// The map used to be drawn as vectors here (building footprints + labels +
+// gates + POIs projected from OSM data). That whole layer is gone — the
+// official artwork already draws every building, its code, its name and the
+// gates, far better than we could, so re-drawing them on top just fought with
+// the picture. See utils/mapProjection.js for how lat/lon is georeferenced
+// onto the artwork (short version: 28 measured control points, affine fit,
+// plus endpoint anchoring so the deer starts/stops exactly on the right
+// building).
+//
+// LAYER ORDER MATTERS AND IS DELIBERATE:
+//   1. the route polyline   <- drawn FIRST, so it ends up underneath
+//   2. the map image        <- painted over it, hiding the route completely
+//   3. the destination halo + the deer  <- drawn last, so they stay visible
+// The route line is still in the DOM (it's what the deer follows, and it's
+// handy when debugging alignment) but the user never sees it, which is the
+// requirement: 「graph 路線圖層要隱藏在 new fcu map 下方…user 不能看到 graph 的線條」.
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import buildings from '../data/buildings.json'
-import poisData from '../data/pois.json'
-import gatesData from '../data/gates.json'
-import { parkingLots } from '../utils/parking'
-import { selectableBuildings } from '../utils/buildingOptions'
-import { project, WORLD, haversine } from '../utils/projection'
+import { MAP_IMAGE, projectMap, warpRoute, anchorFor } from '../utils/mapProjection'
 import { playFootstep } from '../utils/sound'
 import DeerSprite from './DeerSprite.vue'
 
 const props = defineProps({
   route: { type: Object, required: true }, // { points, distanceMeters, etaMinutes, steps }
   destinationBuilding: { type: Object, required: true },
+  // Optional: lets the deer's *start* be pinned to where the artwork draws the
+  // origin building/gate. Omitted (e.g. drive mode, where the origin is a
+  // parking lot with no label on the artwork) just means the start falls back
+  // to the plain affine position.
+  originId: { type: String, default: null },
 })
 const emit = defineEmits(['arrived'])
 const { t } = useI18n()
 
-// Feedback item: the raw routable graph (1074 nodes / 3558 edges — every
-// surveyed sidewalk segment) used to be drawn as a dense mesh of grey lines
-// under the map ("edge/node圖層很醜"). Real campus paper maps don't show a
-// path-finding graph, just buildings + roads, so this layer is no longer
-// rendered at all — only the highlighted route line (below) is drawn. The
-// graph itself is still fully used for Dijkstra routing, just not painted.
-// (graph.json is still imported by utils/routing.js for the actual pathfinding.)
-
-// Building footprints (real surveyed polygons — see scripts/parse_osm.py) are
-// drawn as filled shapes so the map reads like the official campus signboard
-// map (solid building blocks + labels) instead of a single dot per building.
-// Buildings with no surveyed polygon (rare — a couple of POI-only landmarks)
-// fall back to a dot marker via `footprint.length === 0`. Filtered through
-// selectableBuildings() — the same official-map filter the destination
-// dropdowns use — so a building/lot that isn't on the official campus map
-// (no officialCode, or explicitly excluded via NOT_ON_OFFICIAL_MAP) doesn't
-// get drawn on the map either, even though its data stays in buildings.json.
-const buildingMarkers = selectableBuildings(buildings).map((b) => {
-  const pos = project(b.lat, b.lon)
-  const footprintPts = (b.footprint || []).map(([lat, lon]) => project(lat, lon))
-  const footprintPath = footprintPts.length >= 3
-    ? footprintPts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ') + ' Z'
-    : null
-  return { ...b, pos, footprintPath }
-})
-
-// Gate markers (西門/東門/北門), styled like the red gate labels on the
-// official schematic map.
-const gateMarkers = gatesData.map((g) => ({ ...g, pos: project(g.lat, g.lon) }))
-
-const POI_STYLE = {
-  toilets: { color: '#7a4620', icon: '🚻' },
-  drinking_water: { color: '#006b93', icon: '💧' },
-  elevator: { color: '#5b3fa0', icon: '🛗' },
-  aed: { color: '#c0392b', icon: '❤️' },
-  parking: { color: '#3a3a3a', icon: '🅿️' },
-  parking_space: { color: '#3a3a3a', icon: '🅿️' },
-  bench: { color: '#8a7a5c', icon: '🪑' },
-}
-// Keep the map from being overwhelmed with 100+ icons: only show POIs within
-// ~90m of the destination (they matter most once you've arrived), plus the
-// two curated parking lots (see utils/parking.js — the raw survey has 19
-// mostly-unlabeled "parking" ways, trimmed down to the two real, nameable
-// destinations: 凱旋停車場 and the 體育館 underground lot).
-const PARKING_LOT_IDS = new Set(parkingLots.map((lot) => String(lot.id)))
-const poiMarkers = computed(() => {
-  const dest = props.destinationBuilding
-  return poisData
-    .filter((p) => {
-      if (p.kind === 'parking' || p.kind === 'parking_space') return PARKING_LOT_IDS.has(String(p.id))
-      return haversine({ lat: p.lat, lon: p.lon }, dest) <= 90
-    })
-    .map((p) => ({ ...p, pos: project(p.lat, p.lon), style: POI_STYLE[p.kind] }))
-})
+// Where the artwork draws the destination — used for the "you're heading here"
+// halo. Falls back to the affine estimate for anything unlabelled.
+const destPos = computed(
+  () =>
+    anchorFor(props.destinationBuilding?.id) ||
+    projectMap(props.destinationBuilding.lat, props.destinationBuilding.lon)
+)
 
 // ---- route path + deer animation -----------------------------------------
-const routePoints = computed(() => props.route.points.map((p) => project(p.lat, p.lon)))
+const routePoints = computed(() =>
+  warpRoute(props.route.points, props.originId, props.destinationBuilding?.id)
+)
 const routePath = computed(() =>
   routePoints.value.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
 )
@@ -174,8 +144,18 @@ function skipToEnd() {
 watch(() => props.route, start, { immediate: true })
 onBeforeUnmount(cancelAnim)
 
-const viewBox = `0 0 ${WORLD.width.toFixed(0)} ${WORLD.height.toFixed(0)}`
-const aspect = WORLD.width / WORLD.height
+// The SVG coordinate system IS the artwork's pixel space, so the image can be
+// dropped in at 0,0 at natural size and every projected point lines up with it.
+const viewBox = `0 0 ${MAP_IMAGE.width} ${MAP_IMAGE.height}`
+const aspect = MAP_IMAGE.width / MAP_IMAGE.height
+// Deer/halo sizes are in artwork pixels. Sized generously on purpose: the
+// illustration is a busy, colourful drawing, so a deer scaled to the old
+// vector map's proportions just disappeared into it. DeerSprite's art is
+// 140x100, so the foreignObject is DEER_SIZE wide by DEER_SIZE*(100/140) tall,
+// and the sprite's feet sit at the bottom edge — that bottom edge is what gets
+// placed on the route point.
+const DEER_SIZE = 132
+const DEER_H = DEER_SIZE * (100 / 140)
 
 function directionLabel(step) {
   if (step.type === 'straight') return t('directions.straight', { distance: step.distanceMeters })
@@ -198,32 +178,36 @@ function directionLabel(step) {
         :class="{ 'corner-sticker-finish': arrived }"
       />
       <svg class="campus-svg" :viewBox="viewBox" :style="{ aspectRatio: aspect }" preserveAspectRatio="xMidYMid meet">
-        <path :d="routePath" class="route-line" />
+        <!-- LAYER 1 — the routing graph's computed path. Deliberately drawn
+             before the map image so the image paints straight over it: the
+             deer follows it, the user never sees it. -->
+        <path :d="routePath" class="route-line-hidden" />
 
-        <g
-          v-for="b in buildingMarkers"
-          :key="b.id"
-          class="building-marker"
-          :class="{ dest: b.id === destinationBuilding.id, partial: b.tier === 'partial' }"
+        <!-- LAYER 2 — the official illustrated campus map. This IS the map. -->
+        <image
+          :href="MAP_IMAGE.src"
+          x="0"
+          y="0"
+          :width="MAP_IMAGE.width"
+          :height="MAP_IMAGE.height"
+          class="campus-map-image"
+        />
+
+        <!-- LAYER 3 — only what has to sit on top of the artwork. -->
+        <g class="dest-marker">
+          <circle :cx="destPos.x" :cy="destPos.y" r="46" class="dest-ring-outer" />
+          <circle :cx="destPos.x" :cy="destPos.y" r="26" class="dest-ring-inner" />
+        </g>
+
+        <ellipse :cx="deerX" :cy="deerY" rx="40" ry="16" class="deer-halo" />
+        <foreignObject
+          :x="deerX - DEER_SIZE / 2"
+          :y="deerY - DEER_H"
+          :width="DEER_SIZE"
+          :height="DEER_H"
+          class="deer-fo"
         >
-          <path v-if="b.footprintPath" :d="b.footprintPath" class="building-shape" />
-          <circle v-else :cx="b.pos.x" :cy="b.pos.y" :r="b.id === destinationBuilding.id ? 7 : 4" class="building-dot" />
-          <text :x="b.pos.x" :y="b.pos.y - 2" class="building-code">{{ b.officialCode || b.roomCode || '' }}</text>
-          <text :x="b.pos.x" :y="b.pos.y + 7" class="building-name">{{ b.nameZh }}</text>
-        </g>
-
-        <g v-for="g in gateMarkers" :key="g.id" class="gate-marker">
-          <circle :cx="g.pos.x" :cy="g.pos.y" r="5" class="gate-dot" />
-          <text :x="g.pos.x" :y="g.pos.y - 9" class="gate-label">{{ g.nameZh }}</text>
-        </g>
-
-        <g v-for="p in poiMarkers" :key="p.id" class="poi-marker">
-          <circle :cx="p.pos.x" :cy="p.pos.y" r="2.4" :fill="p.style?.color || '#999'" />
-        </g>
-
-        <circle :cx="deerX" :cy="deerY" r="10" class="deer-halo" />
-        <foreignObject :x="deerX - 16" :y="deerY - 23" width="32" height="23" class="deer-fo">
-          <DeerSprite :size="32" :facing="deerFacing" walking />
+          <DeerSprite :size="DEER_SIZE" :facing="deerFacing" walking />
         </foreignObject>
       </svg>
 
@@ -309,85 +293,59 @@ function directionLabel(step) {
   background: #f3ede1;
   border-radius: 10px;
 }
-.route-line {
+/* The route the deer follows. It sits UNDER the map image, so it is never
+   visible to the user — this styling only matters if the image ever fails to
+   load, and when temporarily reordering the layers to check alignment. */
+.route-line-hidden {
   stroke: var(--fcu-maroon);
-  stroke-width: 3.2;
+  stroke-width: 10;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 6 5;
-  animation: dash-move 1.2s linear infinite;
 }
-@keyframes dash-move {
-  to {
-    stroke-dashoffset: -22;
+.campus-map-image {
+  /* Keeps the illustration's fine label text sharp when the card scales the
+     1800px artwork down to whatever width the layout gives it. */
+  image-rendering: auto;
+}
+/* Destination "you're heading here" halo — the one marker allowed on top of
+   the artwork, so the user can see which building the route ends at. */
+.dest-ring-outer {
+  fill: rgba(212, 168, 83, 0.28);
+  stroke: var(--fcu-maroon);
+  stroke-width: 5;
+  animation: dest-pulse 2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.dest-ring-inner {
+  fill: none;
+  stroke: var(--fcu-maroon);
+  stroke-width: 4;
+  opacity: 0.75;
+}
+@keyframes dest-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.6;
   }
 }
-/* Filled building blocks, styled after the official campus schematic map:
-   soft blue-grey for full-tier (has facility data), muted taupe for partial
-   (data pending), gold + maroon outline for the current destination. */
-.building-shape {
-  fill: #aab9c4;
-  stroke: #8b9aa6;
-  stroke-width: 1;
-  paint-order: stroke;
-}
-.building-marker.partial .building-shape {
-  fill: #c9beac;
-  stroke: #b0a38c;
-}
-.building-marker.dest .building-shape {
-  fill: var(--fcu-gold);
-  stroke: var(--fcu-maroon);
-  stroke-width: 1.75;
-}
-.building-dot {
-  fill: var(--fcu-blue);
-  stroke: #fff;
-  stroke-width: 1;
-}
-.building-marker.partial .building-dot {
-  fill: #b7ab98;
-}
-.building-marker.dest .building-dot {
-  fill: var(--fcu-gold);
-  stroke: var(--fcu-maroon);
-  stroke-width: 1.5;
-}
-.building-code {
-  font-size: 11px;
-  font-weight: 800;
-  text-anchor: middle;
-  fill: var(--fcu-maroon-dark);
-  pointer-events: none;
-}
-.building-marker.partial .building-code {
-  fill: #6b5f4d;
-}
-.building-name {
-  font-size: 7.5px;
-  font-weight: 600;
-  text-anchor: middle;
-  fill: var(--text-muted);
-  pointer-events: none;
-}
-.gate-marker .gate-dot {
-  fill: #c0392b;
-  stroke: #fff;
-  stroke-width: 1;
-}
-.gate-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-anchor: middle;
-  fill: #c0392b;
-  pointer-events: none;
-}
+/* Ground shadow under the deer's feet — an ellipse rather than a circle so it
+   reads as the deer standing ON the map rather than a dot behind it. */
 .deer-halo {
-  fill: rgba(129, 27, 41, 0.15);
+  fill: rgba(60, 40, 20, 0.28);
 }
 .deer-fo {
   overflow: visible;
+  /* White rim + drop shadow so the sprite stays legible over any part of the
+     illustration (pale roads, dark green planting, the red running track). */
+  filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px #fff)
+    drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
 }
 .skip-btn {
   position: absolute;

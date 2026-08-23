@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: '文華鹿ナビ FCU Guide',
+    appName: '文華鹿ナビ FCU Campus Navigation Service',
     next: '次へ',
     back: '戻る',
     confirm: '確認',

@@ -54,6 +54,9 @@ function onArrived() {
       <div v-if="store.chosenParkingLotId" class="drive-split-grid">
         <div class="drive-nav-card">
           <h2 class="drive-nav-title">{{ $t('parking.leftCardTitle') }}</h2>
+          <!-- No :origin-id here on purpose: in drive mode the walk starts at
+               a parking lot, which the campus artwork doesn't label, so the
+               start falls back to its plain projected position. -->
           <CampusMap
             v-if="store.route"
             :route="store.route"
@@ -68,6 +71,7 @@ function onArrived() {
         v-else-if="store.route"
         :route="store.route"
         :destination-building="store.destinationBuilding"
+        :origin-id="store.originId"
         @arrived="onArrived"
       />
 

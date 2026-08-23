@@ -1,7 +1,7 @@
 // Source-of-truth locale — every other locale file mirrors this key structure.
 export default {
   common: {
-    appName: '文華鹿帶路 FCU Guide',
+    appName: '文華鹿帶路 FCU Campus Navigation Service',
     next: '下一步',
     back: '上一步',
     confirm: '確認',

@@ -6,8 +6,6 @@ import { useBilingual } from '../utils/bilingual'
 import { fetchEventLocations } from '../utils/api'
 import buildings from '../data/buildings.json'
 import gates from '../data/gates.json'
-import { selectableBuildings } from '../utils/buildingOptions'
-import { parkingLots } from '../utils/parking'
 
 const store = useAppStore()
 const { btName, bt, locale } = useBilingual()
@@ -30,7 +28,24 @@ function onEventLocationChange(e) {
   e.target.value = '' // reset the quick-pick control itself; destination select above reflects the choice
 }
 
-const sortedBuildings = computed(() => selectableBuildings(buildings))
+// Only buildings that are actually drawn on the campus map the app shows
+// belong in the origin/destination pickers — 「不在地圖上的都從 dropdown 移除」.
+// The check is simply "has an official building code", which is now exactly
+// right: the map artwork the app renders (public/map/fcu-campus-map.webp, the
+// school's own illustrated map) labels all 24 coded buildings and nothing else.
+//
+// 逢甲智慧創新港 (IH) used to be excluded here, because the older printed map
+// this list was first checked against pre-dates that building. The current
+// artwork does draw it (badge 23), so it's back in — no exception list needed
+// any more.
+const sortedBuildings = computed(() =>
+  [...buildings]
+    .filter((b) => b.officialCode)
+    .sort((a, b) => {
+      if (a.tier === b.tier) return a.nameZh.localeCompare(b.nameZh, 'zh-Hant')
+      return a.tier === 'full' ? -1 : 1
+    })
+)
 
 // Feedback item: dropdown options get the same building code shown on the
 // redesigned map (e.g. "LIB｜圖書館 / Library") so the two views match up.
@@ -66,9 +81,6 @@ function onSubmit() {
         <select id="origin-select" :value="store.originId ?? ''" @change="onOriginChange">
           <option value="" disabled>{{ $t('select.originPlaceholder') }}</option>
           <option :value="DRIVE_MODE_ORIGIN">{{ $t('select.driveOption') }}</option>
-          <optgroup :label="bt('select.parkingGroup')">
-            <option v-for="p in parkingLots" :key="p.id" :value="p.id">{{ buildingLabel(p) }}</option>
-          </optgroup>
           <optgroup :label="bt('select.gatesGroup')">
             <option v-for="g in gates" :key="g.id" :value="g.id">{{ buildingLabel(g) }}</option>
           </optgroup>
@@ -84,14 +96,9 @@ function onSubmit() {
         <label for="destination-select">{{ $t('select.destinationLabel') }}</label>
         <select id="destination-select" :value="store.destinationId ?? ''" @change="onDestinationChange">
           <option value="" disabled>{{ $t('select.destinationPlaceholder') }}</option>
-          <optgroup :label="bt('select.parkingGroup')">
-            <option v-for="p in parkingLots" :key="p.id" :value="p.id">{{ buildingLabel(p) }}</option>
-          </optgroup>
-          <optgroup :label="bt('select.buildingsGroup')">
-            <option v-for="b in sortedBuildings" :key="b.id" :value="b.id">
-              {{ buildingLabel(b) }}
-            </option>
-          </optgroup>
+          <option v-for="b in sortedBuildings" :key="b.id" :value="b.id">
+            {{ buildingLabel(b) }}
+          </option>
         </select>
       </div>
 

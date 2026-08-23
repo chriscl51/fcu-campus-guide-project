@@ -1,10 +1,11 @@
-# 文華鹿帶路 — 逢甲大學新生／訪客校內導覽網站
+# FCU Campus Navigation Service（文華鹿帶路）
 
-Vue 3 + Vite 打造的校內路線指引網站，核心功能（地圖／路線規劃／設施資訊）是純前端
-靜態站，不需要後端資料庫；管理者後台登入、公告、活動這幾個功能則有一個 Node.js +
-Express + SQLite 後端支援（見下方「後端」章節）。文華鹿會帶新生 / 訪客
+逢甲大學新生／訪客校內導覽網站。核心功能（地圖／路線規劃／設施資訊）是純前端靜態
+站，不需要後端資料庫；管理者後台登入、公告、活動這幾個功能則有一個 Node.js +
+Express + SQLite 後端支援（見下方「後端」章節）。吉祥物「文華鹿」會帶新生 / 訪客
 從你選的出發地（校門、大樓、或幫你找最近停車場）走到目的地大樓，沿途顯示文字導航、
-預估步行時間，抵達後顯示大樓設施資訊（教室編碼、電梯、廁所、飲水機、AED、休憩空間）。
+預估步行時間，抵達後顯示大樓設施資訊（教室編碼、電梯、無障礙電梯、廁所、無障礙
+廁所、飲水機、AED、休憩空間、樓層配置）。
 
 ## 專案結構
 
@@ -74,7 +75,7 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 - **地圖**：沒有使用 Google Maps 或任何地圖 API/金鑰。校園地圖是把 `scripts/` 裡真實
   的 GPS 經緯度資料（來自 `fcu_routing.osm` / `FCU map.osm`）投影成自繪 SVG 向量地圖
   （`src/utils/projection.js`），完全離線可跑。每棟建築用真實測繪的多邊形
-  （`footprint`，見下方「建築資料」）畫成實色色塊＋代碼標籤，米色底＋酒紅/藍灰配色；
+  （`footprint`，見下方「資料從哪來」）畫成實色色塊＋代碼標籤，米色底＋酒紅/藍灰配色；
   校門（西門/東門/北門）畫成紅色標記。底圖只畫出目前這趟路線（醒目紅色虛線），完整
   路網（1074 節點／3558 邊）資料仍保留供 Dijkstra 計算使用，但不畫出來。
 - **路線規劃**：Dijkstra 最短路徑演算法（`src/utils/routing.js`），跑在真實測繪的
@@ -86,17 +87,17 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
   （`DriveInfoCard.vue`，用 `utils/mapsLink.js` 的 `googleMapsEmbedUrl()`），釘選在
   建議停車場的位置，不帶起點參數（由使用者自行在地圖上輸入出發地）。`utils/parking.js`
   只保留兩個開放給訪客使用的停車場：**逢甲大學凱旋停車場**、**體育館地下停車場**
-  （原始測繪資料裡的其餘 17 個停車格點位不對外開放，皆已排除）。這兩個停車場也直接
+  （原始測繪資料裡的其餘停車格點位不對外開放，皆已排除）。這兩個停車場也直接
   加進 `SelectForm.vue` 的出發地／目的地下拉選單最上方（各自獨立的「校內停車場」
   選項群組），可以手動選「已經停在凱旋停車場，帶我走到 X」或「從 X 走回停車場」，
   不一定要透過「🚗 開車」自動流程。
 - **官方地圖範圍一致性**：`src/data/buildings.json` 只收錄官方校園平面圖（見下方
-  「資料從哪來」的兩張圖檔來源）上有標示的 29 個項目——OSM 測繪到、但官方地圖沒有
-  標示的鄰近建物（警衛室、店家、非開放停車格等）在資料產生階段（`build_content.py`）
-  就直接過濾掉，不會進到 `buildings.json` 裡。因此下拉選單（`buildingOptions.js` 的
-  `selectableBuildings()`）跟地圖上實際畫出的建築色塊（`CampusMap.vue`）自然保持一致，
-  不需要額外的排除清單。下拉選單依英文名稱字母順序排序（中文名稱排序規則對使用者來說
-  不好定位，改用英文字母序更容易找到目標建築）。
+  「資料從哪來」）上有標示的 29 個項目——OSM 測繪到、但官方地圖沒有標示的鄰近建物
+  （警衛室、店家、非開放停車格等）在資料產生階段（`build_content.py`）就直接過濾
+  掉，不會進到 `buildings.json` 裡，因此下拉選單（`buildingOptions.js` 的
+  `selectableBuildings()`）跟地圖上實際畫出的建築色塊（`CampusMap.vue`）自然保持
+  一致。下拉選單依官方地圖上的「編號 No.」（1–29）排序，跟訪客掃視實體牌樓地圖
+  的順序一致，出發地下拉選單的停車場選項固定排在最上方，不受此排序影響。
 - **文華鹿走路動畫**：`src/components/DeerSprite.vue`，手繪 SVG 向量插畫，側面角色
   行走姿態（頭朝行進方向、身體橫向、兩對腿以對角步態交替擺動），配色參考鹿吉祥物
   （暖色調毛皮、藍紫漸層鹿角、FCU 深藍/白色鞍布配色）。
@@ -126,13 +127,13 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 |---|---|---|
 | 步行路網（1074 節點） | `fcu_routing.osm` + `FCU map.osm` | 全校園，見下方「路網合併」說明 |
 | 建築／地標座標與外形多邊形 | `FCU map.osm`（含 `<way>` 與 `<relation>` 多邊形、以及命名過的 `leisure=pitch/swimming_pool` 球場泳池） | OSM 測繪到 42 筆，其中 29 筆出現在官方地圖上（見下一列），只有這 29 筆會進 `buildings.json` |
-| 建築中英文正式名稱／代碼 | `map/fcu map buildings.jpg`（官方牌樓圖例）＋ `map/fcu map no.jpg`（官方牌樓地圖本體） | 29 個項目（含 5 項球場／泳池／運動場），見 `scripts/build_content.py` 的 `OFFICIAL_CODES` |
-| 建築實景照片 28 張 | 使用者本人於校園實地拍攝（見 `public/buildings/credits.json`） | 官方地圖上 29 個項目中的 28 個，只剩行政大樓沒有照片 |
-| 電梯 8 處 | `fcu_routing.osm` | 忠勤樓×4、圖書館×1、+3 處 |
+| 建築中英文正式名稱／代碼／編號 | `map/fcu map buildings.jpg`（官方牌樓圖例）＋ `map/fcu map no.jpg`（官方牌樓地圖本體） | 29 個項目（含 5 項球場／泳池／運動場），見 `scripts/build_content.py` 的 `OFFICIAL_CODES` |
+| 建築實景照片 29 張 | 使用者本人於校園實地拍攝（見 `public/buildings/credits.json`） | 官方地圖上全部 29 個項目 |
+| 電梯 8 處、無障礙電梯 1 處 | `fcu_routing.osm`、使用者現場確認 | 忠勤樓×4、圖書館×1、+3 處；行政大樓無障礙電梯 1 處 |
 | AED 8 處 | `map/AED.pdf` | 體育館、育樂館、人言大樓、共善樓、行政大樓、商學大樓 |
-| 廁所 30 處、飲水機 28 處 | `FCU map.osm` | 全校散佈點位 |
+| 廁所 30 處、無障礙廁所 1 處、飲水機 28 處 | `FCU map.osm`、使用者現場確認 | 全校散佈點位；行政大樓無障礙廁所／飲水機位置 |
 | 飲水機精確樓層 27 點 | `map/115-06水質檢測報告總表_27台.pdf` | 19 棟建築 |
-| 休憩空間 7 處 | `休憩空間與飲水機位置.pdf` | 圖書館、商學、行政、人文社會、人言 |
+| 休憩空間 7 處 | `休憩空間與飲水機位置.pdf`、使用者現場確認 | 圖書館、商學、行政、人文社會、人言 |
 | 教室編碼對照表 | `大樓與教室代碼.png` | 16 棟建築縮寫 |
 
 **官方地圖上的 29 個項目，19 棟有完整設施頁**（`src/data/buildings.json` 裡
@@ -148,13 +149,20 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 （見 `client/src/data/gates.json`）；底層路網節點沒有動，因為那個節點是一般路口，
 不是南門專屬的。
 
-**大樓照片**：官方地圖上 29 個項目中的 28 個已放入使用者本人實地拍攝的照片（JPG，於
-`public/buildings/`），前端會直接顯示，只剩行政大樓的 `photo` 欄位是 `null`，前端
-顯示「照片準備中」留白版位。照片來源與拍攝說明記錄在 `public/buildings/credits.json`。
-要再補照片：把圖檔放進 `public/buildings/`（注意不是 `src/assets/`，Vite 只會把
-`public/` 底下的檔案原樣發布成靜態網址），在 `credits.json` 補上一筆來源記錄，再把
-對應建築在 `scripts/build_content.py` 的 `PHOTOS` 字典補上 `"大樓中文名":
-"buildings/xxx.jpg"`。
+**大樓照片**：官方地圖上全部 29 個項目都已放入使用者本人實地拍攝的照片（JPG，於
+`public/buildings/`），前端會直接顯示。照片來源與拍攝說明記錄在
+`public/buildings/credits.json`。要再補照片：把圖檔放進 `public/buildings/`（注意
+不是 `src/assets/`，Vite 只會把 `public/` 底下的檔案原樣發布成靜態網址），在
+`credits.json` 補上一筆來源記錄，再把對應建築在 `scripts/build_content.py` 的
+`PHOTOS` 字典補上 `"大樓中文名": "buildings/xxx.jpg"`。
+
+**設施資料欄位**：除了原本的電梯／廁所／飲水機／AED／休憩空間，`facilities` 現在
+還有 `accessibleElevators`（無障礙電梯位置）、`accessibleRestrooms`（無障礙廁所
+位置）、`floors`（樓層配置，例如「2樓：教室」）——這三個欄位跟其他欄位一樣是
+`CURATED` 字典裡的選填 list，只有實際有資料的大樓（目前是行政大樓）才會顯示對應
+區塊。另外每棟建築有一個獨立的 `accessNote` 欄位（不受 `tier` 限制，`partial` 的
+建築也會顯示），用於出入口／停車等一次性的重要提示，例如逢甲智慧創新港的入口與
+建議停車場說明。
 
 ### 路網合併（技術細節，供之後維護參考）
 
@@ -180,7 +188,7 @@ project/
       components/     各畫面元件（DeerSprite 是手繪側面行走 SVG 鹿精靈；DriveInfoCard 是
                       開車流程的建議停車場小卡片；IntroSplash 含近期活動公告區塊）
       views/          GuideView（主流程）、AdminView（管理後台，含公告／活動／帳號三個頁籤）
-    scripts/          Python：把 .osm / 各種 PDF/PNG/HEIC 原始資料轉成 src/data/*.json
+    scripts/          Python：把 .osm / 各種 PDF/圖檔原始資料轉成 src/data/*.json
     public/buildings/ 建築實景照片（JPG，Vite 直接原樣發布）＋ credits.json 照片來源記錄
   server/
     auth.js           密碼雜湊（node:crypto scrypt）與 session token 產生
@@ -226,7 +234,7 @@ project/
 就自動產生一組隨機密碼並印在終端機上一次（請立刻記下來，之後不會再顯示）。之後要
 新增其他管理者或改密碼，都從後台「帳號管理」頁籤操作即可，不用再碰 `.env`。
 
-**這個機制比舊版的前端密碼鎖要嚴謹得多，但仍然是給小團隊內部使用的簡易帳號系統**——
+**這個機制比單純的前端密碼鎖要嚴謹得多，但仍然是給小團隊內部使用的簡易帳號系統**——
 沒有信箱驗證、忘記密碼流程、或雙重驗證，密碼強度只檢查最少 8 個字元。管理者後台的
 登入現在需要後端（`server/`）確實在執行才能使用；如果只跑純前端靜態站，`/admin`
 會顯示「連不上伺服器」而無法登入，這是刻意的設計，因為驗證密碼本來就不該只在前端做。
@@ -308,7 +316,7 @@ JS + Leaflet.js + PHP，本專案是 Vue 3 + SVG 自繪地圖 + Express/SQLite�
 cd project
 git init
 git add .
-git commit -m "FCU 校園導覽網站：Vue 3 前端 + Express/SQLite 後端"
+git commit -m "FCU Campus Navigation Service: Vue 3 前端 + Express/SQLite 後端"
 git branch -M main
 git remote add origin https://github.com/<你的帳號>/<repo名稱>.git
 git push -u origin main
@@ -335,8 +343,6 @@ Azure 資源：
 
 ## 已知限制 / 之後可以做的事
 
-- **大樓照片仍有 1 個項目（行政大樓）留白**（官方地圖上其餘 28 個項目已全部補上
-  使用者本人拍攝的實景照片，見上「資料從哪來」）。
 - **文華鹿走路動畫是手繪 SVG 向量圖，不是點陣圖/貼圖序列幀**。如果之後有現成的貼圖
   序列幀圖檔，可以直接換掉 `DeerSprite.vue` 改用 `<img>` 序列或 CSS sprite sheet。
 - **Google 地圖相關連結用的是免金鑰的非官方網址技巧**（`output=embed` 內嵌／
