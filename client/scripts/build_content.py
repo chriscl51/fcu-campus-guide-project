@@ -256,6 +256,7 @@ OFFICIAL_CODES = {
 # Matched by the OSM name_zh. Everything else keeps photo=None -> frontend
 # shows a "照片準備中" placeholder rather than a fabricated/AI image.
 PHOTOS = {
+    "行政大樓": "buildings/administration-1.jpg",
     "丘逢甲紀念館": "buildings/chiu-fengchia-memorial.jpg",
     "逢甲大學圖書館": "buildings/library.jpg",
     "忠勤樓": "buildings/jongchin.jpg",
