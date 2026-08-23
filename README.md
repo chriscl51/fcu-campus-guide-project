@@ -72,14 +72,25 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 ## 使用技術與關鍵設計
 
 - **Vue 3 + Vite + Pinia + vue-router + vue-i18n**，全部是免費、無需 API 金鑰的套件。
-- **地圖**：沒有使用 Google Maps 或任何地圖 API/金鑰。校園地圖是把 `scripts/` 裡真實
-  的 GPS 經緯度資料（來自 `fcu_routing.osm` / `FCU map.osm`）投影成自繪 SVG 向量地圖
-  （`src/utils/projection.js`），完全離線可跑。每棟建築用真實測繪的多邊形
-  （`footprint`，見下方「資料從哪來」）畫成實色色塊＋代碼標籤，米色底＋酒紅/藍灰配色；
-  校門（西門/東門/北門）畫成紅色標記。底圖只畫出目前這趟路線（醒目紅色虛線），完整
-  路網（1074 節點／3558 邊）資料仍保留供 Dijkstra 計算使用，但不畫出來。
-- **路線規劃**：Dijkstra 最短路徑演算法（`src/utils/routing.js`），跑在真實測繪的
-  步行路網圖上（`src/data/graph.json`，1074 個節點）。
+- **地圖**：沒有使用 Google Maps 或任何地圖 API/金鑰。畫面上看到的校園地圖底圖是
+  逢甲大學官方校園平面圖插畫本身（`public/map/fcu-campus-map.webp`，擷取自官方平面
+  圖 PDF；首頁另外提供原始 PDF 全圖連結，見下方「首頁地圖連結」），不是自繪的
+  SVG 向量圖——這張官方插畫已經把
+  每棟建築、代碼、名稱和校門都畫好了，比自己重畫更清楚。真正算路線用的仍是
+  `scripts/` 裡真實的 GPS 經緯度資料（來自 `fcu_routing.osm` / `FCU map.osm`），Dijkstra
+  算出的 lat/lon 路徑點透過 `src/utils/mapProjection.js` 的仿射轉換（28 個手動量測的
+  控制點：29 棟建築代碼圓圈＋4 個校門）投影成這張插畫的像素座標，並把路徑起訖點
+  額外校正（endpoint anchoring）到插畫實際畫出該建築的位置，確保文華鹿精準地在
+  正確的建築上出發／抵達。路線折線本身其實仍畫在 `<svg>` 裡（`CampusMap.vue` 的
+  `route-line-hidden`），但刻意疊在地圖圖片**下面**、被完全蓋住——使用者看到的只有
+  文華鹿沿著它走的動畫，不會看到路線疊在官方地圖插畫上。舊版自繪向量地圖用的
+  `src/utils/projection.js`（等距長方投影＋`haversine()` 距離公式）並未整個淘汰，
+  現在仍是路線規劃／停車場最近點計算背後的幾何數學（見下一項與「開車/停車場流程」），
+  只是不再用它把建築畫成 SVG 色塊。完整路網（1075 節點／3563 邊）資料供 Dijkstra
+  計算使用，本身不會被畫出來。
+- **路線規劃**：Dijkstra 最短路徑演算法（`src/utils/routing.js`，用到
+  `src/utils/projection.js` 的等距長方投影與 haversine 距離），跑在真實測繪的
+  步行路網圖上（`src/data/graph.json`，1075 個節點／3563 條邊）。
 - **開車/停車場流程**：選「🚗 開車」＋選目的地大樓按下開始後，系統自動算出離目的地
   最近的停車場（`utils/parking.js` 的 `nearestParkingTo()`），直接跳到路線頁。畫面
   採左右分割：左邊是本網站自己的校內導覽（`GuideView.vue` 的 `.drive-nav-card`，
@@ -95,8 +106,8 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
   「資料從哪來」）上有標示的 29 個項目——OSM 測繪到、但官方地圖沒有標示的鄰近建物
   （警衛室、店家、非開放停車格等）在資料產生階段（`build_content.py`）就直接過濾
   掉，不會進到 `buildings.json` 裡，因此下拉選單（`buildingOptions.js` 的
-  `selectableBuildings()`）跟地圖上實際畫出的建築色塊（`CampusMap.vue`）自然保持
-  一致。下拉選單依官方地圖上的「編號 No.」（1–29）排序，跟訪客掃視實體牌樓地圖
+  `selectableBuildings()`）跟官方地圖插畫（`CampusMap.vue` 顯示的那張）上實際標示
+  出來的建築自然保持一致。下拉選單依官方地圖上的「編號 No.」（1–29）排序，跟訪客掃視實體牌樓地圖
   的順序一致，出發地下拉選單的停車場選項固定排在最上方，不受此排序影響。
 - **文華鹿走路動畫**：`src/components/DeerSprite.vue`，改用美術提供的貼圖圖檔
   （`public/stickers/deer-go-walk.png` 走路、`deer-follow-me.png` 首頁招呼、
@@ -133,7 +144,7 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 
 | 資料 | 來源檔案 | 涵蓋範圍 |
 |---|---|---|
-| 步行路網（1074 節點） | `fcu_routing.osm` + `FCU map.osm` | 全校園，見下方「路網合併」說明 |
+| 步行路網（1075 節點） | `fcu_routing.osm` + `FCU map.osm` | 全校園，見下方「路網合併」說明 |
 | 建築／地標座標與外形多邊形 | `FCU map.osm`（含 `<way>` 與 `<relation>` 多邊形、以及命名過的 `leisure=pitch/swimming_pool` 球場泳池） | OSM 測繪到 42 筆，其中 29 筆出現在官方地圖上（見下一列），只有這 29 筆會進 `buildings.json` |
 | 建築中英文正式名稱／代碼／編號 | `map/fcu map buildings.jpg`（官方牌樓圖例）＋ `map/fcu map no.jpg`（官方牌樓地圖本體） | 29 個項目（含 5 項球場／泳池／運動場），見 `scripts/build_content.py` 的 `OFFICIAL_CODES` |
 | 建築實景照片 29 張 | 使用者本人於校園實地拍攝（見 `public/buildings/credits.json`） | 官方地圖上全部 29 個項目 |
@@ -186,7 +197,14 @@ project/
       data/           OSM 實測資料轉出的 JSON（buildings/graph/pois/gates/bounds）
                       ＋ buildingNamesI18n.js（大樓/校門名稱的日韓越印尼泰文對照表）
                       ＋ facilityContentI18n.js（設施地點描述文字的 6 語言對照表）
-      utils/          投影、Dijkstra 路線規劃、音效、Google Maps 連結、停車場查詢、
+      utils/          projection.js（等距長方投影＋haversine 距離，供路線/停車場計算）、
+                      mapProjection.js（把算好的路線投影校正到官方地圖插畫的像素座標，
+                      見上方「地圖」）、Dijkstra 路線規劃、音效、Google Maps 連結、
+                      停車場查詢、buildingOptions.js（下拉選單可選建築清單）、
+                      dateFormat.js／activeWindow.js（公告/活動的台北時區日期格式化與
+                      上下架時間窗判斷）、publicUrl.js（把 `public/` 底下的資源路徑
+                      加上 `import.meta.env.BASE_URL`，讓網站部署在子路徑
+                      如 GitHub Pages 專案頁時，圖片/PDF 連結仍然正確，見下方「部署」）、
                       bilingual.js（中文/目標語言雙語對照顯示邏輯）、
                       api.js（呼叫 server/ 的失敗優雅降級 fetch 包裝）
       stores/         Pinia：app.js（導覽流程狀態）、announcements.js（公告 CRUD）
@@ -223,6 +241,15 @@ project/
 資料夾裡零原生依賴，幾秒鐘裝完，不需要編譯任何原生模組。
 
 ### 管理者帳號與登入
+
+後台入口是**隱藏的**，UI 上沒有任何看得見的連結：在網站任何頁面按 `Ctrl+Alt+A`
+（Mac 是 `Control+Option`，不是 `Command`；見 `App.vue` 的 `handleAdminHotkey`，全站
+掛載、不只首頁才有）才會跳轉進去。實際路徑
+預設是 `/admin`，可用 `client/.env.example` 的 `VITE_ADMIN_PATH` 覆寫成自訂路徑（例如
+`/change-me-secret-path`）；這只是防止隨意瀏覽的「隱蔽」而非真正的存取控制——因為
+Vite 會把這個路徑值打包進前端 JS，任何人檢查原始碼都能看到，真正的存取控制是後台
+本身的帳號登入（見下方）。網址用 hash mode，所以完整網址長相是
+`https://你的網域/#` + `VITE_ADMIN_PATH` 的值。
 
 `/admin` 後台使用真正的帳號系統，取代了舊版寫死在前端原始碼裡的單一共用密碼：
 
@@ -276,6 +303,7 @@ IP 15 分鐘內最多 10 次嘗試，用 `express-rate-limit`，擋自動化密�
 | GET | `/api/auth/admins` | 管理者帳號列表 |
 | POST | `/api/auth/admins` | 新增管理者帳號 |
 | DELETE | `/api/auth/admins/:id` | 移除管理者帳號（至少保留一位） |
+| GET | `/api/health` | 健康檢查，回傳 `{ ok: true }`，不需登入 |
 | GET | `/api/announcements` | 全部大樓異動公告（公開，不需登入） |
 | POST | `/api/announcements` | 新增公告，需要 `Authorization: Bearer` 標頭 |
 | PUT | `/api/announcements/:id` | 編輯公告，同上 |
@@ -306,14 +334,14 @@ IP 15 分鐘內最多 10 次嘗試，用 `express-rate-limit`，擋自動化密�
 
 | Campus_Finder 的做法 | 本專案對應的做法 | 差異 |
 |---|---|---|
-| 用 JSON 檔案（`poi.json`）儲存地標／設施資料，前端讀取後在地圖上放標記 | `client/src/data/buildings.json`、`gates.json` 儲存建築/校門資料，`CampusMap.vue` 讀取後畫成 SVG 色塊＋代碼標籤 | 本專案的地圖是自繪 SVG 向量圖（投影自真實 GPS 測繪資料），不是疊加在 Leaflet.js 底圖上的標記點 |
+| 用 JSON 檔案（`poi.json`）儲存地標／設施資料，前端讀取後在地圖上放標記 | `client/src/data/buildings.json`、`gates.json` 儲存建築/校門資料；地圖底圖是官方校園平面圖插畫（見上方「地圖」），真實 GPS 測繪資料只用來算路線，再投影到插畫像素座標上 | 本專案的地圖底圖是逢甲大學官方平面圖插畫，不是疊加在 Leaflet.js 底圖上的標記點，也不是自繪 SVG 向量圖 |
 | 提供搜尋功能，快速找到房間/設施 | `server/index.js` 的 `/api/buildings/search` 用 SQL `LIKE` 查詢建築名稱/代碼/教室代碼 | Campus_Finder 的搜尋邏輯寫在 PHP（`server.php`），沒有使用資料庫；本專案改用 Node.js + Express + SQLite |
-| 用節點資料＋最短路徑邏輯做步行導覽（`shortest.js`） | `client/src/utils/routing.js` 用 Dijkstra 演算法在 `graph.json`（1074 個真實測繪節點）上算最短路徑 | 概念相同（節點圖 + 最短路徑），本專案額外做了車輛開車自動找最近停車場、多語系、活動公告等功能 |
+| 用節點資料＋最短路徑邏輯做步行導覽（`shortest.js`） | `client/src/utils/routing.js` 用 Dijkstra 演算法在 `graph.json`（1075 個真實測繪節點）上算最短路徑 | 概念相同（節點圖 + 最短路徑），本專案額外做了車輛開車自動找最近停車場、多語系、活動公告等功能 |
 | 室內導覽頁面（`indoor.html`） | 未實作 | 室內樓層目前不需要 |
 
 參考的是**整體資訊架構與功能設計思路**（地標資料驅動地圖標記、搜尋、節點圖＋最短
 路徑導覽），沒有直接複製任何程式碼——使用的技術完全不同（Campus_Finder 是純 HTML/CSS/
-JS + Leaflet.js + PHP，本專案是 Vue 3 + SVG 自繪地圖 + Express/SQLite）。
+JS + Leaflet.js + PHP，本專案是 Vue 3 + 官方地圖插畫 + Express/SQLite）。
 
 ## 上傳 GitHub ／ 部署到雲端
 
@@ -331,6 +359,34 @@ git push -u origin main
 
 `client/.gitignore` 和 `server/.gitignore` 已經排除 `node_modules`、`dist`、
 `campus.db` 等不必要進版控的檔案，可以直接 `git add .`。
+
+**2. 自動部署（GitHub Actions）**
+
+推到 `main` 分支會自動觸發兩個獨立的部署工作流程（`.github/workflows/`），部署的是
+同一份 `client/` 建置結果，各自是替代方案，不是互相依賴：
+
+- **GitHub Pages**（`gh-pages.yml`）：build 完直接把 `client/dist/` 發布到
+  `https://<帳號>.github.io/<repo名稱>/`。需要手動設定一次：repo 的
+  Settings → Pages → Build and deployment → Source 選「GitHub Actions」（預設是
+  「Deploy from a branch」，會改成用 Jekyll 顯示原始 README.md，不是這個網站）。
+  因為 GitHub Pages 是把整個網站發布在專案子路徑下（不是網域根目錄），這個工作流程
+  在 build 時會設定 `GITHUB_PAGES=true`，讓 `vite.config.js` 把 `base` 從 `/` 改成
+  `/<repo名稱>/`，這樣打包出來的 JS/CSS/favicon 連結才會自動帶上正確的子路徑前綴。
+  **注意**：Vite 只會自動處理 `index.html` 裡的資源連結；程式碼裡任何引用
+  `public/` 資源的地方（圖片、PDF……）都必須透過 `src/utils/publicUrl.js` 組出網址，
+  不能寫死成 `/xxx.png` 這種網域根目錄開頭的字串，否則在 GitHub Pages 子路徑下會
+  404（這正是文華鹿走路地圖、貼圖等圖片曾經在 GitHub Pages 上顯示不出來的原因）。
+- **Azure Static Web Apps**（`azure-static-web-apps.yml`）：從網域根目錄發布，設定
+  上更接近一般網站。需要先在 Azure Portal 建立 Static Web App 資源取得
+  `AZURE_STATIC_WEB_APPS_API_TOKEN`，連同 `VITE_ADMIN_PATH`、`VITE_API_BASE` 一起
+  設成 repo secrets（Settings → Secrets and variables → Actions）；這些是 Vite 在
+  build 時（也就是這個 Actions 工作流程執行 `npm run build` 的當下）就會烤進打包
+  好的 JS 的環境變數，Azure Portal 裡事後改的「Configuration」環境變數不會生效。
+  `server/`（管理者後台/公告/活動的後端）不會被這個工作流程部署，需要另外找地方跑
+  （例如 Azure App Service），見下方「後端」章節。
+
+兩者都只部署 `client/`（純前端靜態站），核心的地圖／路線規劃／設施資訊功能因此都
+能正常運作；`server/` 要另外部署才能讓管理者後台/公告/活動功能生效。
 
 ## 已知限制 / 之後可以做的事
 
