@@ -48,9 +48,12 @@ const facilitySections = computed(() => {
   return [
     { key: 'aed', labelKey: 'facility.aed', items: f.aed },
     { key: 'elevators', labelKey: 'facility.elevators', items: f.elevators },
+    { key: 'accessibleElevators', labelKey: 'facility.accessibleElevators', items: f.accessibleElevators },
     { key: 'restrooms', labelKey: 'facility.restrooms', items: f.restrooms },
+    { key: 'accessibleRestrooms', labelKey: 'facility.accessibleRestrooms', items: f.accessibleRestrooms },
     { key: 'water', labelKey: 'facility.water', items: f.water },
     { key: 'rest', labelKey: 'facility.restArea', items: f.rest },
+    { key: 'floors', labelKey: 'facility.floors', items: f.floors },
   ].filter((section) => Array.isArray(section.items) && section.items.length > 0)
 })
 </script>
@@ -97,7 +100,10 @@ const facilitySections = computed(() => {
         <ul>
           <li v-for="(item, idx) in section.items" :key="idx"><BilingualText v-bind="btContentPair(item)" /></li>
         </ul>
-        <p v-if="section.key === 'restrooms'" class="muted-note">
+        <p
+          v-if="section.key === 'restrooms' && !building.facilities.accessibleRestrooms?.length"
+          class="muted-note"
+        >
           <BilingualText v-bind="btPair('facility.accessibleNote')" />
         </p>
       </section>

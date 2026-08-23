@@ -81,6 +81,7 @@ export default {
     water: 'Lokasi Dispenser Air Minum',
     aed: 'AED (Defibrilator Eksternal Otomatis)',
     restArea: 'Area Istirahat',
+    floors: 'Denah Lantai',
     accessNote: 'Akses & Parkir',
     tierFull: 'Data lengkap',
     tierPartial: 'Data sedang disusun',

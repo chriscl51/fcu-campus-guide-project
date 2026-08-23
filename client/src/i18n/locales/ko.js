@@ -81,6 +81,7 @@ export default {
     water: '정수기 위치',
     aed: 'AED 자동심장충격기',
     restArea: '휴게 공간',
+    floors: '층별 안내',
     accessNote: '출입구 및 교통 안내',
     tierFull: '전체 데이터',
     tierPartial: '데이터 준비 중',

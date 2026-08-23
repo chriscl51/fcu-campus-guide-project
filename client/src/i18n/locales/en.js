@@ -81,6 +81,7 @@ export default {
     water: 'Drinking Water Stations',
     aed: 'AED (Automated External Defibrillator)',
     restArea: 'Rest Areas',
+    floors: 'Floor Directory',
     accessNote: 'Access & Parking',
     tierFull: 'Full data',
     tierPartial: 'Data Pending',

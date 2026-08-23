@@ -82,6 +82,7 @@ export default {
     water: '飲水機位置',
     aed: 'AED 自動體外心臟電擊去顫器',
     restArea: '休憩空間',
+    floors: '樓層配置',
     accessNote: '出入口與交通',
     tierFull: '完整資料',
     tierPartial: '資料建置中',

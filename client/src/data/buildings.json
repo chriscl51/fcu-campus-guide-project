@@ -41,9 +41,12 @@
    "restrooms": [
     "各樓層行政單位辦公室旁"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/chiu-fengchia-memorial.jpg"
  },
@@ -108,11 +111,14 @@
    "restrooms": [
     "1樓"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
    "rest": [
     "B1（共善學園內）新愉園：校內教職員生專屬，規劃沙發區、高腳椅輕食區與團體餐桌。週一至週五07:30–19:00（週末與國定假日不開放）"
-   ]
+   ],
+   "floors": []
   },
   "photo": "buildings/humanities-social.jpg"
  },
@@ -174,7 +180,9 @@
    "restrooms": [
     "各樓層兩側洗手間"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [
     "人言大樓1F（一樓中間門口進來後靠中間電梯處）"
    ],
@@ -182,7 +190,8 @@
     "B1 晨曦廳（東側）／夕暉廳（西側）：大型地下美食街，校內最主要的指標飲食與聚會場地，依校方各階段開放公告為準",
     "1樓公共用餐休憩區：東西兩側皆有桌椅，方便課間用餐與短暫休息",
     "4至7樓公共走廊特定座位區：僅限走廊指定座位可飲食與休息，教室內一律嚴禁飲食"
-   ]
+   ],
+   "floors": []
   },
   "photo": "buildings/renyan.jpg"
  },
@@ -247,15 +256,18 @@
    "restrooms": [
     "1F、B1F（詳見無障礙及性別友善平面圖）"
    ],
+   "accessibleRestrooms": [],
    "elevators": [
     "共善樓電梯（V102/V103）"
    ],
+   "accessibleElevators": [],
    "aed": [
     "共善樓1F櫃台右側（EMBA櫃台旁）"
    ],
    "rest": [
     "B1（共善學園）新愉園，與人文社會館共用空間"
-   ]
+   ],
+   "floors": []
   },
   "photo": "buildings/virtuosi.jpg"
  },
@@ -325,13 +337,16 @@
    "restrooms": [
     "各樓層南北兩側走廊底端"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [
     "地資中心(GIS) 商學大樓6F"
    ],
    "rest": [
     "1樓課間停留空間：進駐「帕哩帕哩小餐館」，設有販賣機與飲水機，依大樓與店家營業時間為準"
-   ]
+   ],
+   "floors": []
   },
   "photo": "buildings/business.jpg"
  },
@@ -384,13 +399,16 @@
    "restrooms": [
     "各樓層"
    ],
+   "accessibleRestrooms": [],
    "elevators": [
     "圖書館電梯"
    ],
+   "accessibleElevators": [],
    "aed": [],
    "rest": [
     "1樓正門右側：路易莎咖啡（逢甲店），指標性連鎖咖啡廳，具備讀書與輕食休憩機能。週一至週五07:30–20:30，週六至週日08:00–16:00"
-   ]
+   ],
+   "floors": []
   },
   "photo": "buildings/library.jpg"
  },
@@ -464,9 +482,12 @@
    "restrooms": [
     "各樓層實驗室集中區走廊盡頭"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/civil-hydraulic.jpg"
  },
@@ -556,9 +577,12 @@
    "restrooms": [
     "各樓層中央中庭電梯旁"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/xuesi.jpg"
  },
@@ -608,11 +632,14 @@
    "restrooms": [
     "各樓層中庭走廊電梯口旁"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
    "rest": [
     "1樓工學館一樓休息區"
-   ]
+   ],
+   "floors": []
   },
   "photo": "buildings/engineering.jpg"
  },
@@ -665,9 +692,12 @@
    "restrooms": [
     "各樓層"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/architecture.jpg"
  },
@@ -717,14 +747,17 @@
    "restrooms": [
     "各樓層川堂兩側"
    ],
+   "accessibleRestrooms": [],
    "elevators": [
     "忠勤樓電梯1",
     "忠勤樓電梯2",
     "忠勤樓電梯3",
     "忠勤樓電梯4"
    ],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/jongchin.jpg"
  },
@@ -806,9 +839,12 @@
    "restrooms": [
     "各樓層兩側樓梯轉角"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/sciences.jpg"
  },
@@ -870,9 +906,12 @@
    "restrooms": [
     "各樓層中央洗手間"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/science-aeronautical.jpg"
  },
@@ -929,11 +968,14 @@
    "restrooms": [
     "1樓後方後台休息區旁"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [
     "健康中心 育114室（育樂館）"
    ],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/recreation.jpg"
  },
@@ -977,20 +1019,31 @@
   "accessNote": null,
   "facilities": {
    "water": [
-    "各樓層樓梯口或主管辦公室旁的茶水間"
+    "各樓層樓梯口或主管辦公室旁的茶水間",
+    "公共飲水機：1樓左側、2樓右側"
    ],
    "restrooms": [
     "各樓層樓梯口旁"
    ],
+   "accessibleRestrooms": [
+    "1樓左側、2樓右側"
+   ],
    "elevators": [],
+   "accessibleElevators": [
+    "面對建築左側"
+   ],
    "aed": [
     "大門警衛室（行政大樓旁）"
    ],
    "rest": [
-    "1樓學生用餐休憩區：右側明亮用餐區、左側舒適沙發座與自由展演舞台，附設充電機能。開學期間每日08:00–22:30"
+    "1樓：全新學生用餐與交流區"
+   ],
+   "floors": [
+    "2樓：教室",
+    "3樓：行政辦公室"
    ]
   },
-  "photo": null
+  "photo": "buildings/administration-1.jpg"
  },
  {
   "id": "b283040765",
@@ -1033,9 +1086,12 @@
    "restrooms": [
     "各樓層洗手間外走廊"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/language.jpg"
  },
@@ -1145,9 +1201,12 @@
    "restrooms": [
     "各樓層大電梯旁洗手間"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/information-electrical.jpg"
  },
@@ -1217,9 +1276,12 @@
    "restrooms": [
     "各樓層靠近實驗室走廊"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/electronic-communications.jpg"
  },
@@ -1393,11 +1455,14 @@
    "restrooms": [
     "1樓、3樓、4樓球場看台入口周邊"
    ],
+   "accessibleRestrooms": [],
    "elevators": [],
+   "accessibleElevators": [],
    "aed": [
     "體育館1F"
    ],
-   "rest": []
+   "rest": [],
+   "floors": []
   },
   "photo": "buildings/sports-center.jpg"
  },

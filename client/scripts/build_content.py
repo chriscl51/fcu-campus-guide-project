@@ -161,11 +161,14 @@ CURATED = {
     },
     "行政大樓": {
         "code": "行", "aliases": ["行政一館"],
-        "water": ["各樓層樓梯口或主管辦公室旁的茶水間"],
+        "water": ["各樓層樓梯口或主管辦公室旁的茶水間", "公共飲水機：1樓左側、2樓右側"],
         "restrooms": ["各樓層樓梯口旁"],
+        "accessibleRestrooms": ["1樓左側、2樓右側"],
         "elevators": [],
+        "accessibleElevators": ["面對建築左側"],
         "aed": ["大門警衛室（行政大樓旁）"],
-        "rest": ["1樓學生用餐休憩區：右側明亮用餐區、左側舒適沙發座與自由展演舞台，附設充電機能。開學期間每日08:00–22:30"],
+        "rest": ["1樓：全新學生用餐與交流區"],
+        "floors": ["2樓：教室", "3樓：行政辦公室"],
     },
     "人文社會館": {
         "code": None, "aliases": ["人社館"],
@@ -333,9 +336,12 @@ for b in buildings_raw:
         "facilities": {
             "water": (curated or {}).get("water", []),
             "restrooms": (curated or {}).get("restrooms", []),
+            "accessibleRestrooms": (curated or {}).get("accessibleRestrooms", []),
             "elevators": (curated or {}).get("elevators", []),
+            "accessibleElevators": (curated or {}).get("accessibleElevators", []),
             "aed": (curated or {}).get("aed", []),
             "rest": (curated or {}).get("rest", []),
+            "floors": (curated or {}).get("floors", []),
         } if curated else None,
         # Real on-campus photos only (src/assets/buildings/) — never AI-generated
         # or stock substitutes. None -> frontend shows a "照片準備中" placeholder.
