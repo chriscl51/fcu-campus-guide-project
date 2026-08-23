@@ -11,6 +11,7 @@
 import { computed } from 'vue'
 import { useAppStore } from '../stores/app'
 import { googleMapsDirectionsUrl, googleMapsEmbedUrl } from '../utils/mapsLink'
+import { publicUrl } from '../utils/publicUrl'
 
 const store = useAppStore()
 const lot = computed(() => store.suggestedParking)
@@ -28,7 +29,7 @@ function openInGoogleMaps() {
       <!-- Feedback item: driving page shows the user's own deerStickerGo.png
            artwork directly (not redrawn), with a car-engine "just started"
            vibration effect (small fast jitter, like an idling engine). -->
-      <img src="/stickers/deer-go.png" alt="文華鹿 Go" class="deer-go-sticker" />
+      <img :src="publicUrl('stickers/deer-go.png')" alt="文華鹿 Go" class="deer-go-sticker" />
       <h2>{{ $t('parking.rightCardTitle') }}</h2>
     </div>
     <div class="drive-info-text">

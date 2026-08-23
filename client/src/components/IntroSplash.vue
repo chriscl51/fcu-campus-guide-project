@@ -11,6 +11,7 @@ import { useBilingual } from '../utils/bilingual'
 import { formatWallClock, formatTaipeiInstant } from '../utils/dateFormat'
 import { useAppStore } from '../stores/app'
 import { useAnnouncementsStore } from '../stores/announcements'
+import { publicUrl } from '../utils/publicUrl'
 import buildings from '../data/buildings.json'
 
 const emit = defineEmits(['start'])
@@ -146,7 +147,7 @@ function onAnnouncementClick(a) {
           <!-- Feedback item: use the user's own sticker artwork directly (not
                a redrawn SVG) — deerStickerFollowMe.png, animated with a simple
                left-right sway via CSS keyframes. -->
-          <img src="/stickers/deer-follow-me.png" alt="文華鹿 Follow Me" class="deer-follow-sticker" />
+          <img :src="publicUrl('stickers/deer-follow-me.png')" alt="文華鹿 Follow Me" class="deer-follow-sticker" />
         </div>
         <h1 class="intro-title">{{ $t('intro.title') }}</h1>
         <p class="intro-subtitle">{{ $t('intro.subtitle') }}</p>
@@ -155,17 +156,17 @@ function onAnnouncementClick(a) {
         </button>
         <a
           class="campus-map-link"
-          href="/map/FCU%20Campus.pdf"
+          :href="publicUrl('map/FCU%20Campus.pdf')"
           target="_blank"
           rel="noopener"
         >
           <span>{{ $t('intro.mapLink') }}</span>
-          <img src="/map/click%20me%20map.png" :alt="$t('intro.mapLink')" />
+          <img :src="publicUrl('map/click%20me%20map.png')" :alt="$t('intro.mapLink')" />
         </a>
-        <a class="secondary-map-link" href="/map/AED.jpg" target="_blank" rel="noopener">
+        <a class="secondary-map-link" :href="publicUrl('map/AED.jpg')" target="_blank" rel="noopener">
           {{ $t('intro.aedMapLink') }}
         </a>
-        <a class="secondary-map-link" href="/map/Barrier_free_map.jpg" target="_blank" rel="noopener">
+        <a class="secondary-map-link" :href="publicUrl('map/Barrier_free_map.jpg')" target="_blank" rel="noopener">
           {{ $t('intro.accessibilityMapLink') }}
         </a>
       </div>

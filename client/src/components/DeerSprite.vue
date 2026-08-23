@@ -1,6 +1,8 @@
 <script setup>
 // 文華鹿 map sprite. The provided walking PNG is used as the character art;
 // the parent map component still animates its position along the route.
+import { publicUrl } from '../utils/publicUrl'
+
 defineProps({
   size: { type: Number, default: 30 },
 })
@@ -11,7 +13,7 @@ defineProps({
     class="deer-sprite"
     :style="{ width: size + 'px', height: size * (267 / 320) + 'px' }"
   >
-    <img src="/stickers/deer-go-walk.png" alt="文華鹿" class="deer-image" />
+    <img :src="publicUrl('stickers/deer-go-walk.png')" alt="文華鹿" class="deer-image" />
   </div>
 </template>
 

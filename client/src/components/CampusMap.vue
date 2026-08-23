@@ -22,6 +22,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { MAP_IMAGE, projectMap, warpRoute, anchorFor } from '../utils/mapProjection'
 import { playFootstep } from '../utils/sound'
+import { publicUrl } from '../utils/publicUrl'
 import DeerSprite from './DeerSprite.vue'
 
 const props = defineProps({
@@ -170,7 +171,7 @@ function directionLabel(step) {
            artwork directly — deerStickerGowalk.png while walking the route,
            swapped for deerStickerFinish.png the moment `arrived` flips true. -->
       <img
-        :src="arrived ? '/stickers/deer-finish.png' : '/stickers/deer-go-walk.png'"
+        :src="publicUrl(arrived ? 'stickers/deer-finish.png' : 'stickers/deer-go-walk.png')"
         :alt="arrived ? '文華鹿 Finish' : '文華鹿 Go Walk'"
         class="corner-sticker"
         :class="{ 'corner-sticker-finish': arrived }"
@@ -183,7 +184,7 @@ function directionLabel(step) {
 
         <!-- LAYER 2 — the official illustrated campus map. This IS the map. -->
         <image
-          :href="MAP_IMAGE.src"
+          :href="publicUrl(MAP_IMAGE.src)"
           x="0"
           y="0"
           :width="MAP_IMAGE.width"
