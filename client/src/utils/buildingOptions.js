@@ -6,7 +6,7 @@ export function selectableBuildings(buildings) {
   return [...buildings]
     .filter((building) => building.officialCode && !NOT_ON_OFFICIAL_MAP.has(building.id))
     .sort((a, b) => {
-      if (a.tier === b.tier) return a.nameZh.localeCompare(b.nameZh, 'zh-Hant')
+      if (a.tier === b.tier) return a.nameEn.localeCompare(b.nameEn, 'en')
       return a.tier === 'full' ? -1 : 1
     })
 }

@@ -19,7 +19,7 @@ function handleAdminHotkey(event) {
   }
 }
 
-onMounted(() => announcements.loadBaseline())
+onMounted(() => announcements.load())
 onMounted(() => window.addEventListener('keydown', handleAdminHotkey))
 onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
 </script>

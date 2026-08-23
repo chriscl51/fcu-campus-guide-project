@@ -6,9 +6,10 @@ import AdminView from '../views/AdminView.vue'
 // is no visible link to it anywhere in the UI (see App.vue), the only way in
 // is IntroSplash.vue's hotkey listener, so the path itself is part of the
 // "hidden" entry. Override via VITE_ADMIN_PATH (see client/.env.example);
-// defaults to '/admin' for local dev. Same caveat as VITE_ADMIN_PASSWORD:
-// Vite still bakes this into the built JS, so it's obscurity against casual
-// browsing, not real access control against someone who inspects the bundle.
+// defaults to '/admin' for local dev. Vite still bakes this path into the
+// built JS, so it's obscurity against casual browsing, not real access
+// control — the actual access control is the account login behind it
+// (see AdminView.vue / server/auth.js).
 const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || '/admin'
 
 // Hash history means the real admin URL is "/#" + ADMIN_PATH — a visitor who

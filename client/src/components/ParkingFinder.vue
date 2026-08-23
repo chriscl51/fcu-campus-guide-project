@@ -51,7 +51,7 @@ const embedUrl = computed(() => {
 function onConfirm() {
   const lot = selectedLot.value
   if (!lot) return
-  emit('confirm', { lat: lot.lat, lon: lot.lon, name: lot.name })
+  emit('confirm', { lat: lot.lat, lon: lot.lon, name: lot.nameZh })
 }
 
 function onBack() {
@@ -72,7 +72,7 @@ function onBack() {
         </p>
 
         <template v-if="suggested">
-          <p class="lot-name">{{ selectedLot?.name }}</p>
+          <p class="lot-name">{{ selectedLot?.nameZh }}</p>
           <p class="lot-distance">
             {{ $t('parking.distanceLabel', { distance: selectedLot?.distanceMeters ?? suggested.distanceMeters }) }}
           </p>
@@ -81,7 +81,7 @@ function onBack() {
             <label for="lot-select">{{ $t('parking.chooseLotLabel') }}</label>
             <select id="lot-select" :value="selectedLotId" @change="onLotChange">
               <option v-for="lot in parkingLots" :key="lot.id" :value="lot.id">
-                {{ lot.name }}
+                {{ lot.nameZh }}
               </option>
             </select>
           </div>

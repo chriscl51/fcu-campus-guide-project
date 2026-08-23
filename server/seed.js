@@ -8,8 +8,16 @@
 // changes (`node server/seed.js`); it upserts by id so it's safe to re-run.
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import { db, runInTransaction } from './db.js'
+import { hashPassword } from './auth.js'
+
+try {
+  process.loadEnvFile()
+} catch {
+  // no .env file — fine if env vars are set some other way
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // project/server/ and project/client/ are sibling folders (see /project
@@ -156,3 +164,35 @@ console.log(
     ? `Seeded ${insertedEvents} test exam announcement(s) into server/campus.db`
     : 'Test exam announcements already present — skipped'
 )
+
+// ---- bootstrap the first admin account -----------------------------------
+// The admin panel now requires a real account (see server/auth.js /
+// server/index.js's /api/auth/* routes) — there's no way to log in at all
+// until at least one exists. Only runs when the admins table is empty, so
+// re-running `npm run seed` never resets an existing team's accounts.
+// Username/password come from server/.env (ADMIN_USERNAME / ADMIN_PASSWORD,
+// see .env.example); if ADMIN_PASSWORD isn't set, a random one is generated
+// and printed once — copy it down, it is not stored anywhere in plain text.
+const adminCount = db.prepare('SELECT COUNT(*) AS n FROM admins').get().n
+if (adminCount === 0) {
+  const username = process.env.ADMIN_USERNAME || 'admin'
+  let password = process.env.ADMIN_PASSWORD
+  let generated = false
+  if (!password) {
+    password = crypto.randomBytes(9).toString('base64url')
+    generated = true
+  }
+  db.prepare('INSERT INTO admins (username, password_hash) VALUES (?, ?)').run(
+    username,
+    hashPassword(password)
+  )
+  console.log(`\nCreated first admin account — username: ${username}`)
+  if (generated) {
+    console.log(`Generated password (copy this now, it will not be shown again): ${password}`)
+  } else {
+    console.log('Password: (from server/.env ADMIN_PASSWORD)')
+  }
+  console.log('Log in at /admin and add more admins or change this password from the account panel.\n')
+} else {
+  console.log(`${adminCount} admin account(s) already exist — skipped bootstrap`)
+}

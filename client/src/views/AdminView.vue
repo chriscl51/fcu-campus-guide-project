@@ -1,18 +1,29 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useAnnouncementsStore } from '../stores/announcements'
-import { fetchAllEvents, createEvent, updateEvent, deleteEvent } from '../utils/api'
+import {
+  fetchAllEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  login as apiLogin,
+  logout as apiLogout,
+  fetchMe,
+  changePassword as apiChangePassword,
+  fetchAdmins,
+  createAdmin,
+  deleteAdmin,
+} from '../utils/api'
 import buildings from '../data/buildings.json'
 import { buildingOptionLabel, selectableBuildings } from '../utils/buildingOptions'
 import { formatWallClock, formatTaipeiInstant } from '../utils/dateFormat'
 
-// NOTE: client-side-only "lock", not real auth — see admin.disclaimer string
-// shown to the user on this same screen. Read from VITE_ADMIN_PASSWORD (see
-// client/.env / .env.example) so the real value stays out of source control
-// — but Vite bakes VITE_-prefixed vars into the built JS at build time, so
-// it's still visible in the built site's source. It only keeps casual
-// visitors out, not a determined attacker.
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'fcu2026'
+// Real account-based auth (see server/auth.js + server/index.js's
+// /api/auth/* routes): logging in exchanges a username/password for a
+// session token, kept in sessionStorage and sent back as
+// "Authorization: Bearer <token>" on every write request. There is no
+// front-end-only password anymore — the login screen genuinely needs the
+// backend (server/) running to work.
 const SESSION_KEY = 'fcu-guide-admin'
 
 const ANNOUNCEMENT_TYPES = ['renovation', 'restroom', 'elevator', 'water', 'power', 'other']
@@ -20,27 +31,113 @@ const availableBuildings = selectableBuildings(buildings)
 
 const store = useAnnouncementsStore()
 
-const isLoggedIn = ref(false)
-const passwordInput = ref('')
-const loginError = ref(false)
+const token = ref('')
+const username = ref('')
+const isLoggedIn = computed(() => !!token.value)
+
+const loginUsername = ref('')
+const loginPassword = ref('')
+const loginError = ref('') // '', 'invalid', 'serverUnreachable'
 
 const showForm = ref(false)
 const editingId = ref(null)
 const savedNote = ref(false)
 let savedNoteTimer = null
 
-const importFileInput = ref(null)
-const importMessage = ref('') // '', 'success', 'error'
-
 const emptyForm = () => ({
   buildingId: availableBuildings[0]?.id || '',
   type: ANNOUNCEMENT_TYPES[0],
+  area: '',
+  message: '',
   startDate: '',
   endDate: '',
 })
 
 const form = reactive(emptyForm())
-const formError = ref(false)
+const formError = ref('') // '', 'incomplete', 'serverUnreachable'
+
+// ---- account management: change my password, add/remove other admins ---
+const admins = ref([])
+const adminsLoadFailed = ref(false)
+
+async function loadAdmins() {
+  const result = await fetchAdmins(token.value)
+  if (result.ok) {
+    admins.value = result.data
+    adminsLoadFailed.value = false
+  } else {
+    adminsLoadFailed.value = true
+  }
+}
+
+const changePasswordForm = reactive({ currentPassword: '', newPassword: '', confirmPassword: '' })
+const changePasswordError = ref('') // '', 'tooShort', 'mismatch', 'wrongCurrent', 'serverUnreachable'
+const changePasswordSuccess = ref(false)
+
+async function submitChangePassword() {
+  changePasswordError.value = ''
+  changePasswordSuccess.value = false
+  if (changePasswordForm.newPassword.length < 8) {
+    changePasswordError.value = 'tooShort'
+    return
+  }
+  if (changePasswordForm.newPassword !== changePasswordForm.confirmPassword) {
+    changePasswordError.value = 'mismatch'
+    return
+  }
+  const result = await apiChangePassword(
+    token.value,
+    changePasswordForm.currentPassword,
+    changePasswordForm.newPassword
+  )
+  if (result.ok) {
+    changePasswordSuccess.value = true
+    changePasswordForm.currentPassword = ''
+    changePasswordForm.newPassword = ''
+    changePasswordForm.confirmPassword = ''
+  } else if (result.status === 0) {
+    changePasswordError.value = 'serverUnreachable'
+  } else {
+    changePasswordError.value = 'wrongCurrent'
+  }
+}
+
+const newAdminForm = reactive({ username: '', password: '' })
+const addAdminError = ref('') // '', 'invalid', 'taken', 'serverUnreachable', 'other'
+
+async function submitAddAdmin() {
+  addAdminError.value = ''
+  if (!newAdminForm.username.trim() || newAdminForm.password.length < 8) {
+    addAdminError.value = 'invalid'
+    return
+  }
+  const result = await createAdmin(token.value, newAdminForm.username.trim(), newAdminForm.password)
+  if (result.ok) {
+    newAdminForm.username = ''
+    newAdminForm.password = ''
+    await loadAdmins()
+  } else if (result.status === 409) {
+    addAdminError.value = 'taken'
+  } else if (result.status === 0) {
+    addAdminError.value = 'serverUnreachable'
+  } else {
+    addAdminError.value = 'other'
+  }
+}
+
+const removeAdminError = ref('') // '', 'lastAdmin', 'other'
+
+async function removeAdmin(id) {
+  removeAdminError.value = ''
+  const result = await deleteAdmin(token.value, id)
+  if (result.ok) {
+    await loadAdmins()
+  } else if (result.status === 400) {
+    removeAdminError.value = 'lastAdmin'
+  } else {
+    removeAdminError.value = 'other'
+  }
+}
 
 const buildingsById = computed(() => Object.fromEntries(buildings.map((b) => [b.id, b])))
 
@@ -54,7 +151,7 @@ function buildingName(id) {
 // dropdown (see IntroSplash.vue / SelectForm.vue). Requires `npm run server`
 // to be running; if it's not, the list below just stays empty with a note
 // rather than erroring — see utils/api.js.
-const activeTab = ref('announcements') // 'announcements' | 'events'
+const activeTab = ref('announcements') // 'announcements' | 'events' | 'account'
 const EVENT_TYPES = ['exam', 'lecture', 'symposium', 'other']
 const events = ref([])
 const eventsLoadFailed = ref(false)
@@ -167,8 +264,8 @@ async function saveEventForm() {
   }
 
   const result = editingEventId.value
-    ? await updateEvent(editingEventId.value, payload, ADMIN_PASSWORD)
-    : await createEvent(payload, ADMIN_PASSWORD)
+    ? await updateEvent(editingEventId.value, payload, token.value)
+    : await createEvent(payload, token.value)
 
   if (!result) {
     eventFormError.value = 'serverUnreachable'
@@ -182,42 +279,74 @@ async function saveEventForm() {
 }
 
 async function deleteEventItem(id) {
-  const ok = await deleteEvent(id, ADMIN_PASSWORD)
+  const ok = await deleteEvent(id, token.value)
   if (ok) {
     flashEventSavedNote()
     await loadEvents()
   }
 }
 
-onMounted(() => {
-  if (sessionStorage.getItem(SESSION_KEY) === '1') {
-    isLoggedIn.value = true
+async function afterLogin() {
+  await Promise.all([store.load(), loadEvents(), loadAdmins()])
+}
+
+onMounted(async () => {
+  const raw = sessionStorage.getItem(SESSION_KEY)
+  if (raw) {
+    try {
+      const saved = JSON.parse(raw)
+      token.value = saved.token || ''
+      username.value = saved.username || ''
+    } catch {
+      sessionStorage.removeItem(SESSION_KEY)
+    }
   }
-  store.loadBaseline()
-  loadEvents()
+
+  if (token.value) {
+    const result = await fetchMe(token.value)
+    if (result.ok) {
+      username.value = result.data.username
+    } else if (result.status !== 0) {
+      // Server reachable and said the token is invalid/expired — really logged out.
+      token.value = ''
+      username.value = ''
+      sessionStorage.removeItem(SESSION_KEY)
+    }
+    // status === 0 (server unreachable): keep the cached session optimistically,
+    // write actions will just fail until the server comes back.
+  }
+
+  if (token.value) await afterLogin()
 })
 
-function login() {
-  if (passwordInput.value === ADMIN_PASSWORD) {
-    sessionStorage.setItem(SESSION_KEY, '1')
-    isLoggedIn.value = true
-    loginError.value = false
-    passwordInput.value = ''
+async function login() {
+  loginError.value = ''
+  const result = await apiLogin(loginUsername.value.trim(), loginPassword.value)
+  if (result.ok) {
+    token.value = result.data.token
+    username.value = result.data.username
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: token.value, username: username.value }))
+    loginPassword.value = ''
+    await afterLogin()
+  } else if (result.status === 0) {
+    loginError.value = 'serverUnreachable'
   } else {
-    loginError.value = true
+    loginError.value = 'invalid'
   }
 }
 
-function logout() {
+async function logout() {
+  if (token.value) await apiLogout(token.value)
+  token.value = ''
+  username.value = ''
   sessionStorage.removeItem(SESSION_KEY)
-  isLoggedIn.value = false
   showForm.value = false
 }
 
 function startAdd() {
   editingId.value = null
   Object.assign(form, emptyForm())
-  formError.value = false
+  formError.value = ''
   showForm.value = true
 }
 
@@ -226,17 +355,19 @@ function startEdit(announcement) {
   Object.assign(form, {
     buildingId: announcement.buildingId,
     type: announcement.type,
+    area: announcement.area || '',
+    message: announcement.message || '',
     startDate: announcement.startDate || '',
     endDate: announcement.endDate || '',
   })
-  formError.value = false
+  formError.value = ''
   showForm.value = true
 }
 
 function cancelForm() {
   showForm.value = false
   editingId.value = null
-  formError.value = false
+  formError.value = ''
 }
 
 function flashSavedNote() {
@@ -247,24 +378,29 @@ function flashSavedNote() {
   }, 3000)
 }
 
-function saveForm() {
-  if (!form.buildingId) {
-    formError.value = true
+async function saveForm() {
+  if (!form.buildingId || !form.message.trim()) {
+    formError.value = 'incomplete'
     return
   }
-  formError.value = false
+  formError.value = ''
 
   const payload = {
     buildingId: form.buildingId,
     type: form.type,
+    area: form.area.trim(),
+    message: form.message.trim(),
     startDate: form.startDate,
     endDate: form.endDate,
   }
 
-  if (editingId.value) {
-    store.update(editingId.value, payload)
-  } else {
-    store.add(payload)
+  const result = editingId.value
+    ? await store.update(editingId.value, payload, token.value)
+    : await store.add(payload, token.value)
+
+  if (!result) {
+    formError.value = 'serverUnreachable'
+    return
   }
 
   showForm.value = false
@@ -272,47 +408,9 @@ function saveForm() {
   flashSavedNote()
 }
 
-function deleteAnnouncement(id) {
-  store.remove(id)
-  flashSavedNote()
-}
-
-function exportData() {
-  const json = store.exportJson()
-  const blob = new Blob([json], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'announcements.json'
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
-
-function triggerImport() {
-  importMessage.value = ''
-  importFileInput.value?.click()
-}
-
-function onImportFile(event) {
-  const file = event.target.files?.[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = () => {
-    try {
-      store.importJson(String(reader.result))
-      importMessage.value = 'success'
-    } catch {
-      importMessage.value = 'error'
-    }
-  }
-  reader.onerror = () => {
-    importMessage.value = 'error'
-  }
-  reader.readAsText(file)
-  // allow re-selecting the same file later
-  event.target.value = ''
+async function deleteAnnouncement(id) {
+  const ok = await store.remove(id, token.value)
+  if (ok) flashSavedNote()
 }
 </script>
 
@@ -323,15 +421,26 @@ function onImportFile(event) {
       <h1>{{ $t('admin.loginTitle') }}</h1>
       <p class="disclaimer">{{ $t('admin.disclaimer') }}</p>
       <form class="field" @submit.prevent="login">
+        <label for="admin-username">{{ $t('admin.usernameLabel') }}</label>
+        <input
+          id="admin-username"
+          v-model="loginUsername"
+          type="text"
+          :placeholder="$t('admin.usernamePlaceholder')"
+          autocomplete="username"
+        />
         <label for="admin-password">{{ $t('admin.passwordLabel') }}</label>
         <input
           id="admin-password"
-          v-model="passwordInput"
+          v-model="loginPassword"
           type="password"
           :placeholder="$t('admin.passwordPlaceholder')"
-          autocomplete="off"
+          autocomplete="current-password"
         />
-        <p v-if="loginError" class="error-text">{{ $t('admin.wrongPassword') }}</p>
+        <p v-if="loginError === 'invalid'" class="error-text">{{ $t('admin.wrongCredentials') }}</p>
+        <p v-else-if="loginError === 'serverUnreachable'" class="error-text">
+          {{ $t('admin.eventsServerUnreachable') }}
+        </p>
         <button type="submit" class="btn">{{ $t('admin.loginButton') }}</button>
       </form>
     </div>
@@ -340,7 +449,10 @@ function onImportFile(event) {
     <div v-else class="dashboard">
       <div class="dashboard-header">
         <h1>{{ $t('admin.dashboardTitle') }}</h1>
-        <button type="button" class="btn ghost" @click="logout">{{ $t('admin.logout') }}</button>
+        <div class="header-right">
+          <span class="logged-in-as">{{ $t('admin.loggedInAs', { username }) }}</span>
+          <button type="button" class="btn ghost" @click="logout">{{ $t('admin.logout') }}</button>
+        </div>
       </div>
 
       <div class="tab-bar">
@@ -360,33 +472,22 @@ function onImportFile(event) {
         >
           {{ $t('admin.eventsTab') }}
         </button>
+        <button
+          type="button"
+          class="tab-btn"
+          :class="{ active: activeTab === 'account' }"
+          @click="activeTab = 'account'"
+        >
+          {{ $t('admin.accountTab') }}
+        </button>
       </div>
 
       <template v-if="activeTab === 'announcements'">
       <div class="toolbar">
         <button type="button" class="btn" @click="startAdd">{{ $t('admin.addNew') }}</button>
-        <button type="button" class="btn secondary" @click="exportData">
-          {{ $t('admin.exportButton') }}
-        </button>
-        <button type="button" class="btn secondary" @click="triggerImport">
-          {{ $t('admin.importButton') }}
-        </button>
-        <input
-          ref="importFileInput"
-          type="file"
-          accept=".json"
-          class="sr-only-input"
-          @change="onImportFile"
-        />
       </div>
 
-      <p v-if="importMessage === 'success'" class="note note-success">
-        {{ $t('admin.importSuccess') }}
-      </p>
-      <p v-else-if="importMessage === 'error'" class="note note-error">
-        {{ $t('admin.importError') }}
-      </p>
-      <p v-if="savedNote" class="note note-success">{{ $t('admin.savedToBrowser') }}</p>
+      <p v-if="savedNote" class="note note-success">{{ $t('admin.savedToServer') }}</p>
 
       <!-- Add / edit form -->
       <div v-if="showForm" class="card form-card">
@@ -406,6 +507,21 @@ function onImportFile(event) {
           </select>
         </div>
 
+        <div class="field">
+          <label for="form-area">{{ $t('admin.areaLabel') }}</label>
+          <input id="form-area" v-model="form.area" type="text" :placeholder="$t('admin.areaPlaceholder')" />
+        </div>
+
+        <div class="field">
+          <label for="form-message">{{ $t('admin.messageLabel') }}</label>
+          <textarea
+            id="form-message"
+            v-model="form.message"
+            rows="2"
+            :placeholder="$t('admin.messagePlaceholder')"
+          ></textarea>
+        </div>
+
         <div class="form-row">
           <div class="field">
             <label for="form-start">{{ $t('admin.startDateLabel') }}</label>
@@ -417,7 +533,10 @@ function onImportFile(event) {
           </div>
         </div>
 
-        <p v-if="formError" class="error-text">{{ $t('admin.formIncomplete') }}</p>
+        <p v-if="formError === 'incomplete'" class="error-text">{{ $t('admin.formIncomplete') }}</p>
+        <p v-else-if="formError === 'serverUnreachable'" class="error-text">
+          {{ $t('admin.eventsServerUnreachable') }}
+        </p>
 
         <div class="form-actions">
           <button type="button" class="btn" @click="saveForm">{{ $t('admin.save') }}</button>
@@ -426,13 +545,16 @@ function onImportFile(event) {
       </div>
 
       <!-- Announcement list -->
-      <p v-if="store.all.length === 0" class="note">{{ $t('admin.noAnnouncements') }}</p>
+      <p v-if="store.loadFailed" class="note note-error">{{ $t('admin.eventsServerUnreachable') }}</p>
+      <p v-else-if="store.all.length === 0" class="note">{{ $t('admin.noAnnouncements') }}</p>
       <ul v-else class="announcement-list">
         <li v-for="a in store.all" :key="a.id" class="card announcement-card">
           <div class="announcement-top">
             <span class="building-name">{{ buildingName(a.buildingId) }}</span>
             <span class="pill" :class="`type-${a.type}`">{{ $t(`announcementType.${a.type}`) }}</span>
           </div>
+          <p v-if="a.area" class="announcement-area">{{ a.area }}</p>
+          <p class="announcement-message">{{ a.message }}</p>
           <p v-if="a.startDate || a.endDate" class="announcement-dates">
             {{ a.startDate || '?' }} — {{ a.endDate || '?' }}
           </p>
@@ -552,6 +674,96 @@ function onImportFile(event) {
         </li>
       </ul>
       </template>
+
+      <!-- Account tab: change my password, add/remove admins. -->
+      <template v-if="activeTab === 'account'">
+      <div class="card form-card">
+        <h2 class="section-title">{{ $t('admin.changePasswordTitle') }}</h2>
+        <form @submit.prevent="submitChangePassword">
+          <div class="field">
+            <label for="current-password">{{ $t('admin.currentPasswordLabel') }}</label>
+            <input
+              id="current-password"
+              v-model="changePasswordForm.currentPassword"
+              type="password"
+              autocomplete="current-password"
+            />
+          </div>
+          <div class="field">
+            <label for="new-password">{{ $t('admin.newPasswordLabel') }}</label>
+            <input
+              id="new-password"
+              v-model="changePasswordForm.newPassword"
+              type="password"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="field">
+            <label for="confirm-password">{{ $t('admin.confirmPasswordLabel') }}</label>
+            <input
+              id="confirm-password"
+              v-model="changePasswordForm.confirmPassword"
+              type="password"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <p v-if="changePasswordError === 'tooShort'" class="error-text">{{ $t('admin.passwordTooShort') }}</p>
+          <p v-else-if="changePasswordError === 'mismatch'" class="error-text">{{ $t('admin.passwordMismatch') }}</p>
+          <p v-else-if="changePasswordError === 'wrongCurrent'" class="error-text">{{ $t('admin.currentPasswordWrong') }}</p>
+          <p v-else-if="changePasswordError === 'serverUnreachable'" class="error-text">{{ $t('admin.eventsServerUnreachable') }}</p>
+          <p v-if="changePasswordSuccess" class="note note-success">{{ $t('admin.changePasswordSuccess') }}</p>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">{{ $t('admin.changePasswordButton') }}</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card form-card">
+        <h2 class="section-title">{{ $t('admin.adminsListTitle') }}</h2>
+        <p v-if="adminsLoadFailed" class="note note-error">{{ $t('admin.eventsServerUnreachable') }}</p>
+        <ul v-else class="admin-list">
+          <li v-for="a in admins" :key="a.id" class="admin-row">
+            <span>{{ a.username }}</span>
+            <button
+              type="button"
+              class="btn ghost"
+              :disabled="admins.length <= 1"
+              @click="removeAdmin(a.id)"
+            >
+              {{ $t('admin.removeAdmin') }}
+            </button>
+          </li>
+        </ul>
+        <p v-if="removeAdminError === 'lastAdmin'" class="error-text">{{ $t('admin.cannotRemoveLast') }}</p>
+
+        <h3 class="section-title">{{ $t('admin.addAdminTitle') }}</h3>
+        <form @submit.prevent="submitAddAdmin">
+          <div class="field">
+            <label for="new-admin-username">{{ $t('admin.newAdminUsernameLabel') }}</label>
+            <input id="new-admin-username" v-model="newAdminForm.username" type="text" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="new-admin-password">{{ $t('admin.newAdminPasswordLabel') }}</label>
+            <input
+              id="new-admin-password"
+              v-model="newAdminForm.password"
+              type="password"
+              autocomplete="new-password"
+            />
+          </div>
+
+          <p v-if="addAdminError === 'invalid'" class="error-text">{{ $t('admin.newAdminInvalid') }}</p>
+          <p v-else-if="addAdminError === 'taken'" class="error-text">{{ $t('admin.adminUsernameTaken') }}</p>
+          <p v-else-if="addAdminError === 'serverUnreachable'" class="error-text">{{ $t('admin.eventsServerUnreachable') }}</p>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">{{ $t('admin.addAdminButton') }}</button>
+          </div>
+        </form>
+      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -593,20 +805,47 @@ function onImportFile(event) {
   flex-wrap: wrap;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.logged-in-as {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+}
+
+.admin-list {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(0, 107, 147, 0.06);
+}
+
 .toolbar {
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;
   margin: 1rem 0;
-}
-
-.sr-only-input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }
 
 .note {

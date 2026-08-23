@@ -23,6 +23,96 @@ async function safeFetch(path, options) {
   }
 }
 
+// Auth calls need to distinguish "wrong password" (server reachable, 401)
+// from "server unreachable" (network error) so the login screen can show the
+// right message — safeFetch collapses both to null, so auth uses its own
+// wrapper that keeps the status code.
+async function authFetch(path, options) {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, options)
+    let data = null
+    try {
+      data = await res.json()
+    } catch {
+      // no JSON body (e.g. 204) — fine
+    }
+    return { ok: res.ok, status: res.status, data }
+  } catch {
+    return { ok: false, status: 0, data: null } // status 0 = network/server unreachable
+  }
+}
+
+function authHeaders(token) {
+  return { Authorization: `Bearer ${token}` }
+}
+
+export function login(username, password) {
+  return authFetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  })
+}
+
+export function logout(token) {
+  return authFetch('/api/auth/logout', { method: 'POST', headers: authHeaders(token) })
+}
+
+export function fetchMe(token) {
+  return authFetch('/api/auth/me', { headers: authHeaders(token) })
+}
+
+export function changePassword(token, currentPassword, newPassword) {
+  return authFetch('/api/auth/change-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify({ currentPassword, newPassword }),
+  })
+}
+
+export function fetchAdmins(token) {
+  return authFetch('/api/auth/admins', { headers: authHeaders(token) })
+}
+
+export function createAdmin(token, username, password) {
+  return authFetch('/api/auth/admins', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify({ username, password }),
+  })
+}
+
+export function deleteAdmin(token, id) {
+  return authFetch(`/api/auth/admins/${id}`, { method: 'DELETE', headers: authHeaders(token) })
+}
+
+export function fetchAnnouncements() {
+  return safeFetch('/api/announcements')
+}
+
+export function createAnnouncement(announcement, token) {
+  return safeFetch('/api/announcements', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify(announcement),
+  })
+}
+
+export function updateAnnouncement(id, announcement, token) {
+  return safeFetch(`/api/announcements/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify(announcement),
+  })
+}
+
+export function deleteAnnouncement(id, token) {
+  return safeFetch(`/api/announcements/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  })
+}
+
 export function fetchUpcomingEvents() {
   return safeFetch('/api/events/upcoming')
 }
@@ -39,25 +129,25 @@ export function searchBuildings(query) {
   return safeFetch(`/api/buildings/search?q=${encodeURIComponent(query)}`)
 }
 
-export function createEvent(event, adminPassword) {
+export function createEvent(event, token) {
   return safeFetch('/api/events', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
     body: JSON.stringify(event),
   })
 }
 
-export function updateEvent(id, event, adminPassword) {
+export function updateEvent(id, event, token) {
   return safeFetch(`/api/events/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
     body: JSON.stringify(event),
   })
 }
 
-export function deleteEvent(id, adminPassword) {
+export function deleteEvent(id, token) {
   return safeFetch(`/api/events/${id}`, {
     method: 'DELETE',
-    headers: { 'x-admin-password': adminPassword },
+    headers: authHeaders(token),
   })
 }

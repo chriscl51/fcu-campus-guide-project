@@ -3,10 +3,9 @@
 // the ONLY part of the project that requires a running Node.js process;
 // everything else (map/routing/buildings/facility data) still works as a
 // pure static site with zero backend, per the project's original design
-// (see README). This backend exists specifically to satisfy the school
-// assignment's Node.js + SQLite requirement, and to back the one feature
-// that genuinely benefits from persistent, centrally-editable data: campus
-// activity/event announcements (見 README 「活動公告後端」章節).
+// (see README). This backend backs the features that genuinely benefit from
+// persistent, centrally-editable data: campus activity/event announcements,
+// building change notices, and admin accounts (見 README 「活動公告後端」章節).
 //
 // NOTE: this used to run on `better-sqlite3`, which needs to compile a
 // native addon on `npm install` (node-gyp downloading platform-specific
@@ -61,9 +60,47 @@ db.exec(`
     PRIMARY KEY (event_id, building_id)
   );
 
+  -- Admin accounts. Passwords are never stored in plain text — password_hash
+  -- is "salt:hash" (see auth.js's hashPassword/verifyPassword, node:crypto
+  -- scrypt). Any admin can add or remove other admins from the account
+  -- management panel; there is no separate "owner" role.
+  CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+  -- Login sessions: a random opaque token handed to the browser (stored in
+  -- sessionStorage, sent back as "Authorization: Bearer <token>"), instead
+  -- of re-sending the password on every request. Deleting an admin cascades
+  -- to their sessions, logging them out everywhere immediately.
+  CREATE TABLE IF NOT EXISTS sessions (
+    token TEXT PRIMARY KEY,
+    admin_id INTEGER NOT NULL REFERENCES admins(id) ON DELETE CASCADE,
+    expires_at TEXT NOT NULL
+  );
+
+  -- Building change notices ("這棟大樓的這個區域在整修/廁所故障/停水停電...").
+  -- Previously lived only in browser localStorage; moved here so every admin
+  -- sees and manages the same shared data, matching how events already work.
+  CREATE TABLE IF NOT EXISTS announcements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    building_id TEXT NOT NULL REFERENCES buildings(id),
+    type TEXT NOT NULL,          -- renovation / restroom / elevator / water / power / other
+    area TEXT,                   -- optional free-text detail, e.g. "3樓男廁"
+    message TEXT NOT NULL,
+    start_date TEXT,
+    end_date TEXT,
+    created_by INTEGER REFERENCES admins(id) ON DELETE SET NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
   CREATE INDEX IF NOT EXISTS idx_events_dates ON events(start_date, end_date);
   CREATE INDEX IF NOT EXISTS idx_buildings_name ON buildings(name_zh, name_en);
   CREATE INDEX IF NOT EXISTS idx_event_locations_event ON event_locations(event_id);
+  CREATE INDEX IF NOT EXISTS idx_sessions_admin ON sessions(admin_id);
+  CREATE INDEX IF NOT EXISTS idx_announcements_building ON announcements(building_id);
 `)
 
 // node:sqlite has no built-in `db.transaction(fn)` helper (unlike

@@ -34,7 +34,7 @@ function openInGoogleMaps() {
     <div class="drive-info-text">
       <p class="drive-info-label">{{ $t('parking.suggestedLotLabel') }}</p>
       <p class="drive-info-lot">
-        🅿️ <strong>{{ lot.name }}</strong>
+        🅿️ <strong>{{ lot.nameZh }}</strong>
         <span class="drive-info-distance">{{ $t('parking.distanceLabel', { distance: lot.distanceMeters }) }}</span>
       </p>
     </div>

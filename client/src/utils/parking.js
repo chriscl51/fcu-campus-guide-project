@@ -13,15 +13,20 @@ const PARKING_KINDS = new Set(['parking', 'parking_space'])
 // in buildings.json — see README for how this was determined).
 const ALLOWED_LOT_IDS = new Set(['w1473277897', '4075384390'])
 const DISPLAY_NAMES = {
-  w1473277897: '逢甲大學凱旋停車場',
-  '4075384390': '體育館地下停車場',
+  w1473277897: { zh: '逢甲大學凱旋停車場', en: 'FCU Kaixuan Parking Lot' },
+  '4075384390': { zh: '體育館地下停車場', en: 'Gymnasium Underground Parking Lot' },
 }
 
+// nameZh/nameEn (not just a single `name`) so parking lots can be shown
+// through the same bilingual building-label rendering as gates/buildings
+// (see utils/bilingual.js's btName(), used when these are offered as
+// origin/destination options in SelectForm.vue).
 export const parkingLots = pois
   .filter((p) => PARKING_KINDS.has(p.kind) && ALLOWED_LOT_IDS.has(String(p.id)))
   .map((p) => ({
     id: p.id,
-    name: DISPLAY_NAMES[p.id] || p.name || '校內停車場',
+    nameZh: DISPLAY_NAMES[p.id]?.zh || p.name || '校內停車場',
+    nameEn: DISPLAY_NAMES[p.id]?.en || p.name || 'Campus Parking Lot',
     lat: p.lat,
     lon: p.lon,
   }))

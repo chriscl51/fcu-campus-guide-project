@@ -2,11 +2,17 @@ import { defineStore } from 'pinia'
 import buildings from '../data/buildings.json'
 import gates from '../data/gates.json'
 import { nearestNode, shortestPath, estimateWalkMinutes, buildDirections } from '../utils/routing'
-import { nearestParkingTo } from '../utils/parking'
+import { nearestParkingTo, parkingLots } from '../utils/parking'
 
-// Origins can be a building OR a campus gate — this looks up either by id.
+// Origins can be a building, a campus gate, or one of the two curated
+// parking lots (see utils/parking.js) — this looks up any of the three by id.
 function findOrigin(id) {
-  return buildings.find((b) => b.id === id) || gates.find((g) => g.id === id) || null
+  return (
+    buildings.find((b) => b.id === id) ||
+    gates.find((g) => g.id === id) ||
+    parkingLots.find((p) => p.id === id) ||
+    null
+  )
 }
 
 // "Origin" options include every building/gate PLUS this synthetic option,
@@ -31,8 +37,17 @@ export const useAppStore = defineStore('app', {
   }),
   getters: {
     buildingsById: () => Object.fromEntries(buildings.map((b) => [b.id, b])),
+    // Destination is usually a building, but can also be one of the two
+    // curated parking lots (see utils/parking.js) — e.g. walking back to
+    // your car. Parking lots have no surveyed `entranceNode` of their own
+    // (unlike buildings), so one is resolved on the fly via nearestNode(),
+    // the same lookup startDriving() already uses for the walking start.
     destinationBuilding(state) {
-      return buildings.find((b) => b.id === state.destinationId) || null
+      const building = buildings.find((b) => b.id === state.destinationId)
+      if (building) return building
+      const lot = parkingLots.find((p) => p.id === state.destinationId)
+      if (lot) return { ...lot, entranceNode: nearestNode(lot.lat, lot.lon) }
+      return null
     },
     originBuilding(state) {
       return findOrigin(state.originId)
@@ -67,7 +82,7 @@ export const useAppStore = defineStore('app', {
     startDriving() {
       const lot = this.suggestedParking
       if (!lot) return false
-      this.chosenParkingLotId = lot.name
+      this.chosenParkingLotId = lot.nameZh
       return this.computeRoute(lot.lat, lot.lon)
     },
     /** Compute the Dijkstra route from an explicit lat/lon start (a building

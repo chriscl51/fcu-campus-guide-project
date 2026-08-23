@@ -7,6 +7,7 @@ import { fetchEventLocations } from '../utils/api'
 import buildings from '../data/buildings.json'
 import gates from '../data/gates.json'
 import { selectableBuildings } from '../utils/buildingOptions'
+import { parkingLots } from '../utils/parking'
 
 const store = useAppStore()
 const { btName, bt, locale } = useBilingual()
@@ -65,6 +66,9 @@ function onSubmit() {
         <select id="origin-select" :value="store.originId ?? ''" @change="onOriginChange">
           <option value="" disabled>{{ $t('select.originPlaceholder') }}</option>
           <option :value="DRIVE_MODE_ORIGIN">{{ $t('select.driveOption') }}</option>
+          <optgroup :label="bt('select.parkingGroup')">
+            <option v-for="p in parkingLots" :key="p.id" :value="p.id">{{ buildingLabel(p) }}</option>
+          </optgroup>
           <optgroup :label="bt('select.gatesGroup')">
             <option v-for="g in gates" :key="g.id" :value="g.id">{{ buildingLabel(g) }}</option>
           </optgroup>
@@ -80,9 +84,14 @@ function onSubmit() {
         <label for="destination-select">{{ $t('select.destinationLabel') }}</label>
         <select id="destination-select" :value="store.destinationId ?? ''" @change="onDestinationChange">
           <option value="" disabled>{{ $t('select.destinationPlaceholder') }}</option>
-          <option v-for="b in sortedBuildings" :key="b.id" :value="b.id">
-            {{ buildingLabel(b) }}
-          </option>
+          <optgroup :label="bt('select.parkingGroup')">
+            <option v-for="p in parkingLots" :key="p.id" :value="p.id">{{ buildingLabel(p) }}</option>
+          </optgroup>
+          <optgroup :label="bt('select.buildingsGroup')">
+            <option v-for="b in sortedBuildings" :key="b.id" :value="b.id">
+              {{ buildingLabel(b) }}
+            </option>
+          </optgroup>
         </select>
       </div>
 

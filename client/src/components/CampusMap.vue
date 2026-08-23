@@ -9,6 +9,7 @@ import buildings from '../data/buildings.json'
 import poisData from '../data/pois.json'
 import gatesData from '../data/gates.json'
 import { parkingLots } from '../utils/parking'
+import { selectableBuildings } from '../utils/buildingOptions'
 import { project, WORLD, haversine } from '../utils/projection'
 import { playFootstep } from '../utils/sound'
 import DeerSprite from './DeerSprite.vue'
@@ -32,8 +33,12 @@ const { t } = useI18n()
 // drawn as filled shapes so the map reads like the official campus signboard
 // map (solid building blocks + labels) instead of a single dot per building.
 // Buildings with no surveyed polygon (rare — a couple of POI-only landmarks)
-// fall back to a dot marker via `footprint.length === 0`.
-const buildingMarkers = buildings.map((b) => {
+// fall back to a dot marker via `footprint.length === 0`. Filtered through
+// selectableBuildings() — the same official-map filter the destination
+// dropdowns use — so a building/lot that isn't on the official campus map
+// (no officialCode, or explicitly excluded via NOT_ON_OFFICIAL_MAP) doesn't
+// get drawn on the map either, even though its data stays in buildings.json.
+const buildingMarkers = selectableBuildings(buildings).map((b) => {
   const pos = project(b.lat, b.lon)
   const footprintPts = (b.footprint || []).map(([lat, lon]) => project(lat, lon))
   const footprintPath = footprintPts.length >= 3
