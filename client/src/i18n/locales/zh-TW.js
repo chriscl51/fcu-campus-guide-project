@@ -11,9 +11,10 @@ export default {
     restart: '重新開始',
   },
   intro: {
-    title: '我是「文華鹿」🦌',
+    title: '我是「文華鹿」',
     subtitle: '校園導航「文華鹿」，走進逢甲免迷路！',
     startButton: '出發囉！',
+    mapLink: '查看全校地圖',
   },
   select: {
     heading: '你要從哪裡出發，去哪裡呢？',

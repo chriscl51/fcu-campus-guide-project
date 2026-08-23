@@ -19,6 +19,22 @@ function findOrigin(id) {
 // which triggers the "help me find parking first" flow (spec item 1.b / 2.b).
 export const DRIVE_MODE_ORIGIN = '__drive_find_parking__'
 
+const WEST_GATE_TURNS = {
+  b283040788: 'right',
+  r6032176: 'right',
+  b283040785: 'right',
+  b406370377: 'left',
+  r6032175: 'left',
+  b283040764: 'left',
+  b402105180: 'left',
+}
+
+function oppositeTurn(turn) {
+  if (turn === 'right') return 'left'
+  if (turn === 'left') return 'right'
+  return null
+}
+
 export const STEP = {
   INTRO: 'intro',
   SELECT: 'select',
@@ -95,11 +111,17 @@ export const useAppStore = defineStore('app', {
       const startNode = nearestNode(startLat, startLon)
       const path = shortestPath(startNode, dest.entranceNode)
       if (!path) return false
+      const preferredTurn =
+        this.originId === 'gate-west'
+          ? WEST_GATE_TURNS[dest.id]
+          : this.destinationId === 'gate-west'
+            ? oppositeTurn(WEST_GATE_TURNS[this.originId])
+            : null
       this.route = {
         points: path.points,
         distanceMeters: Math.round(path.distanceMeters),
         etaMinutes: estimateWalkMinutes(path.distanceMeters),
-        steps: buildDirections(path.points),
+        steps: buildDirections(path.points, preferredTurn),
       }
       this.step = STEP.ROUTING
       return true

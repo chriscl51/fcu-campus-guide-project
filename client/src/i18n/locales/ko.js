@@ -10,9 +10,10 @@ export default {
     restart: '처음부터 다시',
   },
   intro: {
-    title: '저는 웬화사슴이에요 🦌',
+    title: '저는 웬화사슴이에요',
     subtitle: '캠퍼스 안내 도우미 "웬화사슴"과 함께, 펑자대학교를 길 잃지 않고 걸어요!',
     startButton: '출발할게요!',
+    mapLink: '전체 캠퍼스 지도 보기',
   },
   select: {
     heading: '어디에서 출발해서 어디로 가시나요?',

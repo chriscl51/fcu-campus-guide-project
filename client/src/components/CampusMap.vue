@@ -375,8 +375,9 @@ function directionLabel(step) {
   padding-left: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  font-size: 0.92rem;
+  gap: 0.525rem;
+  font-size: 1.38rem;
+  line-height: 1.55;
 }
 .directions-list li.left,
 .directions-list li.right {

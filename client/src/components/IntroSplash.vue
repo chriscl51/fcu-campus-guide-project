@@ -130,6 +130,15 @@ function onEventLocationPick(ev, e) {
         <button type="button" class="btn intro-start-btn" @click="onStart">
           {{ $t('intro.startButton') }}
         </button>
+        <a
+          class="campus-map-link"
+          href="/map/FCU%20Campus.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          <span>{{ $t('intro.mapLink') }}</span>
+          <img src="/map/click%20me%20map.png" :alt="$t('intro.mapLink')" />
+        </a>
       </div>
 
       <!-- Left card (bottom on mobile): campus event announcement board. -->
@@ -227,6 +236,7 @@ function onEventLocationPick(ev, e) {
 }
 
 .deer-card {
+  --intro-heading-size: clamp(1.25rem, 4vw, 2.1rem);
   grid-area: deer;
   display: flex;
   flex-direction: column;
@@ -249,7 +259,8 @@ function onEventLocationPick(ev, e) {
 }
 
 .deer-follow-sticker {
-  width: clamp(160px, 34vw, 360px);
+  width: clamp(220px, 42vw, 380px);
+  max-width: 100%;
   height: auto;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
   animation: deer-sway 2.4s ease-in-out infinite;
@@ -267,7 +278,7 @@ function onEventLocationPick(ev, e) {
 
 .intro-title {
   color: #fff;
-  font-size: clamp(1.25rem, 4vw, 2.1rem);
+  font-size: var(--intro-heading-size);
   margin: 0;
 }
 
@@ -281,13 +292,41 @@ function onEventLocationPick(ev, e) {
 .intro-start-btn {
   background: var(--fcu-gold);
   color: var(--fcu-maroon-dark);
-  font-size: 1.1rem;
-  padding: 0.7em 2.2em;
+  font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+  padding: 0.65em 1.9em;
   margin-top: 1rem;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
 }
 .intro-start-btn:hover {
   background: #e6bf6c;
+}
+
+.campus-map-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: #fff;
+  font-size: var(--intro-heading-size);
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 0.7rem;
+}
+.campus-map-link img {
+  width: clamp(165px, 35vw, 258px);
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+}
+.campus-map-link:hover,
+.campus-map-link:focus-visible {
+  color: var(--fcu-gold);
+  text-decoration: underline;
+}
+.campus-map-link:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
 }
 
 /* ---- Events board (公佈欄) ------------------------------------------- */
@@ -402,10 +441,8 @@ function onEventLocationPick(ev, e) {
   }
 }
 
-/* Feedback item: on mobile the board sits BELOW the deer card, and its
-   header + first entry must be visible without scrolling on any phone size.
-   The deer card is the tall element here, so it's the one trimmed down —
-   smaller sticker, tighter gaps, smaller button — to leave room. */
+/* On mobile the board sits below the deer card, so spacing is tightened while
+  the deer remains larger than the map preview. */
 @media (max-width: 859px) {
   .intro-splash {
     padding: 0.85rem 0.75rem 2rem;
@@ -418,7 +455,7 @@ function onEventLocationPick(ev, e) {
     padding: 0;
   }
   .deer-follow-sticker {
-    width: clamp(140px, 40vw, 220px);
+    width: clamp(190px, 45vw, 250px);
   }
   .intro-subtitle {
     margin: 0;
@@ -444,10 +481,7 @@ function onEventLocationPick(ev, e) {
     gap: 0.45rem;
   }
   .deer-follow-sticker {
-    width: clamp(120px, 36vw, 190px);
-  }
-  .intro-title {
-    font-size: 1.05rem;
+    width: clamp(180px, 42vw, 230px);
   }
   .intro-subtitle {
     display: none;

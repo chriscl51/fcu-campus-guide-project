@@ -10,9 +10,10 @@ export default {
     restart: 'Bắt đầu lại',
   },
   intro: {
-    title: 'Mình là Hươu Wenhwa 🦌',
+    title: 'Mình là Hươu Wenhwa',
     subtitle: 'Hướng dẫn viên khuôn viên "Hươu Wenhwa" — dạo quanh FCU không lo lạc đường!',
     startButton: 'Xuất phát thôi!',
+    mapLink: 'Xem bản đồ toàn trường',
   },
   select: {
     heading: 'Bạn xuất phát từ đâu và muốn đến đâu?',

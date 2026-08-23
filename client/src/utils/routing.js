@@ -150,12 +150,46 @@ export function simplifyPath(points, toleranceMeters = 8) {
  * degrees between simplified segments.
  */
 const TURN_THRESHOLD = 30
+const TURN_CLUSTER_DISTANCE_METERS = 70
 
-export function buildDirections(rawPoints) {
+export function buildDirections(rawPoints, preferredTurn = null) {
   const points = simplifyPath(rawPoints, 8)
   if (points.length < 2) return [{ type: 'arrive', distanceMeters: 0 }]
+
+  if (preferredTurn) {
+    let turnIndex = -1
+    let previousBearing = bearing(points[0], points[1])
+    for (let i = 1; i < points.length - 1; i++) {
+      const currentBearing = bearing(points[i], points[i + 1])
+      let delta = currentBearing - previousBearing
+      delta = ((delta + 540) % 360) - 180
+      if (Math.abs(delta) > TURN_THRESHOLD) {
+        turnIndex = i
+        break
+      }
+      previousBearing = currentBearing
+    }
+    let beforeTurn = 0
+    let afterTurn = 0
+    if (turnIndex >= 0) {
+      for (let i = 0; i < turnIndex; i++) beforeTurn += haversine(points[i], points[i + 1])
+      for (let i = turnIndex; i < points.length - 1; i++) afterTurn += haversine(points[i], points[i + 1])
+    } else {
+      // A short route can simplify to a nearly straight line even when the
+      // surveyed campus instruction still has a known entrance turn.
+      for (let i = 0; i < points.length - 1; i++) beforeTurn += haversine(points[i], points[i + 1])
+    }
+    return [
+      { type: 'straight', distanceMeters: Math.round(beforeTurn) },
+      { type: preferredTurn, distanceMeters: 0 },
+      { type: 'straight', distanceMeters: Math.round(afterTurn) },
+      { type: 'arrive', distanceMeters: 0 },
+    ]
+  }
+
   const steps = []
   let segStart = 0
+  let lastTurnIndex = -1
   let prevBearing = bearing(points[0], points[1])
 
   const pushStep = (type, endIdx) => {
@@ -169,8 +203,19 @@ export function buildDirections(rawPoints) {
     let delta = b - prevBearing
     delta = ((delta + 540) % 360) - 180 // normalize to [-180,180]
     if (Math.abs(delta) > TURN_THRESHOLD) {
+      let distanceSinceTurn = 0
+      if (lastTurnIndex >= 0) {
+        for (let j = lastTurnIndex; j < i; j++) {
+          distanceSinceTurn += haversine(points[j], points[j + 1])
+        }
+      }
+      if (lastTurnIndex >= 0 && distanceSinceTurn <= TURN_CLUSTER_DISTANCE_METERS) {
+        prevBearing = b
+        continue
+      }
       pushStep('straight', i)
       segStart = i
+      lastTurnIndex = i
       steps.push({ type: delta > 0 ? 'right' : 'left', distanceMeters: 0 })
     }
     prevBearing = b

@@ -10,9 +10,10 @@ export default {
     restart: '最初からやり直す',
   },
   intro: {
-    title: '文華鹿です🦌',
+    title: '文華鹿です',
     subtitle: 'キャンパス案内役「文華鹿」と一緒に、逢甲を迷わず歩こう！',
     startButton: '出発しましょう！',
+    mapLink: 'キャンパス全体の地図を見る',
   },
   select: {
     heading: 'どこから出発して、どこへ行きますか？',

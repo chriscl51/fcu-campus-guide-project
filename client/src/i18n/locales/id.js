@@ -10,9 +10,10 @@ export default {
     restart: 'Mulai Ulang',
   },
   intro: {
-    title: 'Aku Rusa Wenhwa 🦌',
+    title: 'Aku Rusa Wenhwa',
     subtitle: 'Pemandu kampus "Rusa Wenhwa" — jelajahi FCU tanpa takut tersesat!',
     startButton: 'Ayo berangkat!',
+    mapLink: 'Lihat Peta Seluruh Kampus',
   },
   select: {
     heading: 'Kamu berangkat dari mana, dan mau ke mana?',

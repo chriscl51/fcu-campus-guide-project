@@ -10,9 +10,10 @@ export default {
     restart: 'Start Over',
   },
   intro: {
-    title: "I'm Wenhwa Deer 🦌",
+    title: "I'm Wenhwa Deer",
     subtitle: 'Your campus guide, Wenhwa Deer — explore FCU and never lose your way!',
     startButton: "Let's go!",
+    mapLink: 'View Full Campus Map',
   },
   select: {
     heading: 'Where are you starting from, and where are you headed?',
