@@ -214,36 +214,39 @@ FULL_TIER_NAMES = set(CURATED.keys())
 # name differs from what OSM had, this table wins (it's the authoritative,
 # on-the-ground source). Matched by the OSM name_zh (see buildings_raw.json).
 # ---------------------------------------------------------------------------
+# Third tuple element is the "編號 No." on the official map legend
+# (fcu map buildings.jpg) — used to order the building dropdown the same way
+# a visitor would scan the physical signboard.
 OFFICIAL_CODES = {
-    "行政大樓": ("ADB", "Administration Building"),
-    "行政二館": ("ADB(II)", "Administration Building II"),
-    "丘逢甲紀念館": ("CMB", "Chiu Feng-Chia Memorial Hall"),
-    "科學與航太館": ("SAB", "Science and Aeronautical Engineering Building"),
-    "商學大樓": ("BB", "Business Building"),
-    "逢甲大學圖書館": ("LIB", "Library"),
-    "忠勤樓": ("JCB", "Jong-Chin Building"),
-    "工學館": ("EGB", "Engineering Building"),
-    "資訊電機館": ("IEB", "Information/Electrical Engineering Building"),
-    "建築館": ("AB", "Architecture Building"),
-    "語文大樓": ("LB", "Language Building"),
-    "第一招待所": ("HH", "History House"),
-    "人言大樓": ("RYB", "Renyan Building"),
-    "人文社會館": ("HSB", "Humanities/Social Sciences Building"),
-    "電子通訊館": ("ECB", "Electronic/Communications Engineering Building"),
-    "育樂館": ("RB", "Recreation Building"),
-    "土木水利館": ("CHB", "Civil/Hydraulic Engineering Building"),
-    "理學大樓": ("SB", "Sciences Building"),
-    "文華創意中心": ("WIC", "Wenhwa Innovation Center"),
-    "學思樓": ("XSB", "Xuesi Building"),
-    "學思園": ("XSG", "Xuesi Garden"),
-    "體育館": ("SC", "Sports Center"),
-    "逢甲智慧創新港": ("IH", "i-Hub Intelligent Innovation Harbor"),
-    "共善樓": ("VH", "Virtuosi Hall"),
-    "逢甲大學游泳池": ("SP", "Swimming Pool"),
-    "綜合運動場": ("AF", "Athletic Field"),
-    "網球場": ("TC", "Tennis Court"),
-    "籃球場": ("BC", "Basketball Court"),
-    "排球場": ("VC", "Volleyball Court"),
+    "行政大樓": ("ADB", "Administration Building", 1),
+    "行政二館": ("ADB(II)", "Administration Building II", 2),
+    "丘逢甲紀念館": ("CMB", "Chiu Feng-Chia Memorial Hall", 3),
+    "科學與航太館": ("SAB", "Science and Aeronautical Engineering Building", 4),
+    "商學大樓": ("BB", "Business Building", 5),
+    "逢甲大學圖書館": ("LIB", "Library", 6),
+    "忠勤樓": ("JCB", "Jong-Chin Building", 7),
+    "工學館": ("EGB", "Engineering Building", 8),
+    "資訊電機館": ("IEB", "Information/Electrical Engineering Building", 9),
+    "建築館": ("AB", "Architecture Building", 10),
+    "語文大樓": ("LB", "Language Building", 11),
+    "第一招待所": ("HH", "History House", 12),
+    "人言大樓": ("RYB", "Renyan Building", 13),
+    "人文社會館": ("HSB", "Humanities/Social Sciences Building", 14),
+    "電子通訊館": ("ECB", "Electronic/Communications Engineering Building", 15),
+    "育樂館": ("RB", "Recreation Building", 16),
+    "土木水利館": ("CHB", "Civil/Hydraulic Engineering Building", 17),
+    "理學大樓": ("SB", "Sciences Building", 18),
+    "文華創意中心": ("WIC", "Wenhwa Innovation Center", 19),
+    "學思樓": ("XSB", "Xuesi Building", 20),
+    "學思園": ("XSG", "Xuesi Garden", 21),
+    "體育館": ("SC", "Sports Center", 22),
+    "逢甲智慧創新港": ("IH", "i-Hub Intelligent Innovation Harbor", 23),
+    "逢甲大學游泳池": ("SP", "Swimming Pool", 24),
+    "綜合運動場": ("AF", "Athletic Field", 25),
+    "網球場": ("TC", "Tennis Court", 26),
+    "籃球場": ("BC", "Basketball Court", 27),
+    "排球場": ("VC", "Volleyball Court", 28),
+    "共善樓": ("VH", "Virtuosi Hall", 29),
 }
 
 # Real on-campus photos the user took, shipped as static files in public/
@@ -321,6 +324,8 @@ for b in buildings_raw:
         # — used on the redesigned map + dropdown labels so they match the real
         # board at the campus gate. Distinct from roomCode (classroom prefix).
         "officialCode": official[0] if official else None,
+        # Position on the official map legend (1-29) — drives dropdown order.
+        "mapNumber": official[2] if official else None,
         "tier": "full" if curated else "partial",
         # Shown on the facility page regardless of tier — see ACCESS_NOTES above.
         "accessNote": ACCESS_NOTES.get(name),

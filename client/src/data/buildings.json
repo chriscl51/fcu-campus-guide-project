@@ -30,6 +30,7 @@
   ],
   "roomCode": "紀",
   "officialCode": "CMB",
+  "mapNumber": 3,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -97,6 +98,7 @@
   ],
   "roomCode": null,
   "officialCode": "HSB",
+  "mapNumber": 14,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -161,6 +163,7 @@
   ],
   "roomCode": "人",
   "officialCode": "RYB",
+  "mapNumber": 13,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -234,6 +237,7 @@
   ],
   "roomCode": "V",
   "officialCode": "VH",
+  "mapNumber": 29,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -310,6 +314,7 @@
   ],
   "roomCode": "商",
   "officialCode": "BB",
+  "mapNumber": 5,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -369,6 +374,7 @@
   ],
   "roomCode": "圖",
   "officialCode": "LIB",
+  "mapNumber": 6,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -447,6 +453,7 @@
   ],
   "roomCode": "土",
   "officialCode": "CHB",
+  "mapNumber": 17,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -538,6 +545,7 @@
   ],
   "roomCode": "學",
   "officialCode": "XSB",
+  "mapNumber": 20,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -589,6 +597,7 @@
   ],
   "roomCode": "工",
   "officialCode": "EGB",
+  "mapNumber": 8,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -646,6 +655,7 @@
   ],
   "roomCode": "建",
   "officialCode": "AB",
+  "mapNumber": 10,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -696,6 +706,7 @@
   ],
   "roomCode": "忠",
   "officialCode": "JCB",
+  "mapNumber": 7,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -784,6 +795,7 @@
   ],
   "roomCode": "理",
   "officialCode": "SB",
+  "mapNumber": 18,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -847,6 +859,7 @@
   ],
   "roomCode": "科航",
   "officialCode": "SAB",
+  "mapNumber": 4,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -906,6 +919,7 @@
   ],
   "roomCode": null,
   "officialCode": "RB",
+  "mapNumber": 16,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -958,6 +972,7 @@
   ],
   "roomCode": "行",
   "officialCode": "ADB",
+  "mapNumber": 1,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -1008,6 +1023,7 @@
   ],
   "roomCode": "語",
   "officialCode": "LB",
+  "mapNumber": 11,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -1118,6 +1134,7 @@
   ],
   "roomCode": "資電",
   "officialCode": "IEB",
+  "mapNumber": 9,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -1189,6 +1206,7 @@
   ],
   "roomCode": "電通",
   "officialCode": "ECB",
+  "mapNumber": 15,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -1364,6 +1382,7 @@
   ],
   "roomCode": null,
   "officialCode": "SC",
+  "mapNumber": 22,
   "tier": "full",
   "accessNote": null,
   "facilities": {
@@ -1413,6 +1432,7 @@
   ],
   "roomCode": null,
   "officialCode": "XSG",
+  "mapNumber": 21,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1457,6 +1477,7 @@
   ],
   "roomCode": null,
   "officialCode": "VC",
+  "mapNumber": 28,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1493,6 +1514,7 @@
   ],
   "roomCode": null,
   "officialCode": "WIC",
+  "mapNumber": 19,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1529,6 +1551,7 @@
   ],
   "roomCode": null,
   "officialCode": "HH",
+  "mapNumber": 12,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1565,6 +1588,7 @@
   ],
   "roomCode": null,
   "officialCode": "BC",
+  "mapNumber": 27,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1580,6 +1604,7 @@
   "footprint": [],
   "roomCode": null,
   "officialCode": "AF",
+  "mapNumber": 25,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1616,6 +1641,7 @@
   ],
   "roomCode": null,
   "officialCode": "TC",
+  "mapNumber": 26,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1668,6 +1694,7 @@
   ],
   "roomCode": null,
   "officialCode": "ADB(II)",
+  "mapNumber": 2,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1704,6 +1731,7 @@
   ],
   "roomCode": null,
   "officialCode": "SP",
+  "mapNumber": 24,
   "tier": "partial",
   "accessNote": null,
   "facilities": null,
@@ -1748,6 +1776,7 @@
   ],
   "roomCode": null,
   "officialCode": "IH",
+  "mapNumber": 23,
   "tier": "partial",
   "accessNote": "智慧創新港入口在西安街，開車請導航至凱旋路停車場。",
   "facilities": null,
