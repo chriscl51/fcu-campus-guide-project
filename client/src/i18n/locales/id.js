@@ -81,6 +81,7 @@ export default {
     water: 'Lokasi Dispenser Air Minum',
     aed: 'AED (Defibrilator Eksternal Otomatis)',
     restArea: 'Area Istirahat',
+    accessNote: 'Akses & Parkir',
     tierFull: 'Data lengkap',
     tierPartial: 'Data sedang disusun',
     dataPending: 'Data fasilitas lengkap untuk gedung ini masih dalam penyusunan. Jika kamu punya informasi terkait, silakan tambahkan melalui panel admin.',

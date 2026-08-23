@@ -81,6 +81,7 @@ export default {
     water: 'Vị trí máy nước uống',
     aed: 'AED (Máy khử rung tim tự động ngoài lồng ngực)',
     restArea: 'Khu vực nghỉ ngơi',
+    accessNote: 'Lối vào & Đỗ xe',
     tierFull: 'Dữ liệu đầy đủ',
     tierPartial: 'Đang cập nhật dữ liệu',
     dataPending: 'Thông tin chi tiết về cơ sở vật chất của tòa nhà này đang được cập nhật. Nếu bạn có thông tin liên quan, vui lòng bổ sung qua trang quản trị.',

@@ -81,6 +81,7 @@ export default {
     water: 'Drinking Water Stations',
     aed: 'AED (Automated External Defibrillator)',
     restArea: 'Rest Areas',
+    accessNote: 'Access & Parking',
     tierFull: 'Full data',
     tierPartial: 'Data Pending',
     dataPending: 'Detailed facility data for this building is still being compiled. If you have information to contribute, please reach out via the admin panel.',

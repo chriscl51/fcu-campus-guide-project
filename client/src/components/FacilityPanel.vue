@@ -76,6 +76,11 @@ const facilitySections = computed(() => {
       </div>
     </div>
 
+    <section v-if="building.accessNote" class="facility-section">
+      <h3><BilingualText v-bind="btPair('facility.accessNote')" /></h3>
+      <p><BilingualText v-bind="btContentPair(building.accessNote)" /></p>
+    </section>
+
     <section v-if="building.roomCode" class="facility-section">
       <h3><BilingualText v-bind="btPair('facility.roomCodeExample')" /></h3>
       <p><BilingualText v-bind="btPair('facility.roomCodeHint', { code: building.roomCode })" /></p>

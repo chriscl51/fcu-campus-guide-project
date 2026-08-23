@@ -213,6 +213,7 @@ def way_footprint(way):
 
 
 LANDMARK_AMENITY = {"college", "university", "library"}
+LANDMARK_LEISURE = {"sports_centre", "pitch", "swimming_pool"}
 
 # amenity=university is also tagged on the whole-campus boundary way(s) in
 # this OSM extract (not just individual buildings) — those have a ~400m
@@ -227,10 +228,12 @@ seen_names = set()
 for way in map_ways:
     tags = way["tags"]
     is_building = "building" in tags
-    is_landmark = tags.get("amenity") in LANDMARK_AMENITY or tags.get("leisure") == "sports_centre"
+    is_landmark = tags.get("amenity") in LANDMARK_AMENITY or tags.get("leisure") in LANDMARK_LEISURE
     if not (is_building or is_landmark):
         continue
-    name = tags.get("name") or tags.get("name:zh")
+    # OSM's ';' separates multiple values on one tag (e.g. an old court-numbering
+    # alias) — the first value is the primary name, e.g. "籃球場;籃3" -> "籃球場".
+    name = (tags.get("name") or tags.get("name:zh") or "").split(";")[0] or None
     if not name or name in EXCLUDE_CAMPUS_BOUNDARY_NAMES:
         continue
     c = way_centroid(way)
@@ -319,6 +322,19 @@ if "13353672109" in map_nodes and "共善樓" not in seen_names:
         "footprint": [],
     })
     seen_names.add("共善樓")
+
+# 綜合運動場 (Athletic Field, official map #25/AF): the running track is only
+# surveyed as unnamed per-lane node/way fragments (第一跑道..第八跑道, 立定跳遠
+# 1-3, etc.) plus one node named "操場" (the field itself) — no single named
+# way covers the whole oval, so anchor on that node like the 共善樓 fallback.
+if "4083393916" in map_nodes and "綜合運動場" not in seen_names:
+    n = map_nodes["4083393916"]
+    buildings.append({
+        "id": "athletic-field-manual", "osmId": None, "name_zh": "綜合運動場", "name_en": "Athletic Field",
+        "lat": n["lat"], "lon": n["lon"], "entranceNode": nearest_graph_node(n["lat"], n["lon"]),
+        "footprint": [],
+    })
+    seen_names.add("綜合運動場")
 
 print(f"buildings: {len(buildings)}")
 with open(os.path.join(RAW, "buildings_raw.json"), "w", encoding="utf-8") as f:

@@ -239,6 +239,11 @@ OFFICIAL_CODES = {
     "體育館": ("SC", "Sports Center"),
     "逢甲智慧創新港": ("IH", "i-Hub Intelligent Innovation Harbor"),
     "共善樓": ("VH", "Virtuosi Hall"),
+    "逢甲大學游泳池": ("SP", "Swimming Pool"),
+    "綜合運動場": ("AF", "Athletic Field"),
+    "網球場": ("TC", "Tennis Court"),
+    "籃球場": ("BC", "Basketball Court"),
+    "排球場": ("VC", "Volleyball Court"),
 }
 
 # Real on-campus photos the user took, shipped as static files in public/
@@ -254,11 +259,48 @@ PHOTOS = {
     "科學與航太館": "buildings/science-aeronautical.jpg",
     "行政二館": "buildings/administration-2.jpg",
     "工學館": "buildings/engineering.jpg",
+    "商學大樓": "buildings/business.jpg",
+    "資訊電機館": "buildings/information-electrical.jpg",
+    "人言大樓": "buildings/renyan.jpg",
+    "學思樓": "buildings/xuesi.jpg",
+    "理學大樓": "buildings/sciences.jpg",
+    "土木水利館": "buildings/civil-hydraulic.jpg",
+    "體育館": "buildings/sports-center.jpg",
+    "建築館": "buildings/architecture.jpg",
+    "電子通訊館": "buildings/electronic-communications.jpg",
+    "人文社會館": "buildings/humanities-social.jpg",
+    "語文大樓": "buildings/language.jpg",
+    "育樂館": "buildings/recreation.jpg",
+    "共善樓": "buildings/virtuosi.jpg",
+    "學思園": "buildings/xuesi-garden.jpg",
+    "文華創意中心": "buildings/wenhwa-innovation.jpg",
+    "第一招待所": "buildings/history-house.jpg",
+    "逢甲智慧創新港": "buildings/ihub-innovation.jpg",
+    "逢甲大學游泳池": "buildings/swimming-pool.jpg",
+    "綜合運動場": "buildings/stadium.jpg",
+    "網球場": "buildings/tennis-court.jpg",
+    "籃球場": "buildings/basketball-court.jpg",
+    "排球場": "buildings/volleyball-court.jpg",
+}
+
+# Short access/parking notes shown on the facility page regardless of tier
+# (e.g. an entrance that's easy to miss from the main campus, or which
+# parking lot to route drivers to) — user-provided, not fabricated. Keyed by
+# name_zh; translated into all locales in facilityContentI18n.js.
+ACCESS_NOTES = {
+    "逢甲智慧創新港": "智慧創新港入口在西安街，開車請導航至凱旋路停車場。",
 }
 
 buildings_out = []
 for b in buildings_raw:
     name = b["name_zh"]
+    if name not in OFFICIAL_CODES:
+        # Not one of the 29 numbered entries on the official FCU campus map
+        # signboard (fcu map no.jpg / fcu map buildings.jpg) — e.g. a
+        # neighboring non-campus building, a shop, or a POI OSM mistagged as
+        # a building. Excluded entirely so the app only ever shows buildings
+        # a visitor can actually match against the physical map.
+        continue
     curated = CURATED.get(name)
     official = OFFICIAL_CODES.get(name)
     entry = {
@@ -280,6 +322,8 @@ for b in buildings_raw:
         # board at the campus gate. Distinct from roomCode (classroom prefix).
         "officialCode": official[0] if official else None,
         "tier": "full" if curated else "partial",
+        # Shown on the facility page regardless of tier — see ACCESS_NOTES above.
+        "accessNote": ACCESS_NOTES.get(name),
         "facilities": {
             "water": (curated or {}).get("water", []),
             "restrooms": (curated or {}).get("restrooms", []),

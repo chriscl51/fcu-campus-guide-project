@@ -1,10 +1,9 @@
 // The official campus-map picker list is shared by the visitor and admin
-// forms. Keeping the rules here prevents the two dropdowns from drifting.
-const NOT_ON_OFFICIAL_MAP = new Set(['b283040780'])
-
+// forms. Keeping the rule here (officialCode only) prevents the two
+// dropdowns from drifting.
 export function selectableBuildings(buildings) {
   return [...buildings]
-    .filter((building) => building.officialCode && !NOT_ON_OFFICIAL_MAP.has(building.id))
+    .filter((building) => building.officialCode)
     .sort((a, b) => {
       if (a.tier === b.tier) return a.nameEn.localeCompare(b.nameEn, 'en')
       return a.tier === 'full' ? -1 : 1

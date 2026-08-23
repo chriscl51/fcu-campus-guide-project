@@ -90,13 +90,13 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
   加進 `SelectForm.vue` 的出發地／目的地下拉選單最上方（各自獨立的「校內停車場」
   選項群組），可以手動選「已經停在凱旋停車場，帶我走到 X」或「從 X 走回停車場」，
   不一定要透過「🚗 開車」自動流程。
-- **官方地圖範圍一致性**：不管是下拉選單（`buildingOptions.js` 的
-  `selectableBuildings()`）還是地圖上實際畫出的建築色塊（`CampusMap.vue`），都套用
-  同一個篩選規則——只有出現在官方校園平面圖上的建築（有 `officialCode`，且不在手動
-  排除清單 `NOT_ON_OFFICIAL_MAP` 裡）才會顯示。`buildings.json` 裡另外 9 筆不在官方
-  地圖上的項目（例如攤商、警衛室、非開放停車格）資料仍保留（供之後補資料用），但不會
-  出現在下拉選單或地圖畫面上。下拉選單依英文名稱字母順序排序（中文名稱排序規則對使用
-  者來說不好定位，改用英文字母序更容易找到目標建築）。
+- **官方地圖範圍一致性**：`src/data/buildings.json` 只收錄官方校園平面圖（見下方
+  「資料從哪來」的兩張圖檔來源）上有標示的 29 個項目——OSM 測繪到、但官方地圖沒有
+  標示的鄰近建物（警衛室、店家、非開放停車格等）在資料產生階段（`build_content.py`）
+  就直接過濾掉，不會進到 `buildings.json` 裡。因此下拉選單（`buildingOptions.js` 的
+  `selectableBuildings()`）跟地圖上實際畫出的建築色塊（`CampusMap.vue`）自然保持一致，
+  不需要額外的排除清單。下拉選單依英文名稱字母順序排序（中文名稱排序規則對使用者來說
+  不好定位，改用英文字母序更容易找到目標建築）。
 - **文華鹿走路動畫**：`src/components/DeerSprite.vue`，手繪 SVG 向量插畫，側面角色
   行走姿態（頭朝行進方向、身體橫向、兩對腿以對角步態交替擺動），配色參考鹿吉祥物
   （暖色調毛皮、藍紫漸層鹿角、FCU 深藍/白色鞍布配色）。
@@ -125,9 +125,9 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 | 資料 | 來源檔案 | 涵蓋範圍 |
 |---|---|---|
 | 步行路網（1074 節點） | `fcu_routing.osm` + `FCU map.osm` | 全校園，見下方「路網合併」說明 |
-| 32 棟建築座標與外形多邊形 | `FCU map.osm`（含 `<way>` 與 `<relation>` 多邊形） | 全校，含行政二館（relation） |
-| 建築中英文正式名稱／代碼 | `建築照片/校園地圖中英對照.HEIC`（官方牌樓地圖） | 24 棟建築，見 `scripts/build_content.py` 的 `OFFICIAL_CODES` |
-| 建築實景照片 23 張 | 使用者本人於校園實地拍攝（見 `public/buildings/credits.json`） | 全校 32 棟中的 23 棟，含 19 棟完整設施頁建築裡的 18 棟 |
+| 建築／地標座標與外形多邊形 | `FCU map.osm`（含 `<way>` 與 `<relation>` 多邊形、以及命名過的 `leisure=pitch/swimming_pool` 球場泳池） | OSM 測繪到 42 筆，其中 29 筆出現在官方地圖上（見下一列），只有這 29 筆會進 `buildings.json` |
+| 建築中英文正式名稱／代碼 | `map/fcu map buildings.jpg`（官方牌樓圖例）＋ `map/fcu map no.jpg`（官方牌樓地圖本體） | 29 個項目（含 5 項球場／泳池／運動場），見 `scripts/build_content.py` 的 `OFFICIAL_CODES` |
+| 建築實景照片 28 張 | 使用者本人於校園實地拍攝（見 `public/buildings/credits.json`） | 官方地圖上 29 個項目中的 28 個，只剩行政大樓沒有照片 |
 | 電梯 8 處 | `fcu_routing.osm` | 忠勤樓×4、圖書館×1、+3 處 |
 | AED 8 處 | `map/AED.pdf` | 體育館、育樂館、人言大樓、共善樓、行政大樓、商學大樓 |
 | 廁所 30 處、飲水機 28 處 | `FCU map.osm` | 全校散佈點位 |
@@ -135,27 +135,26 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 | 休憩空間 7 處 | `休憩空間與飲水機位置.pdf` | 圖書館、商學、行政、人文社會、人言 |
 | 教室編碼對照表 | `大樓與教室代碼.png` | 16 棟建築縮寫 |
 
-**約 19 棟建築有完整設施頁**（`src/data/buildings.json` 裡 `tier: "full"`），其餘
-建築（宿舍、招待所、警衛室等）可以正常導航抵達，但設施頁會顯示「資料建置中」，不會
-編造內容。要補資料：直接編輯 `scripts/build_content.py` 裡的 `CURATED` 字典，改完
-執行 `bash scripts/run_all.sh` 重新產生 `src/data/*.json`。
+**官方地圖上的 29 個項目，19 棟有完整設施頁**（`src/data/buildings.json` 裡
+`tier: "full"`：教室編碼、電梯、廁所、飲水機、AED、休憩空間都有）。其餘 10 個項目
+（行政二館、第一招待所、學思園、文華創意中心、逢甲智慧創新港、游泳池、綜合運動場、
+網球場、籃球場、排球場）可以正常導航抵達、也都有照片，但因為沒有可靠的室內設施資料
+來源，設施頁會顯示「資料建置中」，不會編造內容。要補資料：直接編輯
+`scripts/build_content.py` 裡的 `CURATED` 字典，改完執行 `bash scripts/run_all.sh`
+重新產生 `src/data/*.json`。
 
 **校門**：西門/大門口、東門、北門有實測座標（`scripts/build_gates.py`）。南門已於
 2026 年永久關閉並拆除，已從可選出發點清單、地圖標記與所有語言的介面文字中移除
 （見 `client/src/data/gates.json`）；底層路網節點沒有動，因為那個節點是一般路口，
 不是南門專屬的。
 
-**大樓照片**：全校 32 棟建築中的 23 棟（含 19 棟完整設施頁建築裡的 18 棟）已放入
-使用者本人實地拍攝的照片（JPG，於 `public/buildings/`），前端會直接顯示。目前只有
-行政大樓（唯一還沒有照片的完整設施頁建築）的 `photo` 欄位是 `null`，前端顯示
-「照片準備中」留白版位；另外 8 個沒有照片的項目（Bessie's Kitchen、警衛室、停車場、
-廣場等）因為沒有 `officialCode`，本來就不會出現在訪客/管理者的大樓下拉選單裡
-（見 `client/src/utils/buildingOptions.js` 的 `selectableBuildings()`），不影響
-實際可用的導覽/公告流程。照片來源與拍攝說明記錄在 `public/buildings/credits.json`。
-要再補照片：把圖檔
-放進 `public/buildings/`（注意不是 `src/assets/`，Vite 只會把 `public/` 底下的檔案
-原樣發布成靜態網址），再把對應建築在 `scripts/build_content.py` 的 `PHOTOS` 字典補上
-`"大樓中文名": "buildings/xxx.jpg"`。
+**大樓照片**：官方地圖上 29 個項目中的 28 個已放入使用者本人實地拍攝的照片（JPG，於
+`public/buildings/`），前端會直接顯示，只剩行政大樓的 `photo` 欄位是 `null`，前端
+顯示「照片準備中」留白版位。照片來源與拍攝說明記錄在 `public/buildings/credits.json`。
+要再補照片：把圖檔放進 `public/buildings/`（注意不是 `src/assets/`，Vite 只會把
+`public/` 底下的檔案原樣發布成靜態網址），在 `credits.json` 補上一筆來源記錄，再把
+對應建築在 `scripts/build_content.py` 的 `PHOTOS` 字典補上 `"大樓中文名":
+"buildings/xxx.jpg"`。
 
 ### 路網合併（技術細節，供之後維護參考）
 
@@ -336,10 +335,8 @@ Azure 資源：
 
 ## 已知限制 / 之後可以做的事
 
-- **大樓照片仍有 1 棟完整設施頁建築（行政大樓）留白**（其餘 23 棟已補上使用者本人
-  拍攝的實景照片，見上「資料從哪來」）。另有 8 個項目沒有照片，但這些項目本來就沒有
-  `officialCode`，不會出現在下拉選單或地圖上（見上「官方地圖範圍一致性」），不算
-  實際缺口。
+- **大樓照片仍有 1 個項目（行政大樓）留白**（官方地圖上其餘 28 個項目已全部補上
+  使用者本人拍攝的實景照片，見上「資料從哪來」）。
 - **文華鹿走路動畫是手繪 SVG 向量圖，不是點陣圖/貼圖序列幀**。如果之後有現成的貼圖
   序列幀圖檔，可以直接換掉 `DeerSprite.vue` 改用 `<img>` 序列或 CSS sprite sheet。
 - **Google 地圖相關連結用的是免金鑰的非官方網址技巧**（`output=embed` 內嵌／
@@ -348,8 +345,8 @@ Azure 資源：
 - **建築/校門名稱，以及設施地點描述文字，的日文、韓文、越南文、印尼文、泰文翻譯都是
   AI 最佳猜測翻譯**，不是逢甲大學官方多語標示（實體牌子只有中文＋英文）。設施地點
   描述涉及廁所/電梯/AED 等實際位置，正式對外使用前建議請通曉該語言的人抽查校對。
-- 13 棟次要建築（宿舍、招待所等）設施頁顯示「資料建置中」，可透過
-  `build_content.py` 補資料。
+- 10 個次要項目（行政二館、第一招待所等，見上「資料從哪來」）設施頁顯示
+  「資料建置中」，可透過 `build_content.py` 補資料。
 - 少數幾棟建築（如丘逢甲紀念館）因為建築入口節點是抓「幾何中心點最近的路網節點」，
   實際導航距離會比直線距離長一些（多繞路但仍然可達，不是斷路），如果要更精準可以
   改成手動指定各棟建築的實際大門節點。

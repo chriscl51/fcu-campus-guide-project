@@ -636,6 +636,14 @@ export const FACILITY_CONTENT_I18N = {
     id: 'Sekitar pos satpam dan iHub',
     th: 'รอบห้องรักษาความปลอดภัยและ iHub',
   },
+  '智慧創新港入口在西安街，開車請導航至凱旋路停車場。': {
+    en: 'The i-Hub entrance is on Xi\'an Street. If driving, navigate to the Kaixuan Road parking lot.',
+    ja: 'i-Hubの入口は西安街にあります。お車の場合は凱旋路駐車場までナビをご利用ください。',
+    ko: 'i-Hub 입구는 시안제(西安街)에 있습니다. 차량 이용 시 카이쉬안로(凱旋路) 주차장으로 안내해 주세요.',
+    vi: 'Lối vào i-Hub nằm trên đường Tây An (西安街). Nếu đi ô tô, vui lòng dẫn đường đến bãi đỗ xe đường Khải Toàn (凱旋路).',
+    id: 'Pintu masuk i-Hub berada di Jalan Xi\'an. Jika berkendara, arahkan navigasi ke tempat parkir Jalan Kaixuan.',
+    th: 'ทางเข้า i-Hub อยู่ที่ถนนซีอาน หากขับรถมา กรุณานำทางไปยังลานจอดรถถนนไข่ซวน',
+  },
 }
 
 /** Look up this locale's translation of a facility-location phrase, falling

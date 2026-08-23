@@ -81,6 +81,7 @@ export default {
     water: '정수기 위치',
     aed: 'AED 자동심장충격기',
     restArea: '휴게 공간',
+    accessNote: '출입구 및 교통 안내',
     tierFull: '전체 데이터',
     tierPartial: '데이터 준비 중',
     dataPending: '이 건물의 상세 시설 정보는 현재 준비 중입니다. 관련 정보가 있으시면 관리자 페이지를 통해 제공해 주세요.',

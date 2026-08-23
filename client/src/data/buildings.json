@@ -31,6 +31,7 @@
   "roomCode": "紀",
   "officialCode": "CMB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層行政單位辦公室旁的走廊茶水間",
@@ -97,6 +98,7 @@
   "roomCode": null,
   "officialCode": "HSB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "1樓（人社1F）"
@@ -160,6 +162,7 @@
   "roomCode": "人",
   "officialCode": "RYB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層兩側洗手間旁茶水間；B1晨曦廳與夕暉廳；1樓東西兩側交誼空間週邊",
@@ -232,6 +235,7 @@
   "roomCode": "V",
   "officialCode": "VH",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "B1西右（共善B1-02）、1F回收室附近（共善1F-04）"
@@ -307,6 +311,7 @@
   "roomCode": "商",
   "officialCode": "BB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "每層樓南北兩側走廊底端、洗手間旁（高容量配置）",
@@ -365,6 +370,7 @@
   "roomCode": "圖",
   "officialCode": "LIB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "3樓右（圖3F-1）、B1F南（圖B1-2）"
@@ -442,6 +448,7 @@
   "roomCode": "土",
   "officialCode": "CHB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層實驗室集中區的走廊盡頭或洗手間旁",
@@ -532,6 +539,7 @@
   "roomCode": "學",
   "officialCode": "XSB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層中央中庭電梯旁，或靠近洗手間的走廊盡頭",
@@ -582,6 +590,7 @@
   "roomCode": "工",
   "officialCode": "EGB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層中庭走廊電梯口或洗手間旁",
@@ -638,6 +647,7 @@
   "roomCode": "建",
   "officialCode": "AB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "3樓右（建築3F-2）"
@@ -687,6 +697,7 @@
   "roomCode": "忠",
   "officialCode": "JCB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層川堂兩側樓梯旁或洗手間走廊",
@@ -774,6 +785,7 @@
   "roomCode": "理",
   "officialCode": "SB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層兩側樓梯轉角或洗手間旁",
@@ -836,6 +848,7 @@
   "roomCode": "科航",
   "officialCode": "SAB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層中央洗手間外側走廊",
@@ -894,6 +907,7 @@
   "roomCode": null,
   "officialCode": "RB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "1樓後方後台休息區及洗手間旁"
@@ -945,6 +959,7 @@
   "roomCode": "行",
   "officialCode": "ADB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層樓梯口或主管辦公室旁的茶水間"
@@ -994,6 +1009,7 @@
   "roomCode": "語",
   "officialCode": "LB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層洗手間外的公共走廊"
@@ -1103,6 +1119,7 @@
   "roomCode": "資電",
   "officialCode": "IEB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層大電梯旁，或各系所辦公室旁的洗手間走廊",
@@ -1173,6 +1190,7 @@
   "roomCode": "電通",
   "officialCode": "ECB",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "各樓層靠近實驗室走廊的茶水間",
@@ -1347,6 +1365,7 @@
   "roomCode": null,
   "officialCode": "SC",
   "tier": "full",
+  "accessNote": null,
   "facilities": {
    "water": [
     "1樓、3樓、4樓的球場看台入口周邊及洗手間旁",
@@ -1362,127 +1381,6 @@
    "rest": []
   },
   "photo": "buildings/sports-center.jpg"
- },
- {
-  "id": "b479358943",
-  "nameZh": "Bessie's Kitchen",
-  "nameEn": "",
-  "lat": 24.180665833333336,
-  "lon": 120.64625781666666,
-  "entranceNode": "5308358641",
-  "footprint": [
-   [
-    24.1807042,
-    120.6461955
-   ],
-   [
-    24.1805962,
-    120.6461972
-   ],
-   [
-    24.1805978,
-    120.6463206
-   ],
-   [
-    24.1806867,
-    120.6463192
-   ],
-   [
-    24.1807059,
-    120.6463189
-   ],
-   [
-    24.1807042,
-    120.6461955
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": null,
-  "tier": "partial",
-  "facilities": null,
-  "photo": null
- },
- {
-  "id": "b751579242",
-  "nameZh": "內政部警政署刑事警察局中部打擊犯罪中心",
-  "nameEn": "Criminal investigation bureau Taichung Center",
-  "lat": 24.178502116666667,
-  "lon": 120.65114293333335,
-  "entranceNode": "-27124",
-  "footprint": [
-   [
-    24.178227,
-    120.6514687
-   ],
-   [
-    24.1787531,
-    120.6514773
-   ],
-   [
-    24.1787948,
-    120.651478
-   ],
-   [
-    24.1788047,
-    120.6504836
-   ],
-   [
-    24.1782061,
-    120.6504813
-   ],
-   [
-    24.178227,
-    120.6514687
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": null,
-  "tier": "partial",
-  "facilities": null,
-  "photo": null
- },
- {
-  "id": "b283040767",
-  "nameZh": "天主教立德中心",
-  "nameEn": "",
-  "lat": 24.180949942857143,
-  "lon": 120.64810527142855,
-  "entranceNode": "5295711731",
-  "footprint": [
-   [
-    24.1809834,
-    120.6481392
-   ],
-   [
-    24.180809,
-    120.6481457
-   ],
-   [
-    24.1808121,
-    120.6482474
-   ],
-   [
-    24.1810476,
-    120.6482387
-   ],
-   [
-    24.1810376,
-    120.6479122
-   ],
-   [
-    24.1809765,
-    120.6479145
-   ],
-   [
-    24.1809834,
-    120.6481392
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": null,
-  "tier": "partial",
-  "facilities": null,
-  "photo": null
  },
  {
   "id": "b405246747",
@@ -1516,43 +1414,53 @@
   "roomCode": null,
   "officialCode": "XSG",
   "tier": "partial",
+  "accessNote": null,
   "facilities": null,
   "photo": "buildings/xuesi-garden.jpg"
  },
  {
-  "id": "b402105183",
-  "nameZh": "攀岩場",
-  "nameEn": "",
-  "lat": 24.18123692,
-  "lon": 120.64837568,
-  "entranceNode": "7216722986",
+  "id": "b283040773",
+  "nameZh": "排球場",
+  "nameEn": "Volleyball Court",
+  "lat": 24.18022924285714,
+  "lon": 120.64989375714286,
+  "entranceNode": "-26942",
   "footprint": [
    [
-    24.1812618,
-    120.6484008
+    24.18033,
+    120.6497895
    ],
    [
-    24.1811996,
-    120.6484008
+    24.1803152,
+    120.6497898
    ],
    [
-    24.1811996,
-    120.648338
+    24.1802793,
+    120.6497904
    ],
    [
-    24.1812618,
-    120.648338
+    24.1800049,
+    120.6497951
    ],
    [
-    24.1812618,
-    120.6484008
+    24.1800101,
+    120.6501538
+   ],
+   [
+    24.1803352,
+    120.6501482
+   ],
+   [
+    24.18033,
+    120.6497895
    ]
   ],
   "roomCode": null,
-  "officialCode": null,
+  "officialCode": "VC",
   "tier": "partial",
+  "accessNote": null,
   "facilities": null,
-  "photo": null
+  "photo": "buildings/volleyball-court.jpg"
  },
  {
   "id": "b397387971",
@@ -1586,201 +1494,9 @@
   "roomCode": null,
   "officialCode": "WIC",
   "tier": "partial",
+  "accessNote": null,
   "facilities": null,
   "photo": "buildings/wenhwa-innovation.jpg"
- },
- {
-  "id": "b521721220",
-  "nameZh": "瓊園大廈",
-  "nameEn": "",
-  "lat": 24.17902629090909,
-  "lon": 120.64601840909091,
-  "entranceNode": "-27047",
-  "footprint": [
-   [
-    24.1790801,
-    120.6464143
-   ],
-   [
-    24.1789376,
-    120.6464192
-   ],
-   [
-    24.178902,
-    120.6463827
-   ],
-   [
-    24.1789,
-    120.6458033
-   ],
-   [
-    24.1789344,
-    120.6457461
-   ],
-   [
-    24.179072,
-    120.6457481
-   ],
-   [
-    24.1790763,
-    120.6457863
-   ],
-   [
-    24.1791173,
-    120.6457856
-   ],
-   [
-    24.1791155,
-    120.6458513
-   ],
-   [
-    24.1790739,
-    120.6458513
-   ],
-   [
-    24.1790801,
-    120.6464143
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": null,
-  "tier": "partial",
-  "facilities": null,
-  "photo": null
- },
- {
-  "id": "b314203286",
-  "nameZh": "碧根廣場",
-  "nameEn": "",
-  "lat": 24.178303709523814,
-  "lon": 120.6460737,
-  "entranceNode": "5342541414",
-  "footprint": [
-   [
-    24.1787351,
-    120.6459252
-   ],
-   [
-    24.1787355,
-    120.6462882
-   ],
-   [
-    24.1786492,
-    120.6462856
-   ],
-   [
-    24.1784599,
-    120.6461026
-   ],
-   [
-    24.1783756,
-    120.6462204
-   ],
-   [
-    24.1783251,
-    120.6462282
-   ],
-   [
-    24.1783184,
-    120.6462604
-   ],
-   [
-    24.178263,
-    120.646257
-   ],
-   [
-    24.1782569,
-    120.6462915
-   ],
-   [
-    24.1781689,
-    120.6462936
-   ],
-   [
-    24.1780504,
-    120.6461716
-   ],
-   [
-    24.1780399,
-    120.646049
-   ],
-   [
-    24.17799,
-    120.6460527
-   ],
-   [
-    24.1779937,
-    120.645841
-   ],
-   [
-    24.1780345,
-    120.64579
-   ],
-   [
-    24.1781346,
-    120.6457898
-   ],
-   [
-    24.1781337,
-    120.6459015
-   ],
-   [
-    24.1782088,
-    120.6459025
-   ],
-   [
-    24.1783371,
-    120.6460439
-   ],
-   [
-    24.1784325,
-    120.6459278
-   ],
-   [
-    24.1787351,
-    120.6459252
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": null,
-  "tier": "partial",
-  "facilities": null,
-  "photo": null
- },
- {
-  "id": "b405072911",
-  "nameZh": "第一停車場(一棚)",
-  "nameEn": "",
-  "lat": 24.178141840000002,
-  "lon": 120.64750490000002,
-  "entranceNode": "7265639306",
-  "footprint": [
-   [
-    24.1781659,
-    120.6472449
-   ],
-   [
-    24.1781832,
-    120.6478924
-   ],
-   [
-    24.1781057,
-    120.6478949
-   ],
-   [
-    24.1780885,
-    120.6472474
-   ],
-   [
-    24.1781659,
-    120.6472449
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": null,
-  "tier": "partial",
-  "facilities": null,
-  "photo": null
  },
  {
   "id": "b283040784",
@@ -1814,8 +1530,96 @@
   "roomCode": null,
   "officialCode": "HH",
   "tier": "partial",
+  "accessNote": null,
   "facilities": null,
   "photo": "buildings/history-house.jpg"
+ },
+ {
+  "id": "b283040774",
+  "nameZh": "籃球場",
+  "nameEn": "Basketball Court",
+  "lat": 24.18016206,
+  "lon": 120.64924242000002,
+  "entranceNode": "-26919",
+  "footprint": [
+   [
+    24.1802668,
+    120.6488819
+   ],
+   [
+    24.1802775,
+    120.6497793
+   ],
+   [
+    24.1800049,
+    120.6497832
+   ],
+   [
+    24.1799943,
+    120.6488858
+   ],
+   [
+    24.1802668,
+    120.6488819
+   ]
+  ],
+  "roomCode": null,
+  "officialCode": "BC",
+  "tier": "partial",
+  "accessNote": null,
+  "facilities": null,
+  "photo": "buildings/basketball-court.jpg"
+ },
+ {
+  "id": "athletic-field-manual",
+  "nameZh": "綜合運動場",
+  "nameEn": "Athletic Field",
+  "lat": 24.1807503,
+  "lon": 120.6491958,
+  "entranceNode": "-27293",
+  "footprint": [],
+  "roomCode": null,
+  "officialCode": "AF",
+  "tier": "partial",
+  "accessNote": null,
+  "facilities": null,
+  "photo": "buildings/stadium.jpg"
+ },
+ {
+  "id": "b283040775",
+  "nameZh": "網球場",
+  "nameEn": "Tennis Court",
+  "lat": 24.180176,
+  "lon": 120.64855109999999,
+  "entranceNode": "-26945",
+  "footprint": [
+   [
+    24.1802996,
+    120.6483392
+   ],
+   [
+    24.18031,
+    120.6488613
+   ],
+   [
+    24.1799906,
+    120.6488689
+   ],
+   [
+    24.1799802,
+    120.6483469
+   ],
+   [
+    24.1802996,
+    120.6483392
+   ]
+  ],
+  "roomCode": null,
+  "officialCode": "TC",
+  "tier": "partial",
+  "accessNote": null,
+  "facilities": null,
+  "photo": "buildings/tennis-court.jpg"
  },
  {
   "id": "r6032176",
@@ -1865,51 +1669,45 @@
   "roomCode": null,
   "officialCode": "ADB(II)",
   "tier": "partial",
+  "accessNote": null,
   "facilities": null,
   "photo": "buildings/administration-2.jpg"
  },
  {
-  "id": "b405071374",
-  "nameZh": "逢甲大學大門警衛室",
-  "nameEn": "",
-  "lat": 24.17873591428571,
-  "lon": 120.64658654285714,
-  "entranceNode": "-27183",
+  "id": "b283040779",
+  "nameZh": "逢甲大學游泳池",
+  "nameEn": "Swimming Pool",
+  "lat": 24.181580560000004,
+  "lon": 120.64957262,
+  "entranceNode": "-27112",
   "footprint": [
    [
-    24.1787657,
-    120.6465498
+    24.1816718,
+    120.6493671
    ],
    [
-    24.1787654,
-    120.6465927
+    24.1814452,
+    120.6493663
    ],
    [
-    24.1787334,
-    120.6465923
+    24.1814437,
+    120.6498809
    ],
    [
-    24.1787318,
-    120.6466357
+    24.1816703,
+    120.6498817
    ],
    [
-    24.1786939,
-    120.6466361
-   ],
-   [
-    24.1786955,
-    120.6465494
-   ],
-   [
-    24.1787657,
-    120.6465498
+    24.1816718,
+    120.6493671
    ]
   ],
   "roomCode": null,
-  "officialCode": null,
+  "officialCode": "SP",
   "tier": "partial",
+  "accessNote": null,
   "facilities": null,
-  "photo": null
+  "photo": "buildings/swimming-pool.jpg"
  },
  {
   "id": "b283040780",
@@ -1951,6 +1749,7 @@
   "roomCode": null,
   "officialCode": "IH",
   "tier": "partial",
+  "accessNote": "智慧創新港入口在西安街，開車請導航至凱旋路停車場。",
   "facilities": null,
   "photo": "buildings/ihub-innovation.jpg"
  }

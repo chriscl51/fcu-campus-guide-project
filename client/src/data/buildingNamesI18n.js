@@ -35,6 +35,11 @@ export const BUILDING_NAMES_I18N = {
   b283040778: { ja: '体育館', ko: '체육관', vi: 'Trung tâm Thể thao', id: 'Gedung Olahraga', th: 'อาคารกีฬา' }, // 體育館
   b283040780: { ja: '逢甲スマートイノベーション港（i-Hub）', ko: '펑자 스마트혁신허브(i-Hub)', vi: 'Cảng Đổi mới Thông minh i-Hub', id: 'i-Hub Pelabuhan Inovasi Cerdas', th: 'ไอ-ฮับ ศูนย์นวัตกรรมอัจฉริยะ' }, // 逢甲智慧創新港
   r20159319: { ja: '共善楼（ヴァーチュオージホール）', ko: '공산루(Virtuosi Hall)', vi: 'Tòa nhà Virtuosi (Cộng Thiện Lâu)', id: 'Gedung Virtuosi (Gongshan)', th: 'อาคารกงซั่น (Virtuosi Hall)' }, // 共善樓
+  b283040779: { ja: '逢甲大学プール', ko: '펑자대학교 수영장', vi: 'Hồ bơi Đại học Phùng Giáp', id: 'Kolam Renang Universitas Feng Chia', th: 'สระว่ายน้ำมหาวิทยาลัยเฟิงเจี่ย' }, // 逢甲大學游泳池
+  'athletic-field-manual': { ja: '総合運動場', ko: '종합운동장', vi: 'Sân vận động tổng hợp', id: 'Lapangan Atletik', th: 'สนามกีฬาอเนกประสงค์' }, // 綜合運動場
+  b283040775: { ja: 'テニスコート', ko: '테니스장', vi: 'Sân Tennis', id: 'Lapangan Tenis', th: 'สนามเทนนิส' }, // 網球場
+  b283040774: { ja: 'バスケットコート', ko: '농구장', vi: 'Sân Bóng rổ', id: 'Lapangan Basket', th: 'สนามบาสเกตบอล' }, // 籃球場
+  b283040773: { ja: 'バレーコート', ko: '배구장', vi: 'Sân Bóng chuyền', id: 'Lapangan Voli', th: 'สนามวอลเลย์บอล' }, // 排球場
 }
 
 export const GATE_NAMES_I18N = {

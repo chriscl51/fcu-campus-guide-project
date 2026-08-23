@@ -81,6 +81,7 @@ export default {
     water: '給水機の位置',
     aed: 'AED（自動体外式除細動器）',
     restArea: '休憩スペース',
+    accessNote: '出入口と交通',
     tierFull: 'データ完備',
     tierPartial: 'データ準備中',
     dataPending: 'この建物の詳細な設備情報は現在整備中です。関連情報をお持ちの方は、管理者ページよりご提供いただけると幸いです。',
