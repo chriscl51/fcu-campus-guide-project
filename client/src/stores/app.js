@@ -45,6 +45,8 @@ export const useAppStore = defineStore('app', {
     destinationBuilding(state) {
       const building = buildings.find((b) => b.id === state.destinationId)
       if (building) return building
+      const gate = gates.find((g) => g.id === state.destinationId)
+      if (gate) return gate
       const lot = parkingLots.find((p) => p.id === state.destinationId)
       if (lot) return { ...lot, entranceNode: nearestNode(lot.lat, lot.lon) }
       return null

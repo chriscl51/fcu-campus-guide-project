@@ -67,7 +67,6 @@ const totalLen = computed(() => cumulative.value[cumulative.value.length - 1] ||
 
 const deerX = ref(routePoints.value[0]?.x ?? 0)
 const deerY = ref(routePoints.value[0]?.y ?? 0)
-const deerFacing = ref('right')
 const progress = ref(0) // 0..1
 const arrived = ref(false)
 
@@ -83,7 +82,6 @@ function positionAt(frac) {
   const segFrac = (target - cum[i - 1]) / segLen
   const x = prev.x + (cur.x - prev.x) * segFrac
   const y = prev.y + (cur.y - prev.y) * segFrac
-  if (cur.x !== prev.x) deerFacing.value = cur.x >= prev.x ? 'right' : 'left'
   return { x, y }
 }
 
@@ -207,7 +205,7 @@ function directionLabel(step) {
           :height="DEER_H"
           class="deer-fo"
         >
-          <DeerSprite :size="DEER_SIZE" :facing="deerFacing" walking />
+          <DeerSprite :size="DEER_SIZE" />
         </foreignObject>
       </svg>
 

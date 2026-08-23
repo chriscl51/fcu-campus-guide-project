@@ -80,7 +80,7 @@ export default {
     accessibleNote: '(Untuk toilet ramah difabel, silakan lihat peta aksesibilitas kampus atau tanyakan di meja resepsionis gedung)',
     water: 'Lokasi Dispenser Air Minum',
     aed: 'AED (Defibrilator Eksternal Otomatis)',
-    restArea: 'Area Istirahat',
+    nearbyRestArea: 'Area Istirahat Terdekat',
     floors: 'Denah Lantai',
     accessNote: 'Akses & Parkir',
     tierFull: 'Data lengkap',

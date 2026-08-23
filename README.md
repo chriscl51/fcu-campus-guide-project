@@ -144,10 +144,8 @@ npm run dev            # 同時跑 client (Vite) 和 server (Express)
 `scripts/build_content.py` 裡的 `CURATED` 字典，改完執行 `bash scripts/run_all.sh`
 重新產生 `src/data/*.json`。
 
-**校門**：西門/大門口、東門、北門有實測座標（`scripts/build_gates.py`）。南門已於
-2026 年永久關閉並拆除，已從可選出發點清單、地圖標記與所有語言的介面文字中移除
-（見 `client/src/data/gates.json`）；底層路網節點沒有動，因為那個節點是一般路口，
-不是南門專屬的。
+**校門**：西門/大門口、東門、北門有實測座標（`scripts/build_gates.py`），可作為
+出發地或目的地。
 
 **大樓照片**：官方地圖上全部 29 個項目都已放入使用者本人實地拍攝的照片（JPG，於
 `public/buildings/`），前端會直接顯示。照片來源與拍攝說明記錄在

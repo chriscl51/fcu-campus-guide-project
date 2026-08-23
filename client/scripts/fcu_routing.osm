@@ -1026,6 +1026,7 @@
     <tag k='emergency' v='fire_hydrant' />
   </node>
   <node id='-27266' action='modify' visible='true' lat='24.1788058385' lon='120.64669722449' />
+  <node id='-3001' action='modify' visible='true' lat='24.178405' lon='120.64861' />
   <node id='-27267' action='modify' visible='true' lat='24.17822563873' lon='120.65200002449' />
   <node id='-27268' action='modify' visible='true' lat='24.17822373873' lon='120.65372752449' />
   <node id='-27269' action='modify' visible='true' lat='24.17808853878' lon='120.65200342449' />
@@ -2635,5 +2636,22 @@
     <tag k='oneway' v='yes' />
     <tag k='service' v='parking_aisle' />
     <tag k='surface' v='asphalt' />
+  </way>
+  <!-- Surveyed walking connections: West Gate into 榕榕大道, then south to
+       the Memorial Hall approach at the Library frontage. -->
+  <way id='-2001' action='modify' visible='true'>
+    <nd ref='4075385713' />
+    <nd ref='-27266' />
+    <tag k='highway' v='footway' />
+    <tag k='foot' v='yes' />
+    <tag k='name' v='榕榕大道' />
+  </way>
+  <way id='-2002' action='modify' visible='true'>
+    <nd ref='-27264' />
+    <nd ref='-3001' />
+    <nd ref='-27121' />
+    <tag k='highway' v='footway' />
+    <tag k='foot' v='yes' />
+    <tag k='name' v='丘逢甲紀念館步道' />
   </way>
 </osm>

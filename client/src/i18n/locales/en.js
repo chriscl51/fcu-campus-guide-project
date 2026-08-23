@@ -80,7 +80,7 @@ export default {
     accessibleNote: '(For accessible restrooms, please check the campus accessibility map or ask at the building front desk)',
     water: 'Drinking Water Stations',
     aed: 'AED (Automated External Defibrillator)',
-    restArea: 'Rest Areas',
+    nearbyRestArea: 'Nearby Rest Areas',
     floors: 'Floor Directory',
     accessNote: 'Access & Parking',
     tierFull: 'Full data',

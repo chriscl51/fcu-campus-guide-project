@@ -13,12 +13,9 @@
 //
 // TWO THINGS TO KNOW ABOUT THE ARTWORK
 // ------------------------------------
-// 1. IT IS ROTATED ~90°. North points RIGHT on this map, not up. (North Gate
-//    北門 is drawn on the right edge, South Gate 南門 on the left, Main/West
-//    Gate 西門 at the top, East Gate 東門 at the bottom.) The little compass
-//    rose drawn at the bottom-left points "up", which is simply wrong for this
-//    artwork — don't be misled by it. The affine below encodes the real
-//    rotation, measured from the data, so nothing here depends on that compass.
+// 1. The artwork is georeferenced to the surveyed campus coordinates. Its
+//    compass rose at bottom-left points right toward geographic north and the
+//    North Gate, so the affine below follows the map's actual orientation.
 // 2. IT IS AN ILLUSTRATION, NOT A SURVEY. Buildings are idealised into neat
 //    rows and stretched to fill the frame (the fit is ~12% anisotropic). So a
 //    single affine cannot place every building perfectly — see the anchoring
@@ -60,8 +57,8 @@ export const PX_PER_METER = geo.pxPerMeter
  * (0,0 = top-left of the image; MAP_IMAGE.width x MAP_IMAGE.height).
  */
 export function projectMap(lat, lon) {
-  const e = lon * mLon - E0
-  const n = lat * mLat - N0
+  const e = (lon - E0) * mLon
+  const n = (lat - N0) * mLat
   return {
     x: AX[0] * e + AX[1] * n + AX[2],
     y: AY[0] * e + AY[1] * n + AY[2],

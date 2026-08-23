@@ -2,8 +2,7 @@
 """
 Campus gates selectable as an origin point (spec: "從哪個門...出發").
 3 gates (西門/東門/北門), each with a real surveyed node in the OSM data.
-南門 (south gate) has been permanently closed and removed from campus, so it
-is no longer included here. Produces src/data/gates.json.
+Produces src/data/gates.json.
 """
 import json
 import math
@@ -35,7 +34,7 @@ def nearest_node(lat, lon):
 
 
 GATES = [
-    {"id": "gate-west", "nameZh": "西門（大門口）", "nameEn": "West Gate (Main Entrance)", "lat": 24.1788149, "lon": 120.6465614},
+    {"id": "gate-west", "nameZh": "西門（大門口）", "nameEn": "West Gate (Main Entrance)", "lat": 24.1788149, "lon": 120.6465614, "photo": "buildings/west-gate.jpg"},
     {"id": "gate-east", "nameZh": "東門", "nameEn": "East Gate", "lat": 24.1784066, "lon": 120.6502149},
     {"id": "gate-north", "nameZh": "北門", "nameEn": "North Gate", "lat": 24.1818831, "lon": 120.648129},
 ]

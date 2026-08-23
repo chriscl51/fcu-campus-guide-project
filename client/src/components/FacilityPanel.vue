@@ -52,7 +52,7 @@ const facilitySections = computed(() => {
     { key: 'restrooms', labelKey: 'facility.restrooms', items: f.restrooms },
     { key: 'accessibleRestrooms', labelKey: 'facility.accessibleRestrooms', items: f.accessibleRestrooms },
     { key: 'water', labelKey: 'facility.water', items: f.water },
-    { key: 'rest', labelKey: 'facility.restArea', items: f.rest },
+    { key: 'rest', labelKey: 'facility.nearbyRestArea', items: f.rest },
     { key: 'floors', labelKey: 'facility.floors', items: f.floors },
   ].filter((section) => Array.isArray(section.items) && section.items.length > 0)
 })

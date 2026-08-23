@@ -80,7 +80,7 @@ export default {
     accessibleNote: '(Nếu cần nhà vệ sinh cho người khuyết tật, vui lòng tham khảo bản đồ tiếp cận của trường hoặc hỏi tại quầy lễ tân của tòa nhà)',
     water: 'Vị trí máy nước uống',
     aed: 'AED (Máy khử rung tim tự động ngoài lồng ngực)',
-    restArea: 'Khu vực nghỉ ngơi',
+    nearbyRestArea: 'Khu vực nghỉ ngơi lân cận',
     floors: 'Sơ đồ các tầng',
     accessNote: 'Lối vào & Đỗ xe',
     tierFull: 'Dữ liệu đầy đủ',

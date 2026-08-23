@@ -96,9 +96,14 @@ function onSubmit() {
         <label for="destination-select">{{ $t('select.destinationLabel') }}</label>
         <select id="destination-select" :value="store.destinationId ?? ''" @change="onDestinationChange">
           <option value="" disabled>{{ $t('select.destinationPlaceholder') }}</option>
+          <optgroup :label="bt('select.gatesGroup')">
+            <option v-for="g in gates" :key="g.id" :value="g.id">{{ buildingLabel(g) }}</option>
+          </optgroup>
+          <optgroup :label="bt('select.buildingsGroup')">
           <option v-for="b in sortedBuildings" :key="b.id" :value="b.id">
             {{ buildingLabel(b) }}
           </option>
+          </optgroup>
         </select>
       </div>
 

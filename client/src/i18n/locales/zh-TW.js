@@ -81,7 +81,7 @@ export default {
     accessibleNote: '（如需無障礙廁所，請參考校園無障礙平面圖或洽大樓服務台）',
     water: '飲水機位置',
     aed: 'AED 自動體外心臟電擊去顫器',
-    restArea: '休憩空間',
+    nearbyRestArea: '附近休憩空間',
     floors: '樓層配置',
     accessNote: '出入口與交通',
     tierFull: '完整資料',
