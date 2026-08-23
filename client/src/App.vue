@@ -28,7 +28,8 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
   <div class="app-shell">
     <header class="app-topbar">
       <router-link to="/" class="brand">
-        <span class="brand-name">{{ $t('common.appName') }}</span>
+        <span class="brand-name">{{ $t('common.appNameLocal') }}</span>
+        <span class="brand-suffix">{{ $t('common.appNameSuffix') }}</span>
       </router-link>
       <div class="topbar-right">
         <LanguageSwitcher />
@@ -62,8 +63,9 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
 }
 .brand {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.45em;
   color: #fff;
   text-decoration: none;
   font-weight: 700;
@@ -71,12 +73,10 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
      --intro-heading-size) — kept in sync manually since that variable is
      scoped to IntroSplash's own <style>. */
   font-size: clamp(1.25rem, 4vw, 2.1rem);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   min-width: 0;
 }
-.brand-name {
+.brand-name,
+.brand-suffix {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -96,6 +96,10 @@ onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
     flex: 1 1 100%;
     justify-content: center;
     text-align: center;
+  }
+  .brand-suffix {
+    flex-basis: 100%;
+    justify-content: center;
   }
   .topbar-right {
     flex: 1 1 100%;

@@ -1,7 +1,7 @@
 // Source-of-truth locale — every other locale file mirrors this key structure.
 export default {
   common: {
-    appName: '逢甲導航文華鹿',
+    appNameLocal: '逢甲導航文華鹿',
     next: '下一步',
     back: '上一步',
     confirm: '確認',

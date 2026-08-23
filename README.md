@@ -1,4 +1,4 @@
-# FCU Campus Navigation Service（文華鹿帶路）
+# FCU Campus Navigation Service（逢甲導航文華鹿）
 
 逢甲大學新生／訪客校內導覽網站。核心功能（地圖／路線規劃／設施資訊）是純前端靜態
 站，不需要後端資料庫；管理者後台登入、公告、活動這幾個功能則有一個 Node.js +

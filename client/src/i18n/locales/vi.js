@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: 'Hươu Wenhwa Dẫn Đường FCU Campus Navigation Service',
+    appNameLocal: 'Hươu Wenhwa Dẫn Đường',
     next: 'Tiếp theo',
     back: 'Quay lại',
     confirm: 'Xác nhận',
