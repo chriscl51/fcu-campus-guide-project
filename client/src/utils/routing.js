@@ -148,49 +148,40 @@ export function simplifyPath(points, toleranceMeters = 8) {
  * walk's real shape rather than every small wiggle in the surveyed geometry;
  * a turn is emitted only when the bearing changes by more than TURN_THRESHOLD
  * degrees between simplified segments.
+ *
+ * initialBearing (optional): the direction a walker is already facing at
+ * points[0], e.g. a gate's `facingBearing` (see data/gates.json) — the
+ * bearing of its own most direct/straight-through path, empirically measured
+ * from survey data and confirmed against real walking directions. Without
+ * it, the very first segment out of the start point can never register as a
+ * turn (there's nothing to compare it against), so routes leaving a gate
+ * whose real onward path immediately bends silently dropped that first turn.
  */
 const TURN_THRESHOLD = 30
 const TURN_CLUSTER_DISTANCE_METERS = 70
 
-export function buildDirections(rawPoints, preferredTurn = null) {
-  const points = simplifyPath(rawPoints, 8)
-  if (points.length < 2) return [{ type: 'arrive', distanceMeters: 0 }]
-
-  if (preferredTurn) {
-    let turnIndex = -1
-    let previousBearing = bearing(points[0], points[1])
-    for (let i = 1; i < points.length - 1; i++) {
-      const currentBearing = bearing(points[i], points[i + 1])
-      let delta = currentBearing - previousBearing
-      delta = ((delta + 540) % 360) - 180
-      if (Math.abs(delta) > TURN_THRESHOLD) {
-        turnIndex = i
-        break
-      }
-      previousBearing = currentBearing
+export function buildDirections(rawPoints, initialBearing = null) {
+  let points = simplifyPath(rawPoints, 8)
+  // Always keep the final raw approach point distinct from whatever precedes
+  // it, so a short last-moment turn off a through-path into a destination's
+  // actual door (e.g. a building set just a few metres off the main path) is
+  // still described — Douglas-Peucker alone would fold anything under the 8m
+  // tolerance into the preceding straight line and silently drop that turn.
+  if (rawPoints.length >= 3) {
+    const lastRaw = rawPoints[rawPoints.length - 1]
+    const secondLastRaw = rawPoints[rawPoints.length - 2]
+    if (points[points.length - 1] === lastRaw && points[points.length - 2] !== secondLastRaw) {
+      points = [...points.slice(0, -1), secondLastRaw, lastRaw]
     }
-    let beforeTurn = 0
-    let afterTurn = 0
-    if (turnIndex >= 0) {
-      for (let i = 0; i < turnIndex; i++) beforeTurn += haversine(points[i], points[i + 1])
-      for (let i = turnIndex; i < points.length - 1; i++) afterTurn += haversine(points[i], points[i + 1])
-    } else {
-      // A short route can simplify to a nearly straight line even when the
-      // surveyed campus instruction still has a known entrance turn.
-      for (let i = 0; i < points.length - 1; i++) beforeTurn += haversine(points[i], points[i + 1])
-    }
-    return [
-      { type: 'straight', distanceMeters: Math.round(beforeTurn) },
-      { type: preferredTurn, distanceMeters: 0 },
-      { type: 'straight', distanceMeters: Math.round(afterTurn) },
-      { type: 'arrive', distanceMeters: 0 },
-    ]
   }
+  if (points.length < 2) return [{ type: 'arrive', distanceMeters: 0 }]
 
   const steps = []
   let segStart = 0
   let lastTurnIndex = -1
-  let prevBearing = bearing(points[0], points[1])
+  let lastTurnSign = 0
+  let prevBearing = initialBearing ?? bearing(points[0], points[1])
+  const startI = initialBearing === null ? 1 : 0
 
   const pushStep = (type, endIdx) => {
     let d = 0
@@ -198,25 +189,32 @@ export function buildDirections(rawPoints, preferredTurn = null) {
     if (d >= 1) steps.push({ type, distanceMeters: Math.round(d) })
   }
 
-  for (let i = 1; i < points.length - 1; i++) {
+  for (let i = startI; i < points.length - 1; i++) {
     const b = bearing(points[i], points[i + 1])
     let delta = b - prevBearing
     delta = ((delta + 540) % 360) - 180 // normalize to [-180,180]
     if (Math.abs(delta) > TURN_THRESHOLD) {
+      const sign = delta > 0 ? 1 : -1
       let distanceSinceTurn = 0
       if (lastTurnIndex >= 0) {
         for (let j = lastTurnIndex; j < i; j++) {
           distanceSinceTurn += haversine(points[j], points[j + 1])
         }
       }
-      if (lastTurnIndex >= 0 && distanceSinceTurn <= TURN_CLUSTER_DISTANCE_METERS) {
+      // Only merge this turn into the previous one when they curve the SAME
+      // way (continuing to round one corner/bend, which a walker perceives
+      // as a single turn) and are close together. A nearby turn the OPPOSITE
+      // way is a real jog/kink — e.g. left then shortly after right — that a
+      // walker must navigate as two distinct turns, so it's always kept.
+      if (lastTurnIndex >= 0 && distanceSinceTurn <= TURN_CLUSTER_DISTANCE_METERS && sign === lastTurnSign) {
         prevBearing = b
         continue
       }
       pushStep('straight', i)
       segStart = i
       lastTurnIndex = i
-      steps.push({ type: delta > 0 ? 'right' : 'left', distanceMeters: 0 })
+      lastTurnSign = sign
+      steps.push({ type: sign > 0 ? 'right' : 'left', distanceMeters: 0 })
     }
     prevBearing = b
   }
