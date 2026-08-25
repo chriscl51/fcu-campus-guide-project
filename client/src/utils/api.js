@@ -9,7 +9,7 @@
 // these functions resolve to an empty/null result instead of throwing, so
 // the rest of the app keeps working normally with that one feature simply
 // not showing anything.
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001'
+const API_BASE = import.meta?.env?.VITE_API_BASE || 'http://localhost:3001'
 
 async function safeFetch(path, options) {
   try {
@@ -84,33 +84,6 @@ export function createAdmin(token, username, password) {
 
 export function deleteAdmin(token, id) {
   return authFetch(`/api/auth/admins/${id}`, { method: 'DELETE', headers: authHeaders(token) })
-}
-
-export function fetchAnnouncements() {
-  return safeFetch('/api/announcements')
-}
-
-export function createAnnouncement(announcement, token) {
-  return safeFetch('/api/announcements', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
-    body: JSON.stringify(announcement),
-  })
-}
-
-export function updateAnnouncement(id, announcement, token) {
-  return safeFetch(`/api/announcements/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
-    body: JSON.stringify(announcement),
-  })
-}
-
-export function deleteAnnouncement(id, token) {
-  return safeFetch(`/api/announcements/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders(token),
-  })
 }
 
 export function fetchUpcomingEvents() {

@@ -10,7 +10,7 @@ import AdminView from '../views/AdminView.vue'
 // built JS, so it's obscurity against casual browsing, not real access
 // control — the actual access control is the account login behind it
 // (see AdminView.vue / server/auth.js).
-const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || '/admin'
+const ADMIN_PATH = import.meta?.env?.VITE_ADMIN_PATH || '/admin'
 
 // Hash history means the real admin URL is "/#" + ADMIN_PATH — a visitor who
 // types or bookmarks the bare pathname (no hash) never reaches vue-router

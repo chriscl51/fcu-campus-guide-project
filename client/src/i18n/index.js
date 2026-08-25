@@ -1,11 +1,11 @@
 import { createI18n } from 'vue-i18n'
-import zhTW from './locales/zh-TW'
-import en from './locales/en'
-import ja from './locales/ja'
-import ko from './locales/ko'
-import vi from './locales/vi'
-import id from './locales/id'
-import th from './locales/th'
+import zhTW from './locales/zh-TW.js'
+import en from './locales/en.js'
+import ja from './locales/ja.js'
+import ko from './locales/ko.js'
+import vi from './locales/vi.js'
+import id from './locales/id.js'
+import th from './locales/th.js'
 
 export const SUPPORTED_LOCALES = ['zh-TW', 'en', 'ja', 'ko', 'vi', 'id', 'th']
 
@@ -27,8 +27,16 @@ const STORAGE_KEY = 'fcu-guide-locale'
  * one we support (spec item 7: "若不在上述語系內則自動顯示英文").
  */
 export function detectLocale() {
-  const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved && SUPPORTED_LOCALES.includes(saved)) return saved
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      if (saved && SUPPORTED_LOCALES.includes(saved)) return saved
+    } catch {
+      // ignore
+    }
+  }
+
+  if (typeof navigator === 'undefined') return 'zh-TW'
 
   const candidates = navigator.languages && navigator.languages.length
     ? navigator.languages

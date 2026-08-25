@@ -1,1850 +1,738 @@
 [
- {
-  "id": "b283040785",
-  "nameZh": "丘逢甲紀念館",
-  "nameEn": "Chiu Feng-Chia Memorial Hall",
-  "lat": 24.178280039999997,
-  "lon": 120.64819836,
-  "entranceNode": "-27121",
-  "footprint": [
-   [
-    24.1783737,
-    120.6479444
-   ],
-   [
-    24.1781258,
-    120.6479509
-   ],
-   [
-    24.1781395,
-    120.6485793
-   ],
-   [
-    24.1783875,
-    120.6485728
-   ],
-   [
-    24.1783737,
-    120.6479444
-   ]
-  ],
-  "roomCode": "紀",
-  "officialCode": "CMB",
-  "mapNumber": 3,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層行政單位辦公室旁的走廊茶水間",
-    "2樓（紀念2F）、5樓（紀念5F）"
-   ],
-   "restrooms": [
-    "各樓層行政單位辦公室旁"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040785",
+    "nameZh": "丘逢甲紀念館",
+    "nameEn": "Chiu Feng-Chia Memorial Hall",
+    "lat": 24.178465,
+    "lon": 120.648257,
+    "roomCode": "紀",
+    "officialCode": "CMB",
+    "mapNumber": 3,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層行政單位辦公室旁的走廊茶水間",
+        "2樓（紀念2F）、5樓（紀念5F）"
+      ],
+      "restrooms": [
+        "各樓層行政單位辦公室旁"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/chiu-fengchia-memorial.jpg"
   },
-  "photo": "buildings/chiu-fengchia-memorial.jpg"
- },
- {
-  "id": "b283040771",
-  "nameZh": "人文社會館",
-  "nameEn": "Humanities/Social Sciences Building",
-  "lat": 24.179813369999998,
-  "lon": 120.64939622,
-  "entranceNode": "-26920",
-  "footprint": [
-   [
-    24.1798984,
-    120.6490692
-   ],
-   [
-    24.1797166,
-    120.6490745
-   ],
-   [
-    24.1797223,
-    120.6493073
-   ],
-   [
-    24.1797284,
-    120.6495604
-   ],
-   [
-    24.1797517,
-    120.6495597
-   ],
-   [
-    24.179753,
-    120.6496123
-   ],
-   [
-    24.1798781,
-    120.6496086
-   ],
-   [
-    24.1798767,
-    120.649551
-   ],
-   [
-    24.1799101,
-    120.64955
-   ],
-   [
-    24.1798984,
-    120.6490692
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "HSB",
-  "mapNumber": 14,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "1樓（人社1F）"
-   ],
-   "restrooms": [
-    "1樓"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [
-    "B1（共善學園內）新愉園：校內教職員生專屬，規劃沙發區、高腳椅輕食區與團體餐桌。週一至週五07:30–19:00（週末與國定假日不開放）"
-   ],
-   "floors": []
+  {
+    "id": "b283040771",
+    "nameZh": "人文社會館",
+    "nameEn": "Humanities/Social Sciences Building",
+    "lat": 24.17992273075494,
+    "lon": 120.64951227280159,
+    "roomCode": null,
+    "officialCode": "HSB",
+    "mapNumber": 14,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "1樓（人社1F）"
+      ],
+      "restrooms": [
+        "1樓"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [
+        "B1（共善學園內）新愉園：校內教職員生專屬，規劃沙發區、高腳椅輕食區與團體餐桌。週一至週五07:30–19:00（週末與國定假日不開放）"
+      ],
+      "floors": []
+    },
+    "photo": "buildings/humanities-social.jpg"
   },
-  "photo": "buildings/humanities-social.jpg"
- },
- {
-  "id": "b283040764",
-  "nameZh": "人言大樓",
-  "nameEn": "Renyan Building",
-  "lat": 24.17971498888889,
-  "lon": 120.64866123333331,
-  "entranceNode": "-26875",
-  "footprint": [
-   [
-    24.1798525,
-    120.6484171
-   ],
-   [
-    24.1796405,
-    120.6484211
-   ],
-   [
-    24.1796408,
-    120.6484396
-   ],
-   [
-    24.1796443,
-    120.6486611
-   ],
-   [
-    24.1796449,
-    120.6486995
-   ],
-   [
-    24.1796488,
-    120.6489436
-   ],
-   [
-    24.1796493,
-    120.648978
-   ],
-   [
-    24.1798613,
-    120.648974
-   ],
-   [
-    24.1798525,
-    120.6484171
-   ]
-  ],
-  "roomCode": "人",
-  "officialCode": "RYB",
-  "mapNumber": 13,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層兩側洗手間旁茶水間；B1晨曦廳與夕暉廳；1樓東西兩側交誼空間週邊",
-    "5樓東（人言5F-1）、B1西（人言B1-1）"
-   ],
-   "restrooms": [
-    "各樓層兩側洗手間"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [
-    "人言大樓1F（一樓中間門口進來後靠中間電梯處）"
-   ],
-   "rest": [
-    "B1 晨曦廳（東側）／夕暉廳（西側）：大型地下美食街，校內最主要的指標飲食與聚會場地，依校方各階段開放公告為準",
-    "1樓公共用餐休憩區：東西兩側皆有桌椅，方便課間用餐與短暫休息",
-    "4至7樓公共走廊特定座位區：僅限走廊指定座位可飲食與休息，教室內一律嚴禁飲食"
-   ],
-   "floors": []
+  {
+    "id": "b283040764",
+    "nameZh": "人言大樓",
+    "nameEn": "Renyan Building",
+    "lat": 24.179534158554684,
+    "lon": 120.64861883422898,
+    "roomCode": "人",
+    "officialCode": "RYB",
+    "mapNumber": 13,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層兩側洗手間旁茶水間；B1晨曦廳與夕暉廳；1樓東西兩側交誼空間週邊",
+        "5樓東（人言5F-1）、B1西（人言B1-1）"
+      ],
+      "restrooms": [
+        "各樓層兩側洗手間"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [
+        "人言大樓1F（一樓中間門口進來後靠中間電梯處）"
+      ],
+      "rest": [
+        "B1 晨曦廳（東側）／夕暉廳（西側）：大型地下美食街，校內最主要的指標飲食與聚會場地，依校方各階段開放公告為準",
+        "1樓公共用餐休憩區：東西兩側皆有桌椅，方便課間用餐與短暫休息",
+        "4至7樓公共走廊特定座位區：僅限走廊指定座位可飲食與休息，教室內一律嚴禁飲食"
+      ],
+      "floors": []
+    },
+    "photo": "buildings/renyan.jpg"
   },
-  "photo": "buildings/renyan.jpg"
- },
- {
-  "id": "r20159319",
-  "nameZh": "共善樓",
-  "nameEn": "Virtuosi Hall",
-  "lat": 24.179316086363634,
-  "lon": 120.65083429999999,
-  "entranceNode": "-26939",
-  "footprint": [
-   [
-    24.1795201,
-    120.6515902
-   ],
-   [
-    24.1799532,
-    120.6516545
-   ],
-   [
-    24.1799483,
-    120.6512482
-   ],
-   [
-    24.1796939,
-    120.6510725
-   ],
-   [
-    24.179943,
-    120.6502575
-   ],
-   [
-    24.1797785,
-    120.6502534
-   ],
-   [
-    24.1795026,
-    120.6508622
-   ],
-   [
-    24.1791586,
-    120.6502306
-   ],
-   [
-    24.1792347,
-    120.6509031
-   ],
-   [
-    24.1795201,
-    120.6515902
-   ]
-  ],
-  "roomCode": "V",
-  "officialCode": "VH",
-  "mapNumber": 29,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "B1西右（共善B1-02）、1F回收室附近（共善1F-04）"
-   ],
-   "restrooms": [
-    "1F、B1F（詳見無障礙及性別友善平面圖）"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [
-    "共善樓電梯（V102/V103）"
-   ],
-   "accessibleElevators": [],
-   "aed": [
-    "共善樓1F櫃台右側（EMBA櫃台旁）"
-   ],
-   "rest": [
-    "B1（共善學園）新愉園，與人文社會館共用空間"
-   ],
-   "floors": []
+  {
+    "id": "r20159319",
+    "nameZh": "共善樓",
+    "nameEn": "Virtuosi Hall",
+    "lat": 24.17896599633664,
+    "lon": 120.65022574040069,
+    "roomCode": "V",
+    "officialCode": "VH",
+    "mapNumber": 29,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "B1西右（共善B1-02）、1F回收室附近（共善1F-04）"
+      ],
+      "restrooms": [
+        "1F、B1F（詳見無障礙及性別友善平面圖）"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [
+        "共善樓電梯（V102/V103）"
+      ],
+      "accessibleElevators": [],
+      "aed": [
+        "共善樓1F櫃台右側（EMBA櫃台旁）"
+      ],
+      "rest": [
+        "B1（共善學園）新愉園，與人文社會館共用空間"
+      ],
+      "floors": []
+    },
+    "photo": "buildings/virtuosi.jpg"
   },
-  "photo": "buildings/virtuosi.jpg"
- },
- {
-  "id": "b254446750",
-  "nameZh": "商學大樓",
-  "nameEn": "Business Building",
-  "lat": 24.178366300000004,
-  "lon": 120.6497506909091,
-  "entranceNode": "7216723009",
-  "footprint": [
-   [
-    24.1784459,
-    120.6495011
-   ],
-   [
-    24.1784474,
-    120.649536
-   ],
-   [
-    24.1784641,
-    120.6499107
-   ],
-   [
-    24.1784714,
-    120.6500738
-   ],
-   [
-    24.178367,
-    120.6500794
-   ],
-   [
-    24.1783689,
-    120.650121
-   ],
-   [
-    24.1782043,
-    120.6501298
-   ],
-   [
-    24.1781742,
-    120.6494523
-   ],
-   [
-    24.1783187,
-    120.6494446
-   ],
-   [
-    24.1783215,
-    120.6495078
-   ],
-   [
-    24.1784459,
-    120.6495011
-   ]
-  ],
-  "roomCode": "商",
-  "officialCode": "BB",
-  "mapNumber": 5,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "每層樓南北兩側走廊底端、洗手間旁（高容量配置）",
-    "8樓（水質檢測點：商8F-1）"
-   ],
-   "restrooms": [
-    "各樓層南北兩側走廊底端"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [
-    "地資中心(GIS) 商學大樓6F"
-   ],
-   "rest": [
-    "1樓課間停留空間：進駐「帕哩帕哩小餐館」，設有販賣機與飲水機，依大樓與店家營業時間為準"
-   ],
-   "floors": []
+  {
+    "id": "b254446750",
+    "nameZh": "商學大樓",
+    "nameEn": "Business Building",
+    "lat": 24.178538,
+    "lon": 120.649947,
+    "roomCode": "商",
+    "officialCode": "BB",
+    "mapNumber": 5,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "每層樓南北兩側走廊底端、洗手間旁（高容量配置）",
+        "8樓（水質檢測點：商8F-1）"
+      ],
+      "restrooms": [
+        "各樓層南北兩側走廊底端"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [
+        "地資中心(GIS) 商學大樓6F"
+      ],
+      "rest": [
+        "1樓課間停留空間：進駐「帕哩帕哩小餐館」，設有販賣機與飲水機，依大樓與店家營業時間為準"
+      ],
+      "floors": []
+    },
+    "photo": "buildings/business.jpg"
   },
-  "photo": "buildings/business.jpg"
- },
- {
-  "id": "b262625997",
-  "nameZh": "圖書館",
-  "nameEn": "Library",
-  "lat": 24.178680228571427,
-  "lon": 120.64884894285714,
-  "entranceNode": "7216671757",
-  "footprint": [
-   [
-    24.1789222,
-    120.6486979
-   ],
-   [
-    24.1789265,
-    120.6492163
-   ],
-   [
-    24.1784127,
-    120.6492215
-   ],
-   [
-    24.1784061,
-    120.6487045
-   ],
-   [
-    24.1785424,
-    120.6487028
-   ],
-   [
-    24.1786295,
-    120.6487017
-   ],
-   [
-    24.1789222,
-    120.6486979
-   ]
-  ],
-  "roomCode": "圖",
-  "officialCode": "LIB",
-  "mapNumber": 6,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "3樓右（圖3F-1）、B1F南（圖B1-2）"
-   ],
-   "restrooms": [
-    "各樓層"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [
-    "圖書館電梯"
-   ],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [
-    "1樓正門右側：路易莎咖啡（逢甲店），指標性連鎖咖啡廳，具備讀書與輕食休憩機能。週一至週五07:30–20:30，週六至週日08:00–16:00"
-   ],
-   "floors": []
+  {
+    "id": "b262625997",
+    "nameZh": "圖書館",
+    "nameEn": "Library",
+    "lat": 24.17862880627479,
+    "lon": 120.64861346981138,
+    "roomCode": "圖",
+    "officialCode": "LIB",
+    "mapNumber": 6,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "3樓右（圖3F-1）、B1F南（圖B1-2）"
+      ],
+      "restrooms": [
+        "各樓層"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [
+        "圖書館電梯"
+      ],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [
+        "1樓正門右側：路易莎咖啡（逢甲店），指標性連鎖咖啡廳，具備讀書與輕食休憩機能。週一至週五07:30–20:30，週六至週日08:00–16:00"
+      ],
+      "floors": []
+    },
+    "photo": "buildings/library.jpg"
   },
-  "photo": "buildings/library.jpg"
- },
- {
-  "id": "b283040768",
-  "nameZh": "土木水利館",
-  "nameEn": "Civil/Hydraulic Engineering Building",
-  "lat": 24.181014049999998,
-  "lon": 120.64689644999999,
-  "entranceNode": "7216671767",
-  "footprint": [
-   [
-    24.1811486,
-    120.646659
-   ],
-   [
-    24.1809161,
-    120.6466661
-   ],
-   [
-    24.1809161,
-    120.6467263
-   ],
-   [
-    24.180858,
-    120.6467227
-   ],
-   [
-    24.1808612,
-    120.6468148
-   ],
-   [
-    24.180929,
-    120.6468077
-   ],
-   [
-    24.180929,
-    120.6471191
-   ],
-   [
-    24.1809258,
-    120.6472147
-   ],
-   [
-    24.1811938,
-    120.647197
-   ],
-   [
-    24.181197,
-    120.6470837
-   ],
-   [
-    24.1811454,
-    120.6470873
-   ],
-   [
-    24.1811486,
-    120.646659
-   ]
-  ],
-  "roomCode": "土",
-  "officialCode": "CHB",
-  "mapNumber": 17,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層實驗室集中區的走廊盡頭或洗手間旁",
-    "2樓（土水2F）、5樓（土水5F）"
-   ],
-   "restrooms": [
-    "各樓層實驗室集中區走廊盡頭"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040768",
+    "nameZh": "土木水利館",
+    "nameEn": "Civil/Hydraulic Engineering Building",
+    "lat": 24.18122748282108,
+    "lon": 120.6469709497221,
+    "roomCode": "土",
+    "officialCode": "CHB",
+    "mapNumber": 17,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層實驗室集中區的走廊盡頭或洗手間旁",
+        "2樓（土水2F）、5樓（土水5F）"
+      ],
+      "restrooms": [
+        "各樓層實驗室集中區走廊盡頭"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/civil-hydraulic.jpg"
   },
-  "photo": "buildings/civil-hydraulic.jpg"
- },
- {
-  "id": "b283040769",
-  "nameZh": "學思樓",
-  "nameEn": "Xuesi Building",
-  "lat": 24.181542974999996,
-  "lon": 120.64694204375,
-  "entranceNode": "-27193",
-  "footprint": [
-   [
-    24.1817713,
-    120.6472341
-   ],
-   [
-    24.1817615,
-    120.6466253
-   ],
-   [
-    24.1815802,
-    120.6466319
-   ],
-   [
-    24.1815814,
-    120.6466704
-   ],
-   [
-    24.18127,
-    120.646682
-   ],
-   [
-    24.1812765,
-    120.6468894
-   ],
-   [
-    24.1812851,
-    120.6468891
-   ],
-   [
-    24.1813774,
-    120.6468856
-   ],
-   [
-    24.1813742,
-    120.646785
-   ],
-   [
-    24.181571,
-    120.6467776
-   ],
-   [
-    24.1815778,
-    120.6469946
-   ],
-   [
-    24.1815812,
-    120.647066
-   ],
-   [
-    24.1815854,
-    120.6472363
-   ],
-   [
-    24.1816208,
-    120.647236
-   ],
-   [
-    24.1817025,
-    120.6472353
-   ],
-   [
-    24.1817713,
-    120.6472341
-   ]
-  ],
-  "roomCode": "學",
-  "officialCode": "XSB",
-  "mapNumber": 20,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層中央中庭電梯旁，或靠近洗手間的走廊盡頭",
-    "7樓（學7F）"
-   ],
-   "restrooms": [
-    "各樓層中央中庭電梯旁"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040769",
+    "nameZh": "學思樓",
+    "nameEn": "Xuesi Building",
+    "lat": 24.1814868493936,
+    "lon": 120.64688780124393,
+    "roomCode": "學",
+    "officialCode": "XSB",
+    "mapNumber": 20,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層中央中庭電梯旁，或靠近洗手間的走廊盡頭",
+        "7樓（學7F）"
+      ],
+      "restrooms": [
+        "各樓層中央中庭電梯旁"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/xuesi.jpg"
   },
-  "photo": "buildings/xuesi.jpg"
- },
- {
-  "id": "r6032175",
-  "nameZh": "工學館",
-  "nameEn": "Engineering Building",
-  "lat": 24.179345433333335,
-  "lon": 120.64778416666667,
-  "entranceNode": "-27283",
-  "footprint": [
-   [
-    24.1795235,
-    120.6475093
-   ],
-   [
-    24.179302,
-    120.6475172
-   ],
-   [
-    24.1790644,
-    120.6475288
-   ],
-   [
-    24.1791031,
-    120.6483365
-   ],
-   [
-    24.1795561,
-    120.6483039
-   ],
-   [
-    24.1795235,
-    120.6475093
-   ]
-  ],
-  "roomCode": "工",
-  "officialCode": "EGB",
-  "mapNumber": 8,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層中庭走廊電梯口或洗手間旁",
-    "2樓（工2F-01）"
-   ],
-   "restrooms": [
-    "各樓層中庭走廊電梯口旁"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [
-    "1樓工學館一樓休息區"
-   ],
-   "floors": []
+  {
+    "id": "r6032175",
+    "nameZh": "工學館",
+    "nameEn": "Engineering Building",
+    "lat": 24.179098611502177,
+    "lon": 120.64788122675279,
+    "roomCode": "工",
+    "officialCode": "EGB",
+    "mapNumber": 8,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層中庭走廊電梯口或洗手間旁",
+        "2樓（工2F-01）"
+      ],
+      "restrooms": [
+        "各樓層中庭走廊電梯口旁"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [
+        "1樓工學館一樓休息區"
+      ],
+      "floors": []
+    },
+    "photo": "buildings/engineering.jpg"
   },
-  "photo": "buildings/engineering.jpg"
- },
- {
-  "id": "b402105180",
-  "nameZh": "建築館",
-  "nameEn": "Architecture Building",
-  "lat": 24.17960412857143,
-  "lon": 120.64673061428573,
-  "entranceNode": "ab-entrance-s",
-  "footprint": [
-   [
-    24.1794275,
-    120.6466543
-   ],
-   [
-    24.1794324,
-    120.6468394
-   ],
-   [
-    24.1796409,
-    120.6468368
-   ],
-   [
-    24.1798423,
-    120.6468367
-   ],
-   [
-    24.179842,
-    120.6466452
-   ],
-   [
-    24.1796163,
-    120.6466476
-   ],
-   [
-    24.1794275,
-    120.6466543
-   ]
-  ],
-  "roomCode": "建",
-  "officialCode": "AB",
-  "mapNumber": 10,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "3樓右（建築3F-2）"
-   ],
-   "restrooms": [
-    "各樓層"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b402105180",
+    "nameZh": "建築館",
+    "nameEn": "Architecture Building",
+    "lat": 24.179737338264815,
+    "lon": 120.64662494476114,
+    "roomCode": "建",
+    "officialCode": "AB",
+    "mapNumber": 10,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "3樓右（建築3F-2）"
+      ],
+      "restrooms": [
+        "各樓層"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/architecture.jpg"
   },
-  "photo": "buildings/architecture.jpg"
- },
- {
-  "id": "b406370377",
-  "nameZh": "忠勤樓",
-  "nameEn": "Jong-Chin Building",
-  "lat": 24.17930303333333,
-  "lon": 120.6470265,
-  "entranceNode": "-27185",
-  "footprint": [
-   [
-    24.1794373,
-    120.6473329
-   ],
-   [
-    24.1794324,
-    120.6468394
-   ],
-   [
-    24.1794275,
-    120.6466543
-   ],
-   [
-    24.1790353,
-    120.6466624
-   ],
-   [
-    24.1790484,
-    120.6473371
-   ],
-   [
-    24.1794373,
-    120.6473329
-   ]
-  ],
-  "roomCode": "忠",
-  "officialCode": "JCB",
-  "mapNumber": 7,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層川堂兩側樓梯旁或洗手間走廊",
-    "4樓東（忠4F-01）"
-   ],
-   "restrooms": [
-    "各樓層川堂兩側"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [
-    "忠勤樓電梯1",
-    "忠勤樓電梯2",
-    "忠勤樓電梯3",
-    "忠勤樓電梯4"
-   ],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b406370377",
+    "nameZh": "忠勤樓",
+    "nameEn": "Jong-Chin Building",
+    "lat": 24.179042,
+    "lon": 120.647018,
+    "roomCode": "忠",
+    "officialCode": "JCB",
+    "mapNumber": 7,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層川堂兩側樓梯旁或洗手間走廊",
+        "4樓東（忠4F-01）"
+      ],
+      "restrooms": [
+        "各樓層川堂兩側"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [
+        "忠勤樓電梯1",
+        "忠勤樓電梯2",
+        "忠勤樓電梯3",
+        "忠勤樓電梯4"
+      ],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/jongchin.jpg"
   },
-  "photo": "buildings/jongchin.jpg"
- },
- {
-  "id": "b283040766",
-  "nameZh": "理學大樓",
-  "nameEn": "Sciences Building",
-  "lat": 24.18105767142857,
-  "lon": 120.64765663571428,
-  "entranceNode": "-26934",
-  "footprint": [
-   [
-    24.1811002,
-    120.6473315
-   ],
-   [
-    24.1809227,
-    120.6473381
-   ],
-   [
-    24.1809226,
-    120.6473952
-   ],
-   [
-    24.1808225,
-    120.6473987
-   ],
-   [
-    24.1808217,
-    120.6478777
-   ],
-   [
-    24.1810646,
-    120.6478659
-   ],
-   [
-    24.1810711,
-    120.6482163
-   ],
-   [
-    24.1811518,
-    120.6482092
-   ],
-   [
-    24.1812002,
-    120.6482021
-   ],
-   [
-    24.1812067,
-    120.6475721
-   ],
-   [
-    24.1811776,
-    120.6475191
-   ],
-   [
-    24.1811292,
-    120.6474801
-   ],
-   [
-    24.1811163,
-    120.6474554
-   ],
-   [
-    24.1811002,
-    120.6473315
-   ]
-  ],
-  "roomCode": "理",
-  "officialCode": "SB",
-  "mapNumber": 18,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層兩側樓梯轉角或洗手間旁",
-    "4樓左（理學4F-2）"
-   ],
-   "restrooms": [
-    "各樓層兩側樓梯轉角"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040766",
+    "nameZh": "理學大樓",
+    "nameEn": "Sciences Building",
+    "lat": 24.181168758249587,
+    "lon": 120.64739205653595,
+    "roomCode": "理",
+    "officialCode": "SB",
+    "mapNumber": 18,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層兩側樓梯轉角或洗手間旁",
+        "4樓左（理學4F-2）"
+      ],
+      "restrooms": [
+        "各樓層兩側樓梯轉角"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/sciences.jpg"
   },
-  "photo": "buildings/sciences.jpg"
- },
- {
-  "id": "b283040786",
-  "nameZh": "科學與航太館",
-  "nameEn": "Science and Aeronautical Engineering Building",
-  "lat": 24.17825726666667,
-  "lon": 120.64894943333333,
-  "entranceNode": "-27120",
-  "footprint": [
-   [
-    24.1782539,
-    120.6487477
-   ],
-   [
-    24.178153,
-    120.6487512
-   ],
-   [
-    24.1781728,
-    120.6494344
-   ],
-   [
-    24.1782931,
-    120.6494302
-   ],
-   [
-    24.1782777,
-    120.6489007
-   ],
-   [
-    24.1783287,
-    120.648899
-   ],
-   [
-    24.1783263,
-    120.6488158
-   ],
-   [
-    24.178256,
-    120.6488182
-   ],
-   [
-    24.1782539,
-    120.6487477
-   ]
-  ],
-  "roomCode": "科航",
-  "officialCode": "SAB",
-  "mapNumber": 4,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層中央洗手間外側走廊",
-    "1樓東（科航1F-2）、7樓（科航7F）"
-   ],
-   "restrooms": [
-    "各樓層中央洗手間"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040786",
+    "nameZh": "科學與航太館",
+    "nameEn": "Science and Aeronautical Engineering Building",
+    "lat": 24.178387,
+    "lon": 120.649308,
+    "roomCode": "科航",
+    "officialCode": "SAB",
+    "mapNumber": 4,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層中央洗手間外側走廊",
+        "1樓東（科航1F-2）、7樓（科航7F）"
+      ],
+      "restrooms": [
+        "各樓層中央洗手間"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/science-aeronautical.jpg"
   },
-  "photo": "buildings/science-aeronautical.jpg"
- },
- {
-  "id": "b262625994",
-  "nameZh": "育樂館",
-  "nameEn": "Recreation Building",
-  "lat": 24.1803194625,
-  "lon": 120.6469577,
-  "entranceNode": "-27286",
-  "footprint": [
-   [
-    24.1806466,
-    120.6466372
-   ],
-   [
-    24.1806667,
-    120.6471872
-   ],
-   [
-    24.1804789,
-    120.6471955
-   ],
-   [
-    24.1801958,
-    120.6472069
-   ],
-   [
-    24.1799841,
-    120.6472172
-   ],
-   [
-    24.179973,
-    120.6469132
-   ],
-   [
-    24.179964,
-    120.6466672
-   ],
-   [
-    24.1806466,
-    120.6466372
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "RB",
-  "mapNumber": 16,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "1樓後方後台休息區及洗手間旁"
-   ],
-   "restrooms": [
-    "1樓後方後台休息區旁"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [
-    "健康中心 育114室（育樂館）"
-   ],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b262625994",
+    "nameZh": "育樂館",
+    "nameEn": "Recreation Building",
+    "lat": 24.18001815911466,
+    "lon": 120.64693466993732,
+    "roomCode": null,
+    "officialCode": "RB",
+    "mapNumber": 16,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "1樓後方後台休息區及洗手間旁"
+      ],
+      "restrooms": [
+        "1樓後方後台休息區旁"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [
+        "健康中心 育114室（育樂館）"
+      ],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/recreation.jpg"
   },
-  "photo": "buildings/recreation.jpg"
- },
- {
-  "id": "b283040788",
-  "nameZh": "行政大樓",
-  "nameEn": "Administration Building",
-  "lat": 24.178569483333334,
-  "lon": 120.64696755,
-  "entranceNode": "4076402202",
-  "footprint": [
-   [
-    24.1786233,
-    120.646724
-   ],
-   [
-    24.1784461,
-    120.6467286
-   ],
-   [
-    24.1784592,
-    120.6473347
-   ],
-   [
-    24.1786365,
-    120.6473301
-   ],
-   [
-    24.1786285,
-    120.6469639
-   ],
-   [
-    24.1786233,
-    120.646724
-   ]
-  ],
-  "roomCode": "行",
-  "officialCode": "ADB",
-  "mapNumber": 1,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層樓梯口或主管辦公室旁的茶水間",
-    "公共飲水機：1樓左側、2樓右側"
-   ],
-   "restrooms": [
-    "各樓層樓梯口旁"
-   ],
-   "accessibleRestrooms": [
-    "1樓左側、2樓右側"
-   ],
-   "elevators": [],
-   "accessibleElevators": [
-    "面對建築左側"
-   ],
-   "aed": [
-    "大門警衛室（行政大樓旁）"
-   ],
-   "rest": [
-    "1樓：全新學生用餐與交流區"
-   ],
-   "floors": [
-    "2樓：教室",
-    "3樓：行政辦公室"
-   ]
+  {
+    "id": "b283040788",
+    "nameZh": "行政大樓",
+    "nameEn": "Administration Building",
+    "lat": 24.178694,
+    "lon": 120.647002,
+    "roomCode": "行",
+    "officialCode": "ADB",
+    "mapNumber": 1,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層樓梯口或主管辦公室旁的茶水間",
+        "公共飲水機：1樓左側、2樓右側"
+      ],
+      "restrooms": [
+        "各樓層樓梯口旁"
+      ],
+      "accessibleRestrooms": [
+        "1樓左側、2樓右側"
+      ],
+      "elevators": [],
+      "accessibleElevators": [
+        "面對建築左側"
+      ],
+      "aed": [
+        "大門警衛室（行政大樓旁）"
+      ],
+      "rest": [
+        "1樓：全新學生用餐與交流區"
+      ],
+      "floors": [
+        "2樓：教室",
+        "3樓：行政辦公室"
+      ]
+    },
+    "photo": "buildings/administration-1.jpg"
   },
-  "photo": "buildings/administration-1.jpg"
- },
- {
-  "id": "b283040765",
-  "nameZh": "語文大樓",
-  "nameEn": "Language Building",
-  "lat": 24.179763060000003,
-  "lon": 120.64702752000001,
-  "entranceNode": "lb-entrance-n",
-  "footprint": [
-   [
-    24.1798423,
-    120.6468367
-   ],
-   [
-    24.1796409,
-    120.6468368
-   ],
-   [
-    24.1796448,
-    120.6473149
-   ],
-   [
-    24.179845,
-    120.6473125
-   ],
-   [
-    24.1798423,
-    120.6468367
-   ]
-  ],
-  "roomCode": "語",
-  "officialCode": "LB",
-  "mapNumber": 11,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層洗手間外的公共走廊"
-   ],
-   "restrooms": [
-    "各樓層洗手間外走廊"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040765",
+    "nameZh": "語文大樓",
+    "nameEn": "Language Building",
+    "lat": 24.179891491962383,
+    "lon": 120.64697631414016,
+    "roomCode": "語",
+    "officialCode": "LB",
+    "mapNumber": 11,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層洗手間外的公共走廊"
+      ],
+      "restrooms": [
+        "各樓層洗手間外走廊"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/language.jpg"
   },
-  "photo": "buildings/language.jpg"
- },
- {
-  "id": "b260864150",
-  "nameZh": "資訊電機館",
-  "nameEn": "Information/Electrical Engineering Building",
-  "lat": 24.179407614285715,
-  "lon": 120.64960466190476,
-  "entranceNode": "-26979",
-  "footprint": [
-   [
-    24.1794626,
-    120.6490833
-   ],
-   [
-    24.179471,
-    120.6495828
-   ],
-   [
-    24.1793682,
-    120.6495848
-   ],
-   [
-    24.1793699,
-    120.6496826
-   ],
-   [
-    24.1794429,
-    120.6496814
-   ],
-   [
-    24.1794722,
-    120.6496999
-   ],
-   [
-    24.1794958,
-    120.6497234
-   ],
-   [
-    24.1795116,
-    120.6497505
-   ],
-   [
-    24.1795217,
-    120.6497863
-   ],
-   [
-    24.1795164,
-    120.6498316
-   ],
-   [
-    24.1795027,
-    120.6498675
-   ],
-   [
-    24.1794834,
-    120.6498911
-   ],
-   [
-    24.1794552,
-    120.6499032
-   ],
-   [
-    24.17949,
-    120.6499026
-   ],
-   [
-    24.1794928,
-    120.6501026
-   ],
-   [
-    24.1791403,
-    120.6501085
-   ],
-   [
-    24.1791266,
-    120.64913
-   ],
-   [
-    24.1792197,
-    120.6491285
-   ],
-   [
-    24.1792279,
-    120.649088
-   ],
-   [
-    24.1793264,
-    120.649086
-   ],
-   [
-    24.1794626,
-    120.6490833
-   ]
-  ],
-  "roomCode": "資電",
-  "officialCode": "IEB",
-  "mapNumber": 9,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層大電梯旁，或各系所辦公室旁的洗手間走廊",
-    "2樓西右（資電2F-1）、4樓東（資電4F-1）"
-   ],
-   "restrooms": [
-    "各樓層大電梯旁洗手間"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b260864150",
+    "nameZh": "資訊電機館",
+    "nameEn": "Information/Electrical Engineering Building",
+    "lat": 24.179135314970484,
+    "lon": 120.64965684911805,
+    "roomCode": "資電",
+    "officialCode": "IEB",
+    "mapNumber": 9,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層大電梯旁，或各系所辦公室旁的洗手間走廊",
+        "2樓西右（資電2F-1）、4樓東（資電4F-1）"
+      ],
+      "restrooms": [
+        "各樓層大電梯旁洗手間"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/information-electrical.jpg"
   },
-  "photo": "buildings/information-electrical.jpg"
- },
- {
-  "id": "b283040772",
-  "nameZh": "電子通訊館",
-  "nameEn": "Electronic/Communications Engineering Building",
-  "lat": 24.179796790909094,
-  "lon": 120.64978475454545,
-  "entranceNode": "-26940",
-  "footprint": [
-   [
-    24.1798978,
-    120.6496063
-   ],
-   [
-    24.1798781,
-    120.6496086
-   ],
-   [
-    24.179753,
-    120.6496123
-   ],
-   [
-    24.179719,
-    120.6496132
-   ],
-   [
-    24.1797223,
-    120.6497168
-   ],
-   [
-    24.1797608,
-    120.6497154
-   ],
-   [
-    24.1797693,
-    120.649983
-   ],
-   [
-    24.1797249,
-    120.6499847
-   ],
-   [
-    24.1797285,
-    120.6500964
-   ],
-   [
-    24.1799132,
-    120.6500893
-   ],
-   [
-    24.1798978,
-    120.6496063
-   ]
-  ],
-  "roomCode": "電通",
-  "officialCode": "ECB",
-  "mapNumber": 15,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "各樓層靠近實驗室走廊的茶水間",
-    "5樓（電通5F）"
-   ],
-   "restrooms": [
-    "各樓層靠近實驗室走廊"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040772",
+    "nameZh": "電子通訊館",
+    "nameEn": "Electronic/Communications Engineering Building",
+    "lat": 24.179930071400374,
+    "lon": 120.6495873746536,
+    "roomCode": "電通",
+    "officialCode": "ECB",
+    "mapNumber": 15,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "各樓層靠近實驗室走廊的茶水間",
+        "5樓（電通5F）"
+      ],
+      "restrooms": [
+        "各樓層靠近實驗室走廊"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/electronic-communications.jpg"
   },
-  "photo": "buildings/electronic-communications.jpg"
- },
- {
-  "id": "b283040778",
-  "nameZh": "體育館",
-  "nameEn": "Sports Center",
-  "lat": 24.181613667567568,
-  "lon": 120.6488345837838,
-  "entranceNode": "-27112",
-  "footprint": [
-   [
-    24.1818067,
-    120.6483039
-   ],
-   [
-    24.1817692,
-    120.6482651
-   ],
-   [
-    24.1816782,
-    120.6482483
-   ],
-   [
-    24.1815592,
-    120.6482443
-   ],
-   [
-    24.1814535,
-    120.648243
-   ],
-   [
-    24.1813878,
-    120.6482763
-   ],
-   [
-    24.1813743,
-    120.6483206
-   ],
-   [
-    24.1813586,
-    120.6483852
-   ],
-   [
-    24.1813507,
-    120.6486821
-   ],
-   [
-    24.1813705,
-    120.6489184
-   ],
-   [
-    24.1813555,
-    120.6489873
-   ],
-   [
-    24.1813609,
-    120.6490433
-   ],
-   [
-    24.1813735,
-    120.6490876
-   ],
-   [
-    24.1813943,
-    120.6491061
-   ],
-   [
-    24.1814141,
-    120.6491437
-   ],
-   [
-    24.1814429,
-    120.6491704
-   ],
-   [
-    24.1814651,
-    120.6491822
-   ],
-   [
-    24.1814937,
-    120.6491923
-   ],
-   [
-    24.1815123,
-    120.649187
-   ],
-   [
-    24.1815411,
-    120.6491807
-   ],
-   [
-    24.1815651,
-    120.6491597
-   ],
-   [
-    24.181567,
-    120.6491835
-   ],
-   [
-    24.1815764,
-    120.6492554
-   ],
-   [
-    24.181614,
-    120.6492986
-   ],
-   [
-    24.1818469,
-    120.649297
-   ],
-   [
-    24.1818461,
-    120.6492112
-   ],
-   [
-    24.1818477,
-    120.6491176
-   ],
-   [
-    24.1818488,
-    120.6490452
-   ],
-   [
-    24.1818483,
-    120.6490115
-   ],
-   [
-    24.1818467,
-    120.6489656
-   ],
-   [
-    24.181848,
-    120.6488927
-   ],
-   [
-    24.1818461,
-    120.648752
-   ],
-   [
-    24.1818439,
-    120.6486777
-   ],
-   [
-    24.181841,
-    120.6486137
-   ],
-   [
-    24.1818297,
-    120.6485076
-   ],
-   [
-    24.1818212,
-    120.6484189
-   ],
-   [
-    24.1818067,
-    120.6483039
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "SC",
-  "mapNumber": 22,
-  "tier": "full",
-  "accessNote": null,
-  "facilities": {
-   "water": [
-    "1樓、3樓、4樓的球場看台入口周邊及洗手間旁",
-    "403跑道（體4F-1）"
-   ],
-   "restrooms": [
-    "1樓、3樓、4樓球場看台入口周邊"
-   ],
-   "accessibleRestrooms": [],
-   "elevators": [],
-   "accessibleElevators": [],
-   "aed": [
-    "體育館1F"
-   ],
-   "rest": [],
-   "floors": []
+  {
+    "id": "b283040778",
+    "nameZh": "體育館",
+    "nameEn": "Sports Center",
+    "lat": 24.181516211613676,
+    "lon": 120.64923205191532,
+    "roomCode": null,
+    "officialCode": "SC",
+    "mapNumber": 22,
+    "tier": "full",
+    "accessNote": null,
+    "facilities": {
+      "water": [
+        "1樓、3樓、4樓的球場看台入口周邊及洗手間旁",
+        "403跑道（體4F-1）"
+      ],
+      "restrooms": [
+        "1樓、3樓、4樓球場看台入口周邊"
+      ],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [
+        "體育館1F"
+      ],
+      "rest": [],
+      "floors": []
+    },
+    "photo": "buildings/sports-center.jpg"
   },
-  "photo": "buildings/sports-center.jpg"
- },
- {
-  "id": "b405246747",
-  "nameZh": "學思園",
-  "nameEn": "Xuesi Garden",
-  "lat": 24.181405740000002,
-  "lon": 120.6472719,
-  "entranceNode": "7216671782",
-  "footprint": [
-   [
-    24.1814265,
-    120.647239
-   ],
-   [
-    24.1814271,
-    120.6473207
-   ],
-   [
-    24.1813746,
-    120.6473212
-   ],
-   [
-    24.181374,
-    120.6472396
-   ],
-   [
-    24.1814265,
-    120.647239
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "XSG",
-  "mapNumber": 21,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/xuesi-garden.jpg"
- },
- {
-  "id": "b283040773",
-  "nameZh": "排球場",
-  "nameEn": "Volleyball Court",
-  "lat": 24.18022924285714,
-  "lon": 120.64989375714286,
-  "entranceNode": "-26942",
-  "footprint": [
-   [
-    24.18033,
-    120.6497895
-   ],
-   [
-    24.1803152,
-    120.6497898
-   ],
-   [
-    24.1802793,
-    120.6497904
-   ],
-   [
-    24.1800049,
-    120.6497951
-   ],
-   [
-    24.1800101,
-    120.6501538
-   ],
-   [
-    24.1803352,
-    120.6501482
-   ],
-   [
-    24.18033,
-    120.6497895
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "VC",
-  "mapNumber": 28,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/volleyball-court.jpg"
- },
- {
-  "id": "b397387971",
-  "nameZh": "文華創意中心",
-  "nameEn": "Wenhwa Innovation Center",
-  "lat": 24.181194920000003,
-  "lon": 120.64656391999999,
-  "entranceNode": "4075098811",
-  "footprint": [
-   [
-    24.1807984,
-    120.6465565
-   ],
-   [
-    24.1808002,
-    120.6466126
-   ],
-   [
-    24.1817897,
-    120.646575
-   ],
-   [
-    24.1817879,
-    120.646519
-   ],
-   [
-    24.1807984,
-    120.6465565
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "WIC",
-  "mapNumber": 19,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/wenhwa-innovation.jpg"
- },
- {
-  "id": "b283040784",
-  "nameZh": "第一招待所",
-  "nameEn": "History House",
-  "lat": 24.1797416,
-  "lon": 120.64777732,
-  "entranceNode": "7216671764",
-  "footprint": [
-   [
-    24.1797918,
-    120.6477065
-   ],
-   [
-    24.1797978,
-    120.647878
-   ],
-   [
-    24.1796663,
-    120.6478836
-   ],
-   [
-    24.1796603,
-    120.647712
-   ],
-   [
-    24.1797918,
-    120.6477065
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "HH",
-  "mapNumber": 12,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/history-house.jpg"
- },
- {
-  "id": "b283040774",
-  "nameZh": "籃球場",
-  "nameEn": "Basketball Court",
-  "lat": 24.18016206,
-  "lon": 120.64924242000002,
-  "entranceNode": "-26919",
-  "footprint": [
-   [
-    24.1802668,
-    120.6488819
-   ],
-   [
-    24.1802775,
-    120.6497793
-   ],
-   [
-    24.1800049,
-    120.6497832
-   ],
-   [
-    24.1799943,
-    120.6488858
-   ],
-   [
-    24.1802668,
-    120.6488819
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "BC",
-  "mapNumber": 27,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/basketball-court.jpg"
- },
- {
-  "id": "athletic-field-manual",
-  "nameZh": "綜合運動場",
-  "nameEn": "Athletic Field",
-  "lat": 24.1807503,
-  "lon": 120.6491958,
-  "entranceNode": "-27293",
-  "footprint": [],
-  "roomCode": null,
-  "officialCode": "AF",
-  "mapNumber": 25,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/stadium.jpg"
- },
- {
-  "id": "b283040775",
-  "nameZh": "網球場",
-  "nameEn": "Tennis Court",
-  "lat": 24.180176,
-  "lon": 120.64855109999999,
-  "entranceNode": "-26945",
-  "footprint": [
-   [
-    24.1802996,
-    120.6483392
-   ],
-   [
-    24.18031,
-    120.6488613
-   ],
-   [
-    24.1799906,
-    120.6488689
-   ],
-   [
-    24.1799802,
-    120.6483469
-   ],
-   [
-    24.1802996,
-    120.6483392
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "TC",
-  "mapNumber": 26,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/tennis-court.jpg"
- },
- {
-  "id": "r6032176",
-  "nameZh": "行政二館",
-  "nameEn": "Administration Building II",
-  "lat": 24.178398922222218,
-  "lon": 120.647651,
-  "entranceNode": "7265639305",
-  "footprint": [
-   [
-    24.1786302,
-    120.6474773
-   ],
-   [
-    24.1783169,
-    120.6474838
-   ],
-   [
-    24.1783188,
-    120.6475948
-   ],
-   [
-    24.1782046,
-    120.6475997
-   ],
-   [
-    24.1782075,
-    120.6477479
-   ],
-   [
-    24.1783215,
-    120.6477438
-   ],
-   [
-    24.1783238,
-    120.6478722
-   ],
-   [
-    24.1786368,
-    120.6478622
-   ],
-   [
-    24.1786302,
-    120.6474773
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "ADB(II)",
-  "mapNumber": 2,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/administration-2.jpg"
- },
- {
-  "id": "b283040779",
-  "nameZh": "逢甲大學游泳池",
-  "nameEn": "Swimming Pool",
-  "lat": 24.181580560000004,
-  "lon": 120.64957262,
-  "entranceNode": "sp-entrance",
-  "footprint": [
-   [
-    24.1816718,
-    120.6493671
-   ],
-   [
-    24.1814452,
-    120.6493663
-   ],
-   [
-    24.1814437,
-    120.6498809
-   ],
-   [
-    24.1816703,
-    120.6498817
-   ],
-   [
-    24.1816718,
-    120.6493671
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "SP",
-  "mapNumber": 24,
-  "tier": "partial",
-  "accessNote": null,
-  "facilities": null,
-  "photo": "buildings/swimming-pool.jpg"
- },
- {
-  "id": "b283040780",
-  "nameZh": "逢甲智慧創新港",
-  "nameEn": "i-Hub Intelligent Innovation Harbor",
-  "lat": 24.181827542857146,
-  "lon": 120.64985947142857,
-  "entranceNode": "8174032258",
-  "footprint": [
-   [
-    24.1819106,
-    120.6496638
-   ],
-   [
-    24.1818137,
-    120.6496638
-   ],
-   [
-    24.1818105,
-    120.6499363
-   ],
-   [
-    24.1817233,
-    120.6499363
-   ],
-   [
-    24.1817168,
-    120.6500779
-   ],
-   [
-    24.1819073,
-    120.6500744
-   ],
-   [
-    24.1819106,
-    120.6496638
-   ]
-  ],
-  "roomCode": null,
-  "officialCode": "IH",
-  "mapNumber": 23,
-  "tier": "partial",
-  "accessNote": "智慧創新港入口在西安街，開車請導航至凱旋路停車場。",
-  "facilities": null,
-  "photo": "buildings/ihub-innovation.jpg"
- }
+  {
+    "id": "b405246747",
+    "nameZh": "學思園",
+    "nameEn": "Xuesi Garden",
+    "lat": 24.181525999017808,
+    "lon": 120.64758249337545,
+    "roomCode": null,
+    "officialCode": "XSG",
+    "mapNumber": 21,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/xuesi-garden.jpg"
+  },
+  {
+    "id": "b283040773",
+    "nameZh": "排球場",
+    "nameEn": "Volleyball Court",
+    "lat": 24.180243271887445,
+    "lon": 120.64996288391181,
+    "roomCode": null,
+    "officialCode": "VC",
+    "mapNumber": 28,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/volleyball-court.jpg"
+  },
+  {
+    "id": "b397387971",
+    "nameZh": "文華創意中心",
+    "nameEn": "Wenhua Creative Center",
+    "lat": 24.181540680121714,
+    "lon": 120.64642914350401,
+    "roomCode": "WIC",
+    "officialCode": "WIC",
+    "mapNumber": 19,
+    "tier": "full",
+    "accessNote": "文華創意中心的一、二樓為實習商場，內設有優良商店，帶動週邊活絡氣氛，創造更好的生活機能；三樓為創意中心展示區，將提供本校師生作為創意成果的展示空間，營造更有活力的學習氣氛；地下一樓為停車空間，並與學思樓以地下車道連接，經過人車分道的規劃後，地面層可與學思樓廣場銜接，供全校師生與周圍居民活動使用，秉持敦親睦鄰之信念，讓大學融入社區，提供更好的生活環境。",
+    "facilities": {
+      "water": [],
+      "restrooms": [],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": [
+        "1樓、2樓：實習商場（優良店家進駐）",
+        "3樓：創意中心展示區（師生創作成果展示）",
+        "地下1樓：停車場（地下車道連通學思樓）"
+      ]
+    },
+    "photo": "buildings/wenhwa-innovation.jpg"
+  },
+  {
+    "id": "b283040784",
+    "nameZh": "第一招待所",
+    "nameEn": "History House",
+    "lat": 24.179837660536467,
+    "lon": 120.64761199767365,
+    "roomCode": null,
+    "officialCode": "HH",
+    "mapNumber": 12,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/history-house.jpg"
+  },
+  {
+    "id": "b283040774",
+    "nameZh": "籃球場",
+    "nameEn": "Basketball Court",
+    "lat": 24.180069543592026,
+    "lon": 120.6492976960793,
+    "roomCode": null,
+    "officialCode": "BC",
+    "mapNumber": 27,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/basketball-court.jpg"
+  },
+  {
+    "id": "athletic-field-manual",
+    "nameZh": "綜合運動場",
+    "nameEn": "Athletic Field",
+    "lat": 24.180906373497045,
+    "lon": 120.64868883463473,
+    "roomCode": null,
+    "officialCode": "AF",
+    "mapNumber": 25,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/stadium.jpg"
+  },
+  {
+    "id": "b283040775",
+    "nameZh": "網球場",
+    "nameEn": "Tennis Court",
+    "lat": 24.180096459258923,
+    "lon": 120.6486056861568,
+    "roomCode": null,
+    "officialCode": "TC",
+    "mapNumber": 26,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/tennis-court.jpg"
+  },
+  {
+    "id": "r6032176",
+    "nameZh": "行政二館",
+    "nameEn": "Administration Building II",
+    "lat": 24.178756,
+    "lon": 120.647635,
+    "roomCode": null,
+    "officialCode": "ADB(II)",
+    "mapNumber": 2,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/administration-2.jpg"
+  },
+  {
+    "id": "b283040779",
+    "nameZh": "逢甲大學游泳池",
+    "nameEn": "Swimming Pool",
+    "lat": 24.181466703908843,
+    "lon": 120.6488631782199,
+    "roomCode": null,
+    "officialCode": "SP",
+    "mapNumber": 24,
+    "tier": "partial",
+    "accessNote": null,
+    "facilities": null,
+    "photo": "buildings/swimming-pool.jpg"
+  },
+  {
+    "id": "b283040780",
+    "nameZh": "逢甲智慧創新港",
+    "nameEn": "iHub Innovation Port",
+    "lat": 24.181951179747703,
+    "lon": 120.64980731579277,
+    "roomCode": "IH",
+    "officialCode": "IH",
+    "mapNumber": 23,
+    "tier": "full",
+    "accessNote": "「iHub智慧創新港」是協助建構產學共同研發關鍵技術的平台，讓學校與廠商得以密切合作，同步投入技術開發與產品應用，強化產學交流的積極性與主動性。一樓是討論及展示空間、二樓及三樓為進駐廠商辦公室，地下一樓則將有六間實驗室。未來學界與產業界對於技術開發有共同目標，可以進駐iHub智慧創新港，讓知識與資源保持雙向流通，加快創新成果拓展到市場的腳步。",
+    "facilities": {
+      "water": [],
+      "restrooms": [],
+      "accessibleRestrooms": [],
+      "elevators": [],
+      "accessibleElevators": [],
+      "aed": [],
+      "rest": [],
+      "floors": [
+        "1樓：討論及展示空間",
+        "2樓、3樓：進駐廠商辦公室",
+        "地下1樓：設有六間實驗室"
+      ]
+    },
+    "photo": "buildings/ihub-innovation.jpg"
+  }
 ]

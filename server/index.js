@@ -164,7 +164,6 @@ app.get('/api/health', (req, res) => res.json({ ok: true }))
 // error handler, which (see the catch-all below) is exactly what that
 // handler exists to also guard against, but it's cheaper and clearer to
 // reject bad input up front.
-const ANNOUNCEMENT_TYPES = new Set(['renovation', 'restroom', 'elevator', 'water', 'power', 'maintenance', 'other'])
 const EVENT_TYPES = new Set(['exam', 'lecture', 'symposium', 'other'])
 const buildingExistsStmt = db.prepare('SELECT 1 FROM buildings WHERE id = ?')
 function buildingExists(id) {
@@ -305,77 +304,6 @@ app.delete('/api/events/:id', requireSession, (req, res) => {
   // stays correct even if a future db connection forgets that pragma.
   db.prepare('DELETE FROM event_locations WHERE event_id = ?').run(req.params.id)
   const info = db.prepare('DELETE FROM events WHERE id = ?').run(req.params.id)
-  if (info.changes === 0) return res.status(404).json({ error: 'not found' })
-  res.status(204).end()
-})
-
-// ---- building change notices (整修/廁所故障/停水停電…) --------------------
-// Shared across every admin, same as events — previously lived in browser
-// localStorage on whichever device the admin used.
-function toAnnouncement(row) {
-  return {
-    id: row.id,
-    buildingId: row.building_id,
-    type: row.type,
-    area: row.area || '',
-    message: row.message,
-    startDate: row.start_date || '',
-    endDate: row.end_date || '',
-    createdAt: row.created_at,
-  }
-}
-
-app.get('/api/announcements', (req, res) => {
-  const rows = db.prepare('SELECT * FROM announcements ORDER BY created_at DESC').all()
-  res.json(rows.map(toAnnouncement))
-})
-
-app.post('/api/announcements', requireSession, (req, res) => {
-  const { buildingId, type, area, message, startDate, endDate } = req.body || {}
-  if (!buildingId || !type || !message) {
-    return res.status(400).json({ error: 'buildingId, type, and message are required' })
-  }
-  if (!ANNOUNCEMENT_TYPES.has(type)) return res.status(400).json({ error: 'invalid type' })
-  if (!buildingExists(buildingId)) return res.status(400).json({ error: 'unknown buildingId' })
-  const info = db
-    .prepare(
-      `INSERT INTO announcements (building_id, type, area, message, start_date, end_date, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(buildingId, type, area || null, message, startDate || null, endDate || null, req.admin.id)
-  const created = db.prepare('SELECT * FROM announcements WHERE id = ?').get(info.lastInsertRowid)
-  res.status(201).json(toAnnouncement(created))
-})
-
-app.put('/api/announcements/:id', requireSession, (req, res) => {
-  const existing = db.prepare('SELECT * FROM announcements WHERE id = ?').get(req.params.id)
-  if (!existing) return res.status(404).json({ error: 'not found' })
-
-  const { buildingId, type, area, message, startDate, endDate } = req.body || {}
-  if (type !== undefined && !ANNOUNCEMENT_TYPES.has(type)) {
-    return res.status(400).json({ error: 'invalid type' })
-  }
-  if (buildingId !== undefined && !buildingExists(buildingId)) {
-    return res.status(400).json({ error: 'unknown buildingId' })
-  }
-  db.prepare(
-    `UPDATE announcements SET building_id=?, type=?, area=?, message=?, start_date=?, end_date=?
-     WHERE id=?`
-  ).run(
-    buildingId ?? existing.building_id,
-    type ?? existing.type,
-    area ?? existing.area,
-    message ?? existing.message,
-    startDate ?? existing.start_date,
-    endDate ?? existing.end_date,
-    req.params.id
-  )
-  const updated = db.prepare('SELECT * FROM announcements WHERE id = ?').get(req.params.id)
-  res.json(toAnnouncement(updated))
-})
-
-app.delete('/api/announcements/:id', requireSession, (req, res) => {
-  const info = db.prepare('DELETE FROM announcements WHERE id = ?').run(req.params.id)
   if (info.changes === 0) return res.status(404).json({ error: 'not found' })
   res.status(204).end()
 })

@@ -1,35 +1,35 @@
-// Parking-lot lookup: real parking-area POIs surveyed in the campus OSM data.
-import pois from '../data/pois.json'
-import { haversine } from './projection'
+// Parking-lot lookup: the two curated campus parking lots.
+// Kept as a hardcoded list — auto-suggest the nearest lot to the user's
+// destination, then routing handles the actual directions.
 
-const PARKING_KINDS = new Set(['parking', 'parking_space'])
-
-// Feedback item: the raw OSM survey has 19 separate "parking" ways — mostly
-// small unlabeled motorcycle bays and duplicate segments of the same lot —
-// which cluttered the map with markers that don't correspond to a real,
-// nameable car-parking destination. Trimmed down to the two lots that are
-// actually usable as a "drive here, then walk" suggestion: 凱旋停車場 and the
-// underground lot beside 體育館 (identified by proximity to the gym building
-// in buildings.json — see README for how this was determined).
-const ALLOWED_LOT_IDS = new Set(['w1473277897', '4075384390'])
-const DISPLAY_NAMES = {
-  w1473277897: { zh: '逢甲大學凱旋停車場', en: 'FCU Kaixuan Parking Lot' },
-  '4075384390': { zh: '體育館地下停車場', en: 'Gymnasium Underground Parking Lot' },
+const R = 6371000 // Earth radius in metres
+function haversine(a, b) {
+  const toRad = (d) => (d * Math.PI) / 180
+  const dLat = toRad(b.lat - a.lat)
+  const dLon = toRad(b.lon - a.lon)
+  const sinLat = Math.sin(dLat / 2)
+  const sinLon = Math.sin(dLon / 2)
+  const h = sinLat * sinLat + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * sinLon * sinLon
+  return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h))
 }
 
-// nameZh/nameEn (not just a single `name`) so parking lots can be shown
-// through the same bilingual building-label rendering as gates/buildings
-// (see utils/bilingual.js's btName(), used when these are offered as
-// origin/destination options in SelectForm.vue).
-export const parkingLots = pois
-  .filter((p) => PARKING_KINDS.has(p.kind) && ALLOWED_LOT_IDS.has(String(p.id)))
-  .map((p) => ({
-    id: p.id,
-    nameZh: DISPLAY_NAMES[p.id]?.zh || p.name || '校內停車場',
-    nameEn: DISPLAY_NAMES[p.id]?.en || p.name || 'Campus Parking Lot',
-    lat: p.lat,
-    lon: p.lon,
-  }))
+// Precise GPS coordinates from Google Maps survey
+export const parkingLots = [
+  {
+    id: 'parking-kaixuan',
+    nameZh: '逢甲大學凱旋停車場',
+    nameEn: 'FCU Kaixuan Parking Lot',
+    lat: 24.181978095015463,
+    lon: 120.65077827545396,
+  },
+  {
+    id: 'parking-gym',
+    nameZh: '體育館地下停車場',
+    nameEn: 'Gymnasium Underground Parking Lot',
+    lat: 24.181894902343977,
+    lon: 120.64820603701205,
+  },
+]
 
 /** Nearest parking lot (straight-line) to a given building — used to suggest
  * where to park before walking to `destination`. */

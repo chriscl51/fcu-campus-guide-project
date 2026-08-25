@@ -5,7 +5,7 @@
 // (which is Chinese + English only). Locale === zh-TW shows just the
 // Chinese text, no duplication. Locale === en shows "zh-TW / English".
 import { useI18n } from 'vue-i18n'
-import { BUILDING_NAMES_I18N, GATE_NAMES_I18N } from '../data/buildingNamesI18n'
+import { BUILDING_NAMES_I18N, GATE_NAMES_I18N } from '../data/buildingNamesI18n.js'
 
 export function useBilingual() {
   const { locale, t } = useI18n({ useScope: 'global' })

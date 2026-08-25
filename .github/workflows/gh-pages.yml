@@ -1,61 +1,70 @@
-name: Deploy to GitHub Pages
+name: Deploy FCU Campus Guide to GitHub Pages
 
-# Builds client/ (the Vue static site) and deploys client/dist/ to GitHub
-# Pages. Separate from azure-static-web-apps.yml — that one deploys the same
-# client/ build to Azure instead; this is just an alternate/preview host.
-# Requires one manual step: repo Settings -> Pages -> Build and deployment ->
-# Source -> "GitHub Actions" (it defaults to "Deploy from a branch", which is
-# what was serving the raw README.md via Jekyll instead of this app).
+# Builds client/ (Vue 3 SPA) and deploys client/dist/ directly to GitHub Pages.
+# Setup in GitHub repository:
+#   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
   build:
+    name: Build Frontend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         working-directory: client
 
-      - name: Build
+      - name: Build static site
         run: npm run build
         working-directory: client
         env:
-          # Tells vite.config.js to prefix asset URLs with the GitHub Pages
-          # project subpath (/fcu-campus-guide-project/) instead of root.
+          # Sets asset subpath prefix for GitHub Pages (https://<user>.github.io/<repo>/)
           GITHUB_PAGES: 'true'
 
-      - name: Disable Jekyll processing
-        run: touch client/dist/.nojekyll
+      - name: Prepare SPA routing and bypass Jekyll
+        run: |
+          touch client/dist/.nojekyll
+          cp client/dist/index.html client/dist/404.html
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: client/dist
 
   deploy:
+    name: Deploy to Pages
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

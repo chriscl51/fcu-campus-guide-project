@@ -1,29 +1,26 @@
 [
- {
-  "id": "gate-west",
-  "nameZh": "西門（大門口）",
-  "nameEn": "West Gate (Main Entrance)",
-  "lat": 24.1788149,
-  "lon": 120.6465614,
-  "photo": "buildings/west-gate.jpg",
-  "entranceNode": "4075385713",
-  "facingBearing": 94
- },
- {
-  "id": "gate-east",
-  "nameZh": "東門",
-  "nameEn": "East Gate",
-  "lat": 24.1784066,
-  "lon": 120.6502149,
-  "entranceNode": "-26854"
- },
- {
-  "id": "gate-north",
-  "nameZh": "北門",
-  "nameEn": "North Gate",
-  "lat": 24.1818831,
-  "lon": 120.648129,
-  "photo": "buildings/north-gate.jpg",
-  "entranceNode": "8174032255"
- }
+  {
+    "id": "gate-west",
+    "nameZh": "西門（大門口）",
+    "nameEn": "West Gate (Main Entrance)",
+    "lat": 24.178848,
+    "lon": 120.646538,
+    "photo": "buildings/west-gate.jpg",
+    "facingBearing": 94
+  },
+  {
+    "id": "gate-east",
+    "nameZh": "東門",
+    "nameEn": "East Gate",
+    "lat": 24.178209901915466,
+    "lon": 120.65019355389241
+  },
+  {
+    "id": "gate-north",
+    "nameZh": "北門",
+    "nameEn": "North Gate",
+    "lat": 24.181899796032013,
+    "lon": 120.64815507504099,
+    "photo": "buildings/north-gate.jpg"
+  }
 ]

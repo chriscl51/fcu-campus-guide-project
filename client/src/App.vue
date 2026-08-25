@@ -2,9 +2,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
-import { useAnnouncementsStore } from './stores/announcements'
 
-const announcements = useAnnouncementsStore()
 const router = useRouter()
 
 // Keep the hidden admin entry available across the whole app, rather than
@@ -19,7 +17,6 @@ function handleAdminHotkey(event) {
   }
 }
 
-onMounted(() => announcements.load())
 onMounted(() => window.addEventListener('keydown', handleAdminHotkey))
 onUnmounted(() => window.removeEventListener('keydown', handleAdminHotkey))
 </script>

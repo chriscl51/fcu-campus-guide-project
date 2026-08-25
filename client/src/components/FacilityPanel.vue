@@ -1,11 +1,8 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAnnouncementsStore } from '../stores/announcements'
 import { useBilingual } from '../utils/bilingual'
 import { translateFacilityText } from '../data/facilityContentI18n'
-import { formatWallClock } from '../utils/dateFormat'
-import { fetchUpcomingEvents } from '../utils/api'
 import BilingualText from './BilingualText.vue'
 
 const props = defineProps({
@@ -15,48 +12,42 @@ const props = defineProps({
   },
 })
 
-const announcementsStore = useAnnouncementsStore()
 const { locale } = useI18n({ useScope: 'global' })
 const { bt, btPair, btTitlePair } = useBilingual()
 
-const announcements = computed(() => announcementsStore.activeForBuilding(props.building.id))
+// Lightbox modal state
+const isLightboxOpen = ref(false)
 
-// Feature: the building's currently-relevant activities/events (學測、演講…)
-// now show here too, not just on the landing page board — a visitor who
-// navigated straight to this building's info (e.g. from a bookmark or the
-// dropdown) should still see "this building hosts an exam this week" without
-// having to go back to the homepage. `fetchUpcomingEvents()` is fetched once;
-// the building prop can change without remounting this component (GuideView
-// reuses one FacilityPanel instance), so the filter below stays reactive.
-const upcomingEvents = ref([])
-onMounted(async () => {
-  const events = await fetchUpcomingEvents()
-  if (events) upcomingEvents.value = events
-})
-const buildingEvents = computed(() =>
-  upcomingEvents.value.filter((e) => (e.locations || []).some((loc) => loc.buildingId === props.building.id))
-)
-function eventDateRange(e) {
-  const start = formatWallClock(e.start_date, locale.value)
-  const end = formatWallClock(e.end_date, locale.value)
-  return e.start_date === e.end_date ? start : `${start} – ${end}`
+function openLightbox() {
+  if (props.building?.photo) {
+    isLightboxOpen.value = true
+  }
 }
 
-// building.photo is a root-relative path into public/buildings/ (e.g.
-// "buildings/library.jpg") — same mechanism/asset set as ArrivalModal.vue.
-// This is the main "設施資訊欄" info panel (shown as soon as a destination is
-// picked, not just on arrival), so the photo needs to live here too.
+function closeLightbox() {
+  isLightboxOpen.value = false
+}
+
+function handleKeydown(e) {
+  if (e.key === 'Escape' && isLightboxOpen.value) {
+    closeLightbox()
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
+// Photo URL helper
 function photoUrl(path) {
   return `${import.meta.env.BASE_URL}${path}`
 }
 
-// Facility location text (e.g. "各樓層南北兩側走廊底端") is transcribed
-// verbatim from the source PDFs/photos in Chinese. Per user feedback these
-// now also get a bilingual zh/target treatment, laid out as parallel blocks
-// via BilingualText.vue, using a translated-phrase lookup table
-// (facilityContentI18n.js) — same AI-best-effort / non-official caveat as
-// buildingNamesI18n.js, since there's no paid translation API in this
-// project and these are safety-relevant location descriptions.
+// Facility location text
 function btContentPair(zhText) {
   if (!zhText || locale.value === 'zh-TW') return { zh: zhText, target: '' }
   const target = translateFacilityText(zhText, locale.value)
@@ -89,21 +80,65 @@ const facilitySections = computed(() => {
       </span>
     </div>
 
-    <div class="facility-photo-wrap">
-      <img
-        v-if="building.photo"
-        :src="photoUrl(building.photo)"
-        :alt="building.nameZh"
-        class="facility-photo"
-      />
+    <!-- Building photo with hover zoom & magnifying glass cursor -->
+    <div
+      class="facility-photo-wrap"
+      :class="{ 'has-photo': !!building.photo }"
+      @click="openLightbox"
+    >
+      <div v-if="building.photo" class="photo-inner-container">
+        <img
+          :src="photoUrl(building.photo)"
+          :alt="building.nameZh"
+          class="facility-photo"
+        />
+        <div class="photo-zoom-hint">
+          <span class="zoom-icon">🔍</span>
+          <span class="zoom-text">{{ locale === 'zh-TW' ? '點擊放大檢視' : 'Click to enlarge' }}</span>
+        </div>
+      </div>
       <div v-else class="facility-photo-placeholder">
         <span>{{ $t('arrival.photoMissing') }}</span>
       </div>
     </div>
 
-    <section v-if="building.accessNote" class="facility-section">
-      <h3><BilingualText v-bind="btPair('facility.accessNote')" /></h3>
-      <p><BilingualText v-bind="btContentPair(building.accessNote)" /></p>
+    <!-- Fullscreen Lightbox Modal -->
+    <Teleport to="body">
+      <Transition name="lightbox-fade">
+        <div
+          v-if="isLightboxOpen && building.photo"
+          class="lightbox-overlay"
+          @click="closeLightbox"
+        >
+          <div class="lightbox-dialog" @click.stop>
+            <div class="lightbox-header">
+              <span class="lightbox-title">🏢 {{ building.nameZh }} {{ building.nameEn ? `(${building.nameEn})` : '' }}</span>
+              <button
+                type="button"
+                class="lightbox-close-btn"
+                :title="locale === 'zh-TW' ? '關閉' : 'Close'"
+                @click="closeLightbox"
+              >
+                ✕
+              </button>
+            </div>
+            <div class="lightbox-body" @click="closeLightbox">
+              <img
+                :src="photoUrl(building.photo)"
+                :alt="building.nameZh"
+                class="lightbox-image"
+              />
+            </div>
+            <div class="lightbox-footer">
+              <span>🔍 {{ locale === 'zh-TW' ? '點擊任意處或按 ESC 鍵關閉' : 'Click anywhere or press ESC to close' }}</span>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
+    <section v-if="building.accessNote" class="facility-section intro-section">
+      <p class="building-intro-text"><BilingualText v-bind="btContentPair(building.accessNote)" /></p>
     </section>
 
     <section v-if="building.roomCode" class="facility-section">
@@ -134,40 +169,6 @@ const facilitySections = computed(() => {
     <section v-else class="facility-section pending">
       <p><BilingualText v-bind="btPair('facility.dataPending')" /></p>
     </section>
-
-    <section v-if="buildingEvents.length" class="announcements-section events-section">
-      <h3>{{ bt('events.upcomingTitle') }}</h3>
-      <div v-for="e in buildingEvents" :key="e.id" class="announcement-card">
-        <div class="announcement-head">
-          <span class="tag"><BilingualText v-bind="btPair(`eventType.${e.type}`)" /></span>
-          <span class="announcement-area">{{ e.title }}</span>
-        </div>
-        <p v-if="e.description" class="announcement-message">{{ e.description }}</p>
-        <p class="announcement-dates">{{ eventDateRange(e) }}</p>
-      </div>
-    </section>
-
-    <section v-if="announcements.length" class="announcements-section">
-      <h3><BilingualText v-bind="btPair('facility.announcementsTitle')" /></h3>
-      <div v-for="a in announcements" :key="a.id" class="announcement-card">
-        <div class="announcement-head">
-          <span class="tag"><BilingualText v-bind="btPair(`announcementType.${a.type}`)" /></span>
-          <span v-if="a.area" class="announcement-area">{{ a.area }}</span>
-        </div>
-        <p class="announcement-message">
-          {{ a.message?.[locale] || a.message?.en || a.message?.['zh-TW'] || a.message }}
-        </p>
-        <p
-          v-if="a.message && typeof a.message === 'object' && !a.message[locale] && locale !== 'en'"
-          class="muted-note"
-        >
-          <BilingualText v-bind="btPair('facility.announcementFallbackNote')" />
-        </p>
-        <p v-if="a.startDate || a.endDate" class="announcement-dates">
-          {{ formatWallClock(a.startDate, locale) }}<span v-if="a.startDate && a.endDate"> – </span>{{ formatWallClock(a.endDate, locale) }}
-        </p>
-      </div>
-    </section>
   </div>
 </template>
 
@@ -191,17 +192,74 @@ const facilitySections = computed(() => {
   line-height: 1.4;
 }
 
+/* ---- Photo Hover Zoom & Magnifier Cursor ---- */
 .facility-photo-wrap {
   margin: -0.25rem 0 0.25rem;
+  border-radius: 12px;
+  overflow: hidden;
 }
-.facility-photo {
+.facility-photo-wrap.has-photo {
+  cursor: zoom-in;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.facility-photo-wrap.has-photo:hover {
+  box-shadow: 0 8px 24px rgba(129, 27, 41, 0.2);
+  border-color: var(--fcu-maroon);
+}
+
+.photo-inner-container {
+  position: relative;
   width: 100%;
   height: 240px;
+  overflow: hidden;
+  background: #fbf9f6;
+  border-radius: 10px;
+}
+
+.facility-photo {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   background: var(--bg);
   border-radius: 10px;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center center;
 }
+
+.facility-photo-wrap:hover .facility-photo {
+  transform: scale(1.3);
+}
+
+/* Floating Zoom Hint Badge */
+.photo-zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(30, 20, 20, 0.85);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.facility-photo-wrap:hover .photo-zoom-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .facility-photo-placeholder {
   width: 100%;
   min-height: 120px;
@@ -217,12 +275,118 @@ const facilitySections = computed(() => {
   text-align: center;
 }
 
+/* ---- Lightbox Modal ---- */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(15, 10, 10, 0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.lightbox-dialog {
+  max-width: 92vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #221c1c;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
+.lightbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: #181414;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.lightbox-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+}
+
+.lightbox-close-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.lightbox-close-btn:hover {
+  background: var(--fcu-maroon, #811b29);
+  transform: scale(1.1);
+}
+
+.lightbox-body {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: zoom-out;
+}
+
+.lightbox-image {
+  max-width: 86vw;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-footer {
+  padding: 0.5rem 1.25rem 0.75rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Transitions */
+.lightbox-fade-enter-active,
+.lightbox-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.lightbox-fade-enter-from,
+.lightbox-fade-leave-to {
+  opacity: 0;
+}
+
 .facility-section {
   padding-bottom: 0.25rem;
 }
 .facility-section + .facility-section {
   border-top: 1px solid var(--border);
   padding-top: 1.1rem;
+}
+.intro-section {
+  background: #fbf9f6;
+  border: 1px solid #efe5d8;
+  border-radius: 10px;
+  padding: 0.85rem 1rem !important;
+}
+.building-intro-text {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  color: var(--text);
 }
 
 .facility-section h3 {

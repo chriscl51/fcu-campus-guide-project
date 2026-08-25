@@ -1,6 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { SUPPORTED_LOCALES, LOCALE_LABELS, persistLocale } from '../i18n'
+import { SUPPORTED_LOCALES, LOCALE_LABELS, persistLocale } from '../i18n/index.js'
 
 const { locale } = useI18n({ useScope: 'global' })
 
