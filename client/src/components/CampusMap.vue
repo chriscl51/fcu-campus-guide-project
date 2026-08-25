@@ -11,19 +11,24 @@
 // plus endpoint anchoring so the deer starts/stops exactly on the right
 // building).
 //
-// LAYER ORDER MATTERS AND IS DELIBERATE:
-//   1. the route polyline   <- drawn FIRST, so it ends up underneath
-//   2. the map image        <- painted over it, hiding the route completely
-//   3. the destination halo + the deer  <- drawn last, so they stay visible
-// The route line is still in the DOM (it's what the deer follows, and it's
-// handy when debugging alignment) but the user never sees it, which is the
-// requirement: 「graph 路線圖層要隱藏在 new fcu map 下方…user 不能看到 graph 的線條」.
+// LAYER ORDER:
+//   1. the map image                    <- painted first
+//   2. the route polyline               <- drawn on top, visible
+//   3. the destination halo + the deer  <- drawn last, on top of everything
+// The route line was hidden earlier because a straight chord drawn across a
+// building or pond on the illustrated map read as broken even when the deer's
+// actual walk was fine — several graph edges really were cutting through
+// buildings/courts/ponds. Those underlying graph bugs have since been found
+// and fixed (see testing-notes/README.md for the audit), so the line is
+// visible again as a second, independent way to confirm the walk at a glance.
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { MAP_IMAGE, projectMap, warpRoute, anchorFor } from '../utils/mapProjection'
 import { playFootstep } from '../utils/sound'
 import { publicUrl } from '../utils/publicUrl'
 import DeerSprite from './DeerSprite.vue'
+import graph from '../data/graph.json'
+import gates from '../data/gates.json'
+import { haversine } from '../utils/projection'
 
 const props = defineProps({
   route: { type: Object, required: true }, // { points, distanceMeters, etaMinutes, steps }
@@ -35,7 +40,6 @@ const props = defineProps({
   originId: { type: String, default: null },
 })
 const emit = defineEmits(['arrived'])
-const { t } = useI18n()
 
 // Where the artwork draws the destination — used for the "you're heading here"
 // halo. Falls back to the affine estimate for anything unlabelled.
@@ -44,6 +48,51 @@ const destPos = computed(
     anchorFor(props.destinationBuilding?.id) ||
     projectMap(props.destinationBuilding.lat, props.destinationBuilding.lon)
 )
+
+// Feedback item: 逢甲智慧創新港's only campus-side approach requires leaving
+// through North Gate and walking a public sidewalk along Xi'an St — that's
+// not obvious just from the drawn line (nothing on the map marks the gate as
+// "you're now off campus"), so show an explicit note whenever the computed
+// route actually passes near North Gate on the way there. Checked by
+// proximity (within 30m of the gate's own coordinate), not exact node id —
+// the real surveyed route passes a nearby path node a few metres from the
+// gate's own entranceNode, never that exact id. The East Gate approach stays
+// on campus the whole way and never comes near North Gate, so this stays
+// false for it without needing a separate check.
+const NORTH_GATE = gates.find((g) => g.id === 'gate-north')
+const showXianStreetNote = computed(
+  () =>
+    props.destinationBuilding?.officialCode === 'IH' &&
+    props.route.points.some((p) => haversine(p, NORTH_GATE) < 30)
+)
+
+// ---- debug overlay: the ENTIRE graph.json path network, drawn visibly on
+// top of the artwork so gaps/wrong stretches in the surveyed data can be
+// spotted by eye instead of by manually checking coordinates. Dev/maintenance
+// aid only — toggled by pressing "g", never shown by default. One <path>
+// with many "M..L.." subpaths (not one <line> per edge) so ~3500+ edges don't
+// turn into that many separate DOM nodes.
+const showDebugGraph = ref(false)
+function toggleDebugGraph(e) {
+  if (e.key === 'g' && !e.ctrlKey && !e.metaKey && !e.altKey) showDebugGraph.value = !showDebugGraph.value
+}
+window.addEventListener('keydown', toggleDebugGraph)
+onBeforeUnmount(() => window.removeEventListener('keydown', toggleDebugGraph))
+
+const debugGraphPath = computed(() => {
+  if (!showDebugGraph.value) return ''
+  const nodeById = new Map(graph.nodes.map((n) => [n.id, n]))
+  let d = ''
+  for (const e of graph.edges) {
+    const a = nodeById.get(e.a)
+    const b = nodeById.get(e.b)
+    if (!a || !b) continue
+    const pa = projectMap(a.lat, a.lon)
+    const pb = projectMap(b.lat, b.lon)
+    d += `M${pa.x.toFixed(1)},${pa.y.toFixed(1)} L${pb.x.toFixed(1)},${pb.y.toFixed(1)} `
+  }
+  return d
+})
 
 // ---- route path + deer animation -----------------------------------------
 const routePoints = computed(() =>
@@ -88,11 +137,18 @@ function positionAt(frac) {
 
 // Animation duration scales gently with route length so a short hop and a
 // cross-campus trek both feel reasonable, clamped to a sane UX range.
-const DURATION_MS = computed(() => Math.min(22000, Math.max(4500, props.route.distanceMeters * 45)))
+// Feedback item: with the turn-by-turn text gone, the visible route line is
+// the main way people follow the walk, so the pace is deliberately slow
+// (~3.5x the original) to give time to actually read the map.
+const DURATION_MS = computed(() => Math.min(60000, Math.max(12800, props.route.distanceMeters * 128)))
+// How long the deer stands at the destination, route line still visible,
+// before the arrival modal pops up and covers the map.
+const LINGER_MS = 7200
 
 let rafId = null
 let startTime = null
 let lastFootstepAt = 0
+let lingerTimeoutId = null
 
 function step(now) {
   if (startTime === null) startTime = now
@@ -119,7 +175,7 @@ function finish() {
   const last = routePoints.value[routePoints.value.length - 1]
   deerX.value = last.x
   deerY.value = last.y
-  emit('arrived')
+  lingerTimeoutId = setTimeout(() => emit('arrived'), LINGER_MS)
 }
 
 function start() {
@@ -133,6 +189,8 @@ function start() {
 function cancelAnim() {
   if (rafId) cancelAnimationFrame(rafId)
   rafId = null
+  if (lingerTimeoutId) clearTimeout(lingerTimeoutId)
+  lingerTimeoutId = null
 }
 
 function skipToEnd() {
@@ -156,12 +214,6 @@ const aspect = MAP_IMAGE.width / MAP_IMAGE.height
 const DEER_SIZE = 132
 const DEER_H = DEER_SIZE * (100 / 140)
 
-function directionLabel(step) {
-  if (step.type === 'straight') return t('directions.straight', { distance: step.distanceMeters })
-  if (step.type === 'left') return t('directions.left')
-  if (step.type === 'right') return t('directions.right')
-  return t('directions.arrive')
-}
 </script>
 
 <template>
@@ -177,12 +229,7 @@ function directionLabel(step) {
         :class="{ 'corner-sticker-finish': arrived }"
       />
       <svg class="campus-svg" :viewBox="viewBox" :style="{ aspectRatio: aspect }" preserveAspectRatio="xMidYMid meet">
-        <!-- LAYER 1 — the routing graph's computed path. Deliberately drawn
-             before the map image so the image paints straight over it: the
-             deer follows it, the user never sees it. -->
-        <path :d="routePath" class="route-line-hidden" />
-
-        <!-- LAYER 2 — the official illustrated campus map. This IS the map. -->
+        <!-- LAYER 1 — the official illustrated campus map. This IS the map. -->
         <image
           :href="publicUrl(MAP_IMAGE.src)"
           x="0"
@@ -191,6 +238,15 @@ function directionLabel(step) {
           :height="MAP_IMAGE.height"
           class="campus-map-image"
         />
+
+        <!-- LAYER 2 — the routing graph's computed path, drawn on top of the
+             map so the deer's route is visible. -->
+        <path :d="routePath" class="route-line" />
+
+        <!-- DEBUG ONLY — the whole graph.json path network, visible on top of
+             the artwork. Off by default; press "g" to toggle. Not part of
+             the normal user-facing layer order above. -->
+        <path v-if="showDebugGraph" :d="debugGraphPath" class="debug-graph-overlay" />
 
         <!-- LAYER 3 — only what has to sit on top of the artwork. -->
         <g class="dest-marker">
@@ -209,10 +265,6 @@ function directionLabel(step) {
           <DeerSprite :size="DEER_SIZE" />
         </foreignObject>
       </svg>
-
-      <button type="button" class="btn ghost skip-btn" @click="skipToEnd" v-if="!arrived">
-        {{ $t('routing.skipToEnd') }}
-      </button>
     </div>
 
     <div class="route-info card">
@@ -226,12 +278,10 @@ function directionLabel(step) {
           <strong>{{ $t('routing.distanceLabel', { distance: route.distanceMeters }) }}</strong>
         </div>
       </div>
-      <h3>{{ $t('routing.directionsTitle') }}</h3>
-      <ol class="directions-list">
-        <li v-for="(step, i) in route.steps" :key="i" :class="step.type">
-          {{ directionLabel(step) }}
-        </li>
-      </ol>
+      <p v-if="showXianStreetNote" class="xian-street-note">{{ $t('routing.xianStreetNote') }}</p>
+      <button type="button" class="btn ghost skip-btn" @click="skipToEnd" v-if="!arrived">
+        {{ $t('routing.skipToEnd') }}
+      </button>
     </div>
   </div>
 </template>
@@ -292,15 +342,25 @@ function directionLabel(step) {
   background: #f3ede1;
   border-radius: 10px;
 }
-/* The route the deer follows. It sits UNDER the map image, so it is never
-   visible to the user — this styling only matters if the image ever fails to
-   load, and when temporarily reordering the layers to check alignment. */
-.route-line-hidden {
+/* The route the deer follows, drawn on top of the map artwork. */
+.route-line {
   stroke: var(--fcu-maroon);
-  stroke-width: 10;
+  stroke-width: 6;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
+  opacity: 0.85;
+  filter: drop-shadow(0 1px 2px rgba(43, 35, 32, 0.35));
+}
+/* Debug-only: the full graph.json path network, drawn over the artwork so
+   gaps/wrong stretches in the surveyed data can be spotted by eye. Toggle
+   with "g". Bright cyan on purpose — nothing else on the map looks like it. */
+.debug-graph-overlay {
+  stroke: #00e5ff;
+  stroke-width: 2;
+  stroke-opacity: 0.85;
+  fill: none;
+  pointer-events: none;
 }
 .campus-map-image {
   /* Keeps the illustration's fine label text sharp when the card scales the
@@ -347,11 +407,10 @@ function directionLabel(step) {
     drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
 }
 .skip-btn {
-  position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
-  font-size: 0.8rem;
-  padding: 0.4em 0.9em;
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  font-size: 1.15rem;
+  padding: 0.55em 1.3em;
 }
 .route-info {
   display: flex;
@@ -360,34 +419,34 @@ function directionLabel(step) {
 }
 .route-following {
   font-weight: 700;
+  font-size: 1.3rem;
   color: var(--fcu-maroon);
 }
+/* Feedback item: with the turn-by-turn text list gone, this is the only
+   textual info left on the route screen, so it needs to read clearly at a
+   glance rather than blend in as fine print. */
 .route-stats {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.92rem;
+  gap: 0.6rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 .route-stats strong {
   margin-right: 0.4em;
 }
-.directions-list {
+/* Warns that this specific route leaves campus through North Gate onto a
+   public sidewalk — not obvious from the drawn line alone. */
+.xian-street-note {
   margin: 0;
-  padding-left: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.525rem;
-  font-size: 1.38rem;
-  line-height: 1.55;
-}
-.directions-list li.left,
-.directions-list li.right {
-  font-weight: 700;
+  padding: 0.6em 0.8em;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--fcu-blue-dark);
-}
-.directions-list li.arrive {
-  font-weight: 700;
-  color: var(--fcu-maroon);
+  background: color-mix(in srgb, var(--fcu-blue-dark) 10%, transparent);
+  border-left: 4px solid var(--fcu-blue-dark);
+  border-radius: 4px;
 }
 
 @media (max-width: 780px) {

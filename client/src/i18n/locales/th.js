@@ -55,15 +55,9 @@ export default {
     etaLabel: 'เวลาเดินโดยประมาณ',
     minutes: 'ประมาณ {min} นาที',
     distanceLabel: 'ระยะทางเดินประมาณ {distance} เมตร',
-    directionsTitle: 'คำแนะนำเส้นทางแบบข้อความ',
     following: 'กวางเหวินฮว่ากำลังพาคุณไป…',
     skipToEnd: 'ข้ามไปยังจุดหมายปลายทาง',
-  },
-  directions: {
-    straight: 'เดินตรงไปประมาณ {distance} เมตร',
-    left: 'เลี้ยวซ้าย',
-    right: 'เลี้ยวขวา',
-    arrive: 'ถึงจุดหมายปลายทาง',
+    xianStreetNote: 'จากประตูเหนือไปยัง i-Hub ให้เดินไปทางทิศตะวันออกตามถนนซีอาน (ทางเท้านอกมหาวิทยาลัย)',
   },
   arrival: {
     title: 'คุณมาถึง "{name}" แล้ว!',

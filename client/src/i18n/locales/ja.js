@@ -55,15 +55,9 @@ export default {
     etaLabel: '徒歩の所要時間（目安）',
     minutes: '約{min}分',
     distanceLabel: '徒歩距離は約{distance}m',
-    directionsTitle: 'テキストでの道案内',
     following: '文華鹿が案内しています…',
     skipToEnd: '目的地までスキップ',
-  },
-  directions: {
-    straight: '約{distance}m直進',
-    left: '左折',
-    right: '右折',
-    arrive: '目的地に到着',
+    xianStreetNote: '北門からi-Hubへは、西安街沿いに東へ歩いてください（キャンパス外の歩道です）。',
   },
   arrival: {
     title: '「{name}」に到着しました！',

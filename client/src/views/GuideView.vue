@@ -76,11 +76,22 @@ function onArrived() {
       />
 
       <ArrivalModal
-        v-if="store.step === STEP.ARRIVED && store.destinationBuilding && !store.facilitiesOpen"
+        v-if="store.step === STEP.ARRIVED && store.destinationBuilding && !store.destinationIsGate && !store.facilitiesOpen"
         :building="store.destinationBuilding"
         @view-facilities="store.facilitiesOpen = true"
         @plan-another="store.reset()"
       />
+
+      <!-- Gates have no facilities/photo worth a full popup for, but arriving
+           still needs SOME way back to planning a new route. -->
+      <button
+        v-if="store.step === STEP.ARRIVED && store.destinationIsGate"
+        type="button"
+        class="btn plan-another-btn"
+        @click="store.reset()"
+      >
+        {{ $t('arrival.planAnother') }}
+      </button>
 
       <div v-if="store.facilitiesOpen" class="facility-overlay" @click.self="store.facilitiesOpen = false">
         <div class="facility-overlay-inner card">
@@ -118,6 +129,10 @@ function onArrived() {
   gap: 1.25rem;
   align-items: start;
   width: 100%;
+}
+.plan-another-btn {
+  display: block;
+  margin: 1.25rem auto 0;
 }
 .drive-nav-card {
   display: flex;

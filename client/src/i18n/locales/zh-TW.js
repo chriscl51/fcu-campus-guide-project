@@ -56,15 +56,9 @@ export default {
     etaLabel: '預計步行時間',
     minutes: '約 {min} 分鐘',
     distanceLabel: '步行距離約 {distance} 公尺',
-    directionsTitle: '文字導航',
     following: '文華鹿正帶你走過去…',
     skipToEnd: '跳到終點',
-  },
-  directions: {
-    straight: '直走約 {distance} 公尺',
-    left: '左轉',
-    right: '右轉',
-    arrive: '抵達目的地',
+    xianStreetNote: '從北門到智慧創新港請沿西安街往東走（校園外人行道）。',
   },
   arrival: {
     title: '你抵達「{name}」囉！',

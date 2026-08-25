@@ -649,7 +649,7 @@
   "nameEn": "Architecture Building",
   "lat": 24.17960412857143,
   "lon": 120.64673061428573,
-  "entranceNode": "-26982",
+  "entranceNode": "ab-entrance-s",
   "footprint": [
    [
     24.1794275,
@@ -1051,7 +1051,7 @@
   "nameEn": "Language Building",
   "lat": 24.179763060000003,
   "lon": 120.64702752000001,
-  "entranceNode": "-26982",
+  "entranceNode": "lb-entrance-n",
   "footprint": [
    [
     24.1798423,
@@ -1771,7 +1771,7 @@
   "nameEn": "Swimming Pool",
   "lat": 24.181580560000004,
   "lon": 120.64957262,
-  "entranceNode": "-27112",
+  "entranceNode": "sp-entrance",
   "footprint": [
    [
     24.1816718,

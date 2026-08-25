@@ -55,15 +55,9 @@ export default {
     etaLabel: 'Perkiraan waktu jalan kaki',
     minutes: 'Sekitar {min} menit',
     distanceLabel: 'Jarak jalan kaki sekitar {distance} m',
-    directionsTitle: 'Petunjuk Arah Tertulis',
     following: 'Rusa Wenhwa sedang memandu kamu…',
     skipToEnd: 'Lewati ke Tujuan',
-  },
-  directions: {
-    straight: 'Jalan lurus sekitar {distance} m',
-    left: 'Belok kiri',
-    right: 'Belok kanan',
-    arrive: 'Tiba di tujuan',
+    xianStreetNote: "Dari Gerbang Utara ke i-Hub, jalan kaki ke arah timur di sepanjang Jalan Xi'an (trotoar di luar kampus).",
   },
   arrival: {
     title: 'Kamu sudah tiba di "{name}"!',

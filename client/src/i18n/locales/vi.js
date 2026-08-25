@@ -55,15 +55,9 @@ export default {
     etaLabel: 'Thời gian đi bộ dự kiến',
     minutes: 'Khoảng {min} phút',
     distanceLabel: 'Quãng đường đi bộ khoảng {distance} mét',
-    directionsTitle: 'Chỉ đường bằng văn bản',
     following: 'Hươu Wenhwa đang dẫn bạn đi…',
     skipToEnd: 'Bỏ qua, đến thẳng điểm đến',
-  },
-  directions: {
-    straight: 'Đi thẳng khoảng {distance} mét',
-    left: 'Rẽ trái',
-    right: 'Rẽ phải',
-    arrive: 'Đến điểm đến',
+    xianStreetNote: 'Từ Bắc Môn đến i-Hub, hãy đi bộ về phía đông dọc theo đường Tây An (vỉa hè ngoài khuôn viên trường).',
   },
   arrival: {
     title: 'Bạn đã đến "{name}" rồi!',

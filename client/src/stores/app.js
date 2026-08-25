@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import buildings from '../data/buildings.json'
 import gates from '../data/gates.json'
-import { nearestNode, shortestPath, estimateWalkMinutes, buildDirections } from '../utils/routing'
+import { nearestNode, shortestPath, estimateWalkMinutes } from '../utils/routing'
 import { nearestParkingTo, parkingLots } from '../utils/parking'
 
 // Origins can be a building, a campus gate, or one of the two curated
@@ -54,6 +54,11 @@ export const useAppStore = defineStore('app', {
     originBuilding(state) {
       return findOrigin(state.originId)
     },
+    // Feedback item: gates have no facilities/photo worth showing on arrival
+    // (unlike a building), so the arrival popup is skipped for them entirely.
+    destinationIsGate(state) {
+      return gates.some((g) => g.id === state.destinationId)
+    },
     suggestedParking(state) {
       const dest = this.destinationBuilding
       if (!dest) return null
@@ -95,16 +100,10 @@ export const useAppStore = defineStore('app', {
       const startNode = nearestNode(startLat, startLon)
       const path = shortestPath(startNode, dest.entranceNode)
       if (!path) return false
-      // If starting from a gate with a known facingBearing (see data/gates.json),
-      // seed buildDirections with it so a turn immediately outside the gate
-      // (before the route reaches its own second surveyed node) is still
-      // described — see buildDirections' initialBearing doc comment.
-      const initialBearing = this.originBuilding?.facingBearing ?? null
       this.route = {
         points: path.points,
         distanceMeters: Math.round(path.distanceMeters),
         etaMinutes: estimateWalkMinutes(path.distanceMeters),
-        steps: buildDirections(path.points, initialBearing),
       }
       this.step = STEP.ROUTING
       return true

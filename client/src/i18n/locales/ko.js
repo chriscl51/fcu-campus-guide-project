@@ -55,15 +55,9 @@ export default {
     etaLabel: '예상 도보 소요 시간',
     minutes: '약 {min}분',
     distanceLabel: '도보 거리 약 {distance}m',
-    directionsTitle: '텍스트 길안내',
     following: '웬화사슴이 안내하고 있어요…',
     skipToEnd: '목적지로 건너뛰기',
-  },
-  directions: {
-    straight: '약 {distance}m 직진',
-    left: '좌회전',
-    right: '우회전',
-    arrive: '목적지에 도착',
+    xianStreetNote: '북문에서 i-Hub까지는 시안제(西安街)를 따라 동쪽으로 걸어가세요(캠퍼스 밖 인도입니다).',
   },
   arrival: {
     title: '「{name}」에 도착했어요!',

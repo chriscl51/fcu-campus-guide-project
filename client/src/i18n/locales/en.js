@@ -56,15 +56,9 @@ export default {
     etaLabel: 'Estimated walking time',
     minutes: 'About {min} min',
     distanceLabel: 'Walking distance: about {distance} m',
-    directionsTitle: 'Written Directions',
     following: 'The Wenhwa Deer is guiding you there…',
     skipToEnd: 'Skip to Destination',
-  },
-  directions: {
-    straight: 'Go straight for about {distance} m',
-    left: 'Turn left',
-    right: 'Turn right',
-    arrive: 'Arrive at your destination',
+    xianStreetNote: "From North Gate to i-Hub, walk east along Xi'an St. (a public sidewalk outside campus).",
   },
   arrival: {
     title: 'You\'ve arrived at "{name}"!',
