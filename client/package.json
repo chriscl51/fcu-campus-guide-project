@@ -16,7 +16,6 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@rolldown/binding-darwin-arm64": "file:../../../../.vscode/tmp/tmp_vscode_3/rolldown-binding-darwin-arm64-1.2.5.tgz",
     "@vitejs/plugin-vue": "^6.0.8",
     "vite": "^8.2.0"
   }

@@ -159,6 +159,9 @@ export default {
     addAdminButton: '新增管理者',
     eventsServerUnreachable: '目前連不上後端伺服器，請確認 Node.js 伺服器是否已啟動（npm start）',
     savedToServer: '已儲存到伺服器資料庫',
+    save: '儲存',
+    edit: '編輯',
+    delete: '刪除',
   },
   language: {
     label: '語言',

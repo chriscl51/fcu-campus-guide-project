@@ -158,6 +158,9 @@ export default {
     addAdminButton: 'Thêm quản trị viên',
     eventsServerUnreachable: 'Không thể kết nối với máy chủ. Vui lòng kiểm tra máy chủ Node.js đã được khởi động chưa (npm start)',
     savedToServer: 'Đã lưu vào máy chủ',
+    save: 'Lưu',
+    edit: 'Sửa',
+    delete: 'Xóa',
   },
   language: {
     label: 'Ngôn ngữ',

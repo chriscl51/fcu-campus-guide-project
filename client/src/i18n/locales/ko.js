@@ -158,6 +158,9 @@ export default {
     addAdminButton: '관리자 추가',
     eventsServerUnreachable: '서버에 연결할 수 없습니다. Node.js 서버가 실행 중인지 확인하세요(npm start)',
     savedToServer: '서버에 저장되었습니다',
+    save: '저장',
+    edit: '수정',
+    delete: '삭제',
   },
   language: {
     label: '언어',

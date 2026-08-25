@@ -158,6 +158,9 @@ export default {
     addAdminButton: 'Tambah Admin',
     eventsServerUnreachable: 'Saat ini tidak dapat terhubung ke server backend. Pastikan server Node.js sudah dijalankan (npm start)',
     savedToServer: 'Tersimpan di basis data server',
+    save: 'Simpan',
+    edit: 'Edit',
+    delete: 'Hapus',
   },
   language: {
     label: 'Bahasa',

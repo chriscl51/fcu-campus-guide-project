@@ -158,6 +158,9 @@ export default {
     addAdminButton: '管理者を追加',
     eventsServerUnreachable: 'バックエンドサーバーに接続できません。Node.jsサーバーが起動しているか確認してください（npm start）',
     savedToServer: 'サーバーに保存しました',
+    save: '保存',
+    edit: '編集',
+    delete: '削除',
   },
   language: {
     label: '言語',

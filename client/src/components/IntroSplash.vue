@@ -87,7 +87,7 @@ function onEventLocationPick(ev, e) {
         <p class="events-board-title">{{ bt('events.upcomingTitle') }}</p>
 
         <p v-if="upcomingEvents.length === 0" class="events-board-empty">
-          {{ $t('events.upcomingEmpty') }}
+          {{ $t('events.emptyBoard') }}
         </p>
 
         <ul v-else class="events-list">

@@ -158,6 +158,9 @@ export default {
     addAdminButton: 'เพิ่มผู้ดูแลระบบ',
     eventsServerUnreachable: 'ขณะนี้ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาตรวจสอบว่าเซิร์ฟเวอร์ Node.js ทำงานอยู่หรือไม่ (npm start)',
     savedToServer: 'บันทึกลงฐานข้อมูลเซิร์ฟเวอร์แล้ว',
+    save: 'บันทึก',
+    edit: 'แก้ไข',
+    delete: 'ลบ',
   },
   language: {
     label: 'ภาษา',

@@ -158,6 +158,9 @@ export default {
     addAdminButton: 'Add Admin',
     eventsServerUnreachable: 'Cannot reach the backend server right now — please make sure the Node.js server is running (npm start)',
     savedToServer: 'Saved to the server database',
+    save: 'Save',
+    edit: 'Edit',
+    delete: 'Delete',
   },
   language: {
     label: 'Language',

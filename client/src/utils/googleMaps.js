@@ -217,7 +217,12 @@ const CAMPUS_GRAPH_NODES = {
 }
 
 const CAMPUS_GRAPH_EDGES = [
-  // 榕樹大道（校內唯一有名字之道路：西門進入至圖書館前）
+  // 榕樹大道（校內唯一有名字之道路：西門進入至圖書館前）— this label is
+  // geometrically gated by resolveEdgeName()/BANYAN_PROMENADE_ZONE above, so
+  // an edge below only actually displays as Banyan Promenade when its real
+  // coordinates fall inside that surveyed zone; otherwise it silently
+  // downgrades to the generic Campus Walkway label instead of mislabeling a
+  // different real path (e.g. the west perimeter wall route) as this one.
   ['w_gate', 'adb_1', '榕樹大道 (Banyan Promenade)'],
   ['adb_1', 'adb_2', '榕樹大道 (Banyan Promenade)'],
   ['adb_2', 'cmb', '榕樹大道 (Banyan Promenade)'],
@@ -347,8 +352,9 @@ function solveCampusWalkwayRoute(from, to, locale = 'zh-TW') {
         continue // Skip edge: blocked by No-Crossing Zone (e.g. Lotus Pond)
       }
       const dist = haversineDistanceMeters(uNode.lat, uNode.lon, vNode.lat, vNode.lon)
-      adj[u].push({ to: v, dist, name })
-      adj[v].push({ to: u, dist, name })
+      const resolvedName = resolveEdgeName(name, uNode, vNode)
+      adj[u].push({ to: v, dist, name: resolvedName })
+      adj[v].push({ to: u, dist, name: resolvedName })
     }
   }
 
@@ -466,8 +472,8 @@ function solveCampusWalkwayRoute(from, to, locale = 'zh-TW') {
   } else {
     // Step 1: Depart
     const firstEdge = prev[pathNodeIds[1]]
-    const firstWalkway = translateStreet(firstEdge?.name || '榕樹大道', loc)
-    const firstWalkwayZh = firstEdge?.name || '榕樹大道'
+    const firstWalkway = translateStreet(firstEdge?.name || CAMPUS_WALKWAY_NAME, loc)
+    const firstWalkwayZh = firstEdge?.name || CAMPUS_WALKWAY_NAME
     steps.push({
       index: 1,
       instruction: tDepart(fromName, firstWalkway),
