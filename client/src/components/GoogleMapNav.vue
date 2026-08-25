@@ -401,7 +401,7 @@ async function exportPdf() {
         attributionControl: false,
       })
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      const pdfTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
       }).addTo(pdfLeaflet)
 
@@ -442,10 +442,29 @@ async function exportPdf() {
         pdfLeaflet.fitBounds(poly.getBounds().pad(0.18), { animate: false })
         pdfLeaflet.removeLayer(poly)
       }
-    }
 
-    // Wait for Leaflet tiles to load
-    await new Promise((r) => setTimeout(r, 600))
+      // Wait for the tiles in the fitted view to actually finish loading.
+      // A single tileLayer 'load' event isn't reliable here — it can fire
+      // for an early/partial batch while Leaflet is still issuing more tile
+      // requests for the final view, leaving most of the exported map blank.
+      // Poll isLoading() until it actually settles, capped so export never
+      // hangs if a tile request stalls or drops.
+      await new Promise((resolve) => {
+        const start = Date.now()
+        const minWaitMs = 300
+        const maxWaitMs = 12000
+        const poll = () => {
+          const elapsed = Date.now() - start
+          const stillLoading = pdfTileLayer.isLoading ? pdfTileLayer.isLoading() : false
+          if ((!stillLoading && elapsed >= minWaitMs) || elapsed >= maxWaitMs) {
+            resolve()
+          } else {
+            setTimeout(poll, 150)
+          }
+        }
+        poll()
+      })
+    }
 
     // 2. Render Template Page 1 & Page 2
     const page1El = document.getElementById('fcu-pdf-page-1')

@@ -112,6 +112,38 @@ const CAMPUS_STREETS = {
   },
 }
 
+// The one stretch of campus path that's actually allowed to be labeled
+// "榕樹大道 (Banyan Promenade)" — a real, named path, confirmed on-site.
+// [lat, lon] polygon, same winding/format as noCrossingZones.js. Any graph
+// edge whose name says Banyan Promenade but whose geometry falls outside
+// this polygon is mislabeled (the surrounding CAMPUS_GRAPH_EDGES topology is
+// a coarse ~30-node approximation, not a surveyed path network, so an edge
+// can be forced through this label even when the real walk it represents is
+// elsewhere, e.g. along the west perimeter wall) — see resolveEdgeName().
+const BANYAN_PROMENADE_ZONE = [
+  [24.178977511630222, 120.64670977665287],
+  [24.178813569223998, 120.64674732759823],
+  [24.17875239663018, 120.64799991918254],
+  [24.17906804689728, 120.64798919034705],
+  [24.17897995852919, 120.64801601243579],
+  [24.17913166623642, 120.6490137940415],
+  [24.179004427526436, 120.64905939158992],
+]
+
+const BANYAN_PROMENADE_NAME = '榕樹大道 (Banyan Promenade)'
+const CAMPUS_WALKWAY_NAME = '校園步道 (Campus Walkway)'
+
+/** Gate the Banyan Promenade label on real geometry: only keep it when the
+ * edge's midpoint actually falls inside BANYAN_PROMENADE_ZONE, otherwise
+ * fall back to the generic campus-walkway label. Any other name passes
+ * through unchanged. */
+function resolveEdgeName(rawName, uNode, vNode) {
+  if (rawName !== BANYAN_PROMENADE_NAME) return rawName
+  const midLat = (uNode.lat + vNode.lat) / 2
+  const midLon = (uNode.lon + vNode.lon) / 2
+  return isPointInsidePolygon(midLat, midLon, BANYAN_PROMENADE_ZONE) ? rawName : CAMPUS_WALKWAY_NAME
+}
+
 function translateStreet(name, locale) {
   if (!name || locale === 'zh-TW') return name
   for (const [zhKey, translations] of Object.entries(CAMPUS_STREETS)) {
